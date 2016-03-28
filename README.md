@@ -8,21 +8,20 @@ This is a clone of the popular Quora built using Ruby on Rails and React.js. Thi
 - [ ] Create an Account
 - [ ] Log in / Log out
 - [ ] Submit questions
+- [ ] Subscribe to select topics
 - [ ] Browse a feed of answered questions
 - [ ] Narrow that feed by topic
 - [ ] Answer questions
 - [ ] Upvote/Downvote answers
-- [ ] Search questions by content
+- [ ] Search questions by title
 - [ ] Build up profile listing qualifications
 
 ## Design Docs
-* [View Wireframes][views]
 * [React Components][components]
 * [Flux Stores][stores]
 * [API endpoints][api-endpoints]
 * [DB schema][schema]
 
-[views]: ./docs/views.md
 [components]: ./docs/components.md
 [stores]: ./docs/stores.md
 [api-endpoints]: ./docs/api-endpoints.md
@@ -63,7 +62,7 @@ This is a clone of the popular Quora built using Ruby on Rails and React.js. Thi
 - [ ] questions added to DB
 - [ ] create question show page
   - [ ] CRUD API for questions (`QuestionsController`)
-- [ ] user picks tags for question
+- [ ] user picks topics for question
 - [ ] setup React Router
 - [ ] setup Webpack and Flux scaffold
 - [ ] implement Question and Answer Components, implement Flux loop
