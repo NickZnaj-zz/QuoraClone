@@ -24,7 +24,6 @@
 
 - `GET /api/questions`
   - Questions index/search
-  - accepts `topic_name` query param to list questions by topic
 - `POST /api/questions`
 - `GET /api/questions/:id`
   - question show page with all answers
@@ -38,6 +37,6 @@
 ### Topics
 
 - A question's topics will be included in the question show template
-- `GET /api/topics`
+- `GET /api/topics/topic_name`
   - includes query param for typeahead suggestions
   - index of all questions with the desired topic
