@@ -19668,6 +19668,7 @@
 	var React = __webpack_require__(1);
 	var QuestionStore = __webpack_require__(160);
 	var ApiUtil = __webpack_require__(182);
+	var IndexItem = __webpack_require__(185);
 	
 	var QuestionsIndex = React.createClass({
 	  displayName: 'QuestionsIndex',
@@ -19690,26 +19691,13 @@
 	  },
 	
 	  render: function () {
-	    var questions = this.state.questions.map(function (question) {
-	      return React.createElement(
-	        'li',
-	        null,
-	        React.createElement(
-	          'p',
-	          null,
-	          question.title
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          question.body
-	        )
-	      );
-	    });
+	
 	    return React.createElement(
 	      'ul',
 	      null,
-	      questions
+	      this.state.questions.map(function (question) {
+	        return React.createElement(IndexItem, { key: question.id, question: question });
+	      })
 	    );
 	  }
 	});
@@ -26556,6 +26544,30 @@
 	module.exports = {
 	  QUESTIONS_RECEIVED: "QUESTIONS_RECEIVED"
 	};
+
+/***/ },
+/* 185 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var IndexItem = React.createClass({
+	  displayName: "IndexItem",
+	
+	  render: function () {
+	    return React.createElement(
+	      "li",
+	      { className: "question-list-item" },
+	      React.createElement(
+	        "h3",
+	        null,
+	        this.props.question.title
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = IndexItem;
 
 /***/ }
 /******/ ]);
