@@ -8,10 +8,10 @@
 
 Question.create!(
   title: "can you see me?",
-  user_id: 1
+  # user_id: 1
 )
 
 Question.create!(
   title: "this is another test, what do you think?",
-  user_id: 2
+  # user_id: 2
 )
