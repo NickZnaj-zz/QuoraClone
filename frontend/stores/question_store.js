@@ -9,6 +9,9 @@ var resetQuestions = function(questions){
   _questions = questions;
 };
 
+var resetQuestion = function(question){
+  _questions[question.id] = question;
+};
 
 QuestionStore.all = function () {
   return _questions.slice(0);
@@ -19,6 +22,10 @@ QuestionStore.__onDispatch = function (payload) {
 switch(payload.actionType) {
   case QuestionConstants.QUESTIONS_RECEIVED:
     resetQuestions(payload.questions);
+    QuestionStore.__emitChange();
+    break;
+  case QuestionConstants.QUESTION_RECEIVED:
+    resetQuestion(payload.question);
     QuestionStore.__emitChange();
     break;
   }

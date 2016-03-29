@@ -10,9 +10,20 @@ var ApiUtil = {
         QuestionActions.receiveAllQuestions(questions);
       }
     });
+  },
+
+  createQuestion: function(question, callback) {
+    $.ajax({
+      type: "POST",
+      url: "api/questions",
+      data: {question: question},
+      success: function(question) {
+        QuestionActions.receiveSingleQuestion(question);
+        callback && callback(question.id);
+      }
+    });
   }
 };
 
-window.ApiUtil = ApiUtil;
 
 module.exports = ApiUtil;
