@@ -1,4 +1,4 @@
 json.extract!(
   question,
-  :id, :title, :body
+  :id, :title
 )

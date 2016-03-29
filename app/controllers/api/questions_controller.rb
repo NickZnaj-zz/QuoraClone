@@ -14,4 +14,10 @@ class Api::QuestionsController < ApplicationController
     end
   end
 
+
+  private
+
+  def question_params
+    params.require(:question).permit(:title)
+  end
 end
