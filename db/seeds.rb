@@ -8,12 +8,10 @@
 
 Question.create!(
   title: "can you see me?",
-  body: " that would be great if you could",
   user_id: 1
 )
 
 Question.create!(
-  title: "this is another test",
-  body: "another test",
+  title: "this is another test, what do you think?",
   user_id: 2
 )
