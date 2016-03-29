@@ -29,47 +29,53 @@ This is a clone of the popular Quora built using Ruby on Rails and React.js. Thi
 
 ## Implementation Timeline
 
-### Phase 1: Question Feature and Backend Setup (2 Days)
 
-**Objective:** Have a readable feed of Questions on main page.
+### Phase 1: Backend setup and begin Read View (1 Day)
 
-- [ ] create new project
-- [ ] setup React Router
-- [ ] setup Webpack and Flux scaffold
-- [ ] create `Question` model
-- [ ] implement Question Component, implement Flux loop
-  - [ ] `QuestionsIndex`
-  - [ ] `QuestionsIndexItem`
-- [ ] set up `APIUtil` to interact with the API
-- [ ] users can submit questions in a nav bar
-- [ ] create question show page
-  - [ ] CRUD API for questions (`QuestionsController`)
-- [ ] seed the database with sample questions
-- [ ] questions added to DB
+**Objective:** Have a readable feed of Questions with seeded data with Answers and User info
 
-### Phase 2: Answer Feature (2 Days)
-**Objective:** Anyone can now answer questions through a form and a question's show page will display all of its answers
 
-- [ ] Create `Answers` table
-- [ ] CRUD API for questions
-- [ ] answers added to DB
-  - [ ] (`QuestionsController`)
+- [ ] create `Answer` model
+- [ ] create `User` model
+- [ ] create `Topic` model
+- [ ] set up associations and validations for all models
+- [ ] seed the database with sample data
+
+### Phase 2: Styling feed (0.5 Days)
+
+**Objective:** style feed with CSS to include a user avatar and designated boxes for each feature.
+
+- [ ] users have default avatar
+- [ ] questions are clearly marked
+- [ ] feed has one answer per question visible
+- [ ] shorted response to first 200 characters
+- [ ] have link to expand text in page and shrink back if desired
+- [ ] answerer's information visible alongside answer
+
+
+### Phase 3: API and basic APIUtil (2 days)
+
+**Objective:** Questions can be submitted from main page, after which user is taken to a question show page.
+
+
+- [ ] user picks topics for question
+
 - [ ] implement Question and Answer Components, implement Flux loop
+
   - [ ] `AnswersIndex`
   - [ ] `AnswersIndexItem`
-- [ ] CSS styling for answers
-- [ ] Add Answer seeds
 
-### Phase 3: Voting Feature and Answer Submission (1 Day)
+### Phase 4: Submitting and Rating Answers (1 day)
+
+**Objective:** Users will be able to submit answers to questions from Question show page and from main feed
+
+- [ ] CRUD API for answers
+- [ ] answers can be upvoted or downvoted and will display their number of points
 - [ ] top answer will be displayed under each question in main feed
 - [ ] question show page answers will be ordered by date of submission (earliest at the top)
 - [ ] users can upload images to go with answers
-- [ ] users can upvote or downvote answers
-- [ ] answer's score will be displayed
-- [ ] style everything
 
-
-### Phase 4: Styling Existing Pages and Nav Bar (0.5 days)
+### Phase 5: Styling Existing Pages and Nav Bar (0.5 days)
 
 **Objective:** All pages built thus far will be pleasant to look at. Nav bar will persist across pages and will also look good.
 
@@ -81,7 +87,7 @@ This is a clone of the popular Quora built using Ruby on Rails and React.js. Thi
 - [ ] Style Answer forms
 - [ ] Style Navbar
 
-### Phase 5: User Auth, User Profile, and Feed Customization (1.5 days)
+### Phase 6: User Auth, User Profile, and Feed Customization (1.5 days)
 
 **Objective:** Users can create accounts and select interests from a preset lists and browse, answer, and post questions.
 
@@ -97,7 +103,7 @@ This is a clone of the popular Quora built using Ruby on Rails and React.js. Thi
 - [ ] users can add bios
 - [ ] when logged in, users only see questions with topics from their selected topics.
 
-### Phase 6: Further Feed Customization & Tidying Up (1.5 days)
+### Phase 7: Further Feed Customization & Tidying Up (1.5 days)
 
 **Objective:** Users will be able to and delete interests after initial sign up.
 
@@ -108,7 +114,7 @@ This is a clone of the popular Quora built using Ruby on Rails and React.js. Thi
   - [ ] Add highlighting to selected view
   - [ ] Add profile dropdown with link to profile for now.
 
-### Phase 7: Question Follows and Notifications (1.5 days)
+### Phase 8: Question Follows and Notifications (1.5 days)
 - [ ] Users can mark questions to follow.
 - [ ] When a question is answered by another user, a notification will appear in the navbar.
 - [ ] Notification dropdown shows links to relevant questions
@@ -121,6 +127,20 @@ This is a clone of the popular Quora built using Ruby on Rails and React.js. Thi
 - [ ] cool logo
 - [ ] sharing to Twitter, Facebook etc
 - [ ] Multiple Sessions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -5,3 +5,15 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+Question.create!(
+  title: "can you see me?",
+  body: " that would be great if you could",
+  user_id: 1
+)
+
+Question.create!(
+  title: "this is another test",
+  body: "another test",
+  user_id: 2
+)
