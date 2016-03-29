@@ -13,13 +13,17 @@ var ApiUtil = {
   },
 
   createQuestion: function(question, callback) {
+    debugger
     $.ajax({
-      type: "POST",
-      url: "api/questions",
+      method: "POST",
+      url: "/api/questions",
       data: {question: question},
       success: function(question) {
         QuestionActions.receiveSingleQuestion(question);
         callback && callback(question.id);
+      },
+      error: function(e) {
+        console.log("api_util#createQuestion");
       }
     });
   }

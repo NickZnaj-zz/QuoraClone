@@ -26539,13 +26539,17 @@
 	  },
 	
 	  createQuestion: function (question, callback) {
+	    debugger;
 	    $.ajax({
-	      type: "POST",
-	      url: "api/questions",
+	      method: "POST",
+	      url: "/api/questions",
 	      data: { question: question },
 	      success: function (question) {
 	        QuestionActions.receiveSingleQuestion(question);
 	        callback && callback(question.id);
+	      },
+	      error: function (e) {
+	        console.log("api_util#createQuestion");
 	      }
 	    });
 	  }
@@ -26615,14 +26619,23 @@
 	
 	  mixins: [History],
 	
+	  getInitialState: function () {
+	    return { title: '' };
+	  },
+	
+	  _onChange: function (event) {
+	    this.setState({ title: event.target.value });
+	  },
+	
 	  blankAttrs: {
 	    title: ''
 	  },
 	
 	  handleSubmit: function (event) {
-	    event.PreventDefault();
+	    event.preventDefault();
 	
-	    ApiUtil.createQuestion(this.state, function (id) {
+	    var title = { title: this.state.title };
+	    ApiUtil.createQuestion(title, function (id) {
 	      this.history.pushState(null, "/question/" + id, {});
 	    }.bind(this));
 	    this.setState(this.blankAttrs);
@@ -26635,7 +26648,7 @@
 	      React.createElement(
 	        'form',
 	        { onSubmit: this.handleSubmit },
-	        React.createElement('input', { type: 'text' }),
+	        React.createElement('input', { name: 'title', type: 'text', onChange: this._onChange, value: this.state.title }),
 	        React.createElement('input', { type: 'submit' })
 	      )
 	    );

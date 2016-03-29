@@ -6,16 +6,23 @@ var History = require('react-router').History;
 var QuestionForm = React.createClass({
   mixins: [History],
 
+  getInitialState: function() {
+    return ({title: ''});
+  },
 
-  
+  _onChange: function(event) {
+    this.setState({title: event.target.value});
+  },
+
   blankAttrs: {
     title: ''
   },
 
   handleSubmit: function(event){
-    event.PreventDefault();
+    event.preventDefault();
 
-    ApiUtil.createQuestion(this.state, function(id) {
+    var title = {title: this.state.title};
+    ApiUtil.createQuestion(title, function(id) {
       this.history.pushState(null, "/question/" + id, {});
     }.bind(this));
     this.setState(this.blankAttrs);
@@ -26,7 +33,7 @@ var QuestionForm = React.createClass({
       <div className="QuestionForm">
         <form onSubmit={this.handleSubmit}>
 
-          <input type="text" />
+          <input name="title" type="text" onChange={this._onChange} value={this.state.title}/>
           <input type="submit" />
 
         </form>
