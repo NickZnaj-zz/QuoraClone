@@ -31,7 +31,10 @@
 ### Answers
 
 - `POST /api/questions/:id/answers`
-- `DELETE /api/questions/:id/answers/:id`
+- `DELETE /api/answers/:id`
+
+### Votes
+- `POST /api/answers/:id`
 
 
 ### Topics
