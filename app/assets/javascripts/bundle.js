@@ -19765,6 +19765,10 @@
 	  _questions.splice(deleted, 1);
 	};
 	
+	var editQuestion = function (question) {
+	  _questions[question.id] = question;
+	};
+	
 	QuestionStore.all = function () {
 	  return _questions.slice(0);
 	};
