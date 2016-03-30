@@ -30,11 +30,11 @@ var QuestionDetail =  React.createClass({
 
   },
 
-  renderEdit: function(event) {
+  handleEdit: function(event) {
     event.preventDefault();
-    console.log("hit the other render");
-    render(<div component={QuestionEdit} />);
+    console.log("hit handleEdit");
 
+    this.setState({ edit: true });
   },
   // fetchDetails: function (props) {
   //   // if you want to factor out the ApiUtil call
@@ -56,18 +56,20 @@ var QuestionDetail =  React.createClass({
 
 
   render: function () {
-    if(this.state.question === undefined) { return <div></div>; }
-    return(
-      <div>
+    if (!this.state.question) { return <div></div>; }
+    if (this.state.edit) { return ( <QuestionEdit question={this.state.question}/> ); }
+
+    else{
+      return(
         <div className="question-show-page" onSubmit={this.handleDelete}>
           <div className="question">
             {this.state.question.title}
           </div>
           <input type="submit" value="Delete" onClick={this.handleDelete} />
-          <input type="button" value="Edit" onClick={this.renderEdit} />
+          <input type="submit" value="Edit" onClick={this.handleEdit} />
         </div>
-      </div>
-    );
+      );
+    }
   }
 });
 

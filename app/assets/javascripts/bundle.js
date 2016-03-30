@@ -31832,10 +31832,11 @@
 	    }.bind(this));
 	  },
 	
-	  renderEdit: function (event) {
+	  handleEdit: function (event) {
 	    event.preventDefault();
-	    console.log("hit the other render");
-	    render(React.createElement('div', { component: QuestionEdit }));
+	    console.log("hit handleEdit");
+	
+	    this.setState({ edit: true });
 	  },
 	  // fetchDetails: function (props) {
 	  //   // if you want to factor out the ApiUtil call
@@ -31855,13 +31856,13 @@
 	  },
 	
 	  render: function () {
-	    if (this.state.question === undefined) {
+	    if (!this.state.question) {
 	      return React.createElement('div', null);
 	    }
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
+	    if (this.state.edit) {
+	      return React.createElement(QuestionEdit, { question: this.state.question });
+	    } else {
+	      return React.createElement(
 	        'div',
 	        { className: 'question-show-page', onSubmit: this.handleDelete },
 	        React.createElement(
@@ -31870,9 +31871,9 @@
 	          this.state.question.title
 	        ),
 	        React.createElement('input', { type: 'submit', value: 'Delete', onClick: this.handleDelete }),
-	        React.createElement('input', { type: 'button', value: 'Edit', onClick: this.renderEdit })
-	      )
-	    );
+	        React.createElement('input', { type: 'submit', value: 'Edit', onClick: this.handleEdit })
+	      );
+	    }
 	  }
 	});
 	
@@ -31893,25 +31894,19 @@
 	    router: React.PropTypes.object.isRequired
 	  },
 	
-	  getStateFromStore: function () {
-	    return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
-	  },
+	  _onChange: function (event) {
 	
-	  _onChange: function () {
-	    this.setState(this.getStateFromStore());
+	    this.setState({ title: this.state.question.title + event.target.value });
 	  },
 	
 	  getInitialState: function () {
-	    return this.getStateFromStore();
-	  },
-	
-	  componentWillReceiveProps: function (newProps) {
-	    ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
+	    debugger;
+	    return { question: QuestionStore.all()[QuestionStore.all().length - 1] };
 	  },
 	
 	  componentDidMount: function () {
 	    this.questionListener = QuestionStore.addListener(this._onChange);
-	    ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
+	    // ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
 	  },
 	
 	  componentWillUnmount: function () {
@@ -31936,15 +31931,10 @@
 	      'div',
 	      null,
 	      React.createElement(
-	        'div',
-	        { className: 'question-show-page', onSubmit: this.handleEdit },
-	        React.createElement(
-	          'div',
-	          { className: 'question' },
-	          this.state.question.title
-	        ),
-	        React.createElement('input', { type: 'text', className: 'question-update', value: this.state.question.title }),
-	        React.createElement('input', { type: 'submit', value: 'Update', onClick: this.handleEdit })
+	        'form',
+	        { className: 'question-edit', onSubmit: this.handleEdit },
+	        React.createElement('input', { type: 'text', className: 'question-update', value: this.state.question.title, onChange: this._onChange }),
+	        React.createElement('input', { type: 'submit', value: 'Update' })
 	      )
 	    );
 	  }
