@@ -26627,14 +26627,14 @@
 	    });
 	  },
 	
-	  editQuestion: function (question, callback) {
+	  editQuestion: function (question, newAttrs, callback) {
 	    $.ajax({
 	      method: "PATCH",
 	      url: "/api/questions/" + question.id,
-	      data: { question: question },
+	      data: { question: newAttrs },
 	      success: function (question) {
 	        QuestionActions.editQuestion(question);
-	        callback && callback();
+	        callback && callback(question);
 	      },
 	      error: function (e) {
 	        console.log("api_util#editQuestion error");
@@ -31863,11 +31863,15 @@
 	    }.bind(this));
 	  },
 	
-	  handleEdit: function (event) {
+	  startEdit: function (event) {
 	    event.preventDefault();
 	    console.log("hit handleEdit");
 	
-	    this.setState({ edit: true });
+	    this.setState({ isEditing: true });
+	  },
+	
+	  closeEdit: function () {
+	    this.setState({ isEditing: false });
 	  },
 	  // fetchDetails: function (props) {
 	  //   // if you want to factor out the ApiUtil call
@@ -31890,8 +31894,8 @@
 	    if (!this.state.question) {
 	      return React.createElement('div', null);
 	    }
-	    if (this.state.edit) {
-	      return React.createElement(QuestionEdit, { question: this.state.question });
+	    if (this.state.isEditing) {
+	      return React.createElement(QuestionEdit, { question: this.state.question, onEditEnd: this.closeEdit });
 	    } else {
 	      return React.createElement(
 	        'div',
@@ -31902,7 +31906,7 @@
 	          this.state.question.title
 	        ),
 	        React.createElement('input', { type: 'submit', value: 'Delete', onClick: this.handleDelete }),
-	        React.createElement('input', { type: 'submit', value: 'Edit', onClick: this.handleEdit })
+	        React.createElement('input', { type: 'submit', value: 'Edit', onClick: this.startEdit })
 	      );
 	    }
 	  }
@@ -31925,20 +31929,22 @@
 	    router: React.PropTypes.object.isRequired
 	  },
 	
-	  _onChange: function (event) {
+	  _onChange: function (e) {
 	
-	    this.setState({ title: event.target.value });
+	    this.setState({ title: e.target.value });
+	    // this.setState(this.state.question.title = event.target.value );
 	  },
+	
+	  _onStoreChange: function () {},
 	
 	  getInitialState: function () {
 	    // debugger
-	    var relevant = QuestionStore.all()[QuestionStore.all().length - 1];
-	    return { question: relevant, title: relevant.title };
+	    return { title: this.props.question.title };
 	    // return { title: this.state.question.title };
 	  },
 	
 	  componentDidMount: function () {
-	    this.questionListener = QuestionStore.addListener(this._onChange);
+	    this.questionListener = QuestionStore.addListener(this._onStoreChange);
 	    // ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
 	  },
 	
@@ -31950,15 +31956,12 @@
 	    event.preventDefault();
 	
 	    console.log("hit the handle EDIT");
-	    ApiUtil.editQuestion(this.state.question, function () {
-	      this.context.router.push('/questions/' + this.state.question.id);
+	    ApiUtil.editQuestion(this.props.question, this.state, function (question) {
+	      this.props.onEditEnd();
 	    }.bind(this));
 	  },
 	
 	  render: function () {
-	    if (this.state.question === undefined) {
-	      return React.createElement('div', null);
-	    }
 	
 	    return React.createElement(
 	      'div',

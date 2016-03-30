@@ -48,14 +48,14 @@ var ApiUtil = {
     });
   },
 
-  editQuestion: function(question, callback) {
+  editQuestion: function(question, newAttrs, callback) {
     $.ajax({
       method: "PATCH",
       url: "/api/questions/" + question.id,
-      data: { question: question },
+      data: { question: newAttrs },
       success: function(question) {
         QuestionActions.editQuestion(question);
-        callback && callback();
+        callback && callback(question);
       },
       error: function(e) {
         console.log("api_util#editQuestion error");

@@ -30,11 +30,15 @@ var QuestionDetail =  React.createClass({
 
   },
 
-  handleEdit: function(event) {
+  startEdit: function(event) {
     event.preventDefault();
     console.log("hit handleEdit");
 
-    this.setState({ edit: true });
+    this.setState({ isEditing: true });
+  },
+
+  closeEdit: function() {
+    this.setState({ isEditing: false });
   },
   // fetchDetails: function (props) {
   //   // if you want to factor out the ApiUtil call
@@ -57,7 +61,7 @@ var QuestionDetail =  React.createClass({
 
   render: function () {
     if (!this.state.question) { return <div></div>; }
-    if (this.state.edit) { return ( <QuestionEdit question={this.state.question}/> ); }
+    if (this.state.isEditing) { return ( <QuestionEdit question={this.state.question} onEditEnd={this.closeEdit}/> ); }
 
     else{
       return(
@@ -66,7 +70,7 @@ var QuestionDetail =  React.createClass({
             {this.state.question.title}
           </div>
           <input type="submit" value="Delete" onClick={this.handleDelete} />
-          <input type="submit" value="Edit" onClick={this.handleEdit} />
+          <input type="submit" value="Edit" onClick={this.startEdit} />
         </div>
       );
     }

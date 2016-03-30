@@ -7,22 +7,24 @@ var QuestionEdit =  React.createClass({
     router: React.PropTypes.object.isRequired
   },
 
+  _onChange: function (e) {
 
+    this.setState({ title: e.target.value });
+    // this.setState(this.state.question.title = event.target.value );
+  },
 
-  _onChange: function (event) {
+  _onStoreChange: function() {
 
-    this.setState({ title: event.target.value });
   },
 
   getInitialState: function () {
     // debugger
-    var relevant = QuestionStore.all()[QuestionStore.all().length -1];
-    return { question: relevant, title: relevant.title };
+    return { title: this.props.question.title };
     // return { title: this.state.question.title };
   },
 
   componentDidMount: function () {
-    this.questionListener = QuestionStore.addListener(this._onChange);
+    this.questionListener = QuestionStore.addListener(this._onStoreChange);
     // ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
   },
 
@@ -34,14 +36,13 @@ var QuestionEdit =  React.createClass({
     event.preventDefault();
 
     console.log("hit the handle EDIT");
-    ApiUtil.editQuestion(this.state.question, function () {
-      this.context.router.push('/questions/' + this.state.question.id);
+    ApiUtil.editQuestion(this.props.question, this.state, function (question) {
+      this.props.onEditEnd();
     }.bind(this));
 
   },
 
   render: function () {
-    if(this.state.question === undefined) { return <div></div>; }
 
     return(
       <div>
@@ -49,7 +50,7 @@ var QuestionEdit =  React.createClass({
           <input type="text" className="question-update" onChange={this._onChange} value={this.state.title}>
 
           </input>
-          <input type="submit" value="Update"  />
+          <input type="submit" value="Update" />
         </form>
       </div>
     );
