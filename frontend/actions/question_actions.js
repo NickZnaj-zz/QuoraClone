@@ -20,7 +20,7 @@ var QuestionActions = {
     Dispatcher.dispatch({
       actionType: QuestionConstants.QUESTION_DELETED,
       question: question
-    })
+    });
   }
 };
 

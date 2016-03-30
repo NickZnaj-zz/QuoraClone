@@ -18,10 +18,16 @@ class Api::QuestionsController < ApplicationController
     @question = Question.find(params[:id])
   end
 
+  def destroy
+    question = Question.find(params[:id])
+    question.destroy
+  end
+
 
   private
 
   def question_params
     params.require(:question).permit(:title)
+    redirect_to api_questions_url
   end
 end
