@@ -8,20 +8,7 @@ var Router = require('react-router').Router;
 var Route = require('react-router').Route;
 var IndexRoute = require('react-router').IndexRoute;
 var hashHistory = require('react-router').hashHistory;
-// document.AddEventListener("DOMContentLoaded", function() {
-//   ReactDOM.render(
-//     <Index />,
-//     document.getElementById('content')
-//   );
-// });
 
-
-// $( document ).ready(function() {
-//   ReactDOM.render(
-//     <QuestionsIndex />,
-//     document.getElementById('content')
-//   );
-// });
 
 var App = React.createClass({
   render: function(){
@@ -34,14 +21,12 @@ var App = React.createClass({
   }
 });
 
-
 var routes = (
     <Route path='/' component={App}>
       <IndexRoute component={QuestionsIndex}/>
       <Route path="questions/:questionId" component={QuestionDetail} />
     </Route>
 );
-
 
 $( document ).ready(function() {
   ReactDOM.render(

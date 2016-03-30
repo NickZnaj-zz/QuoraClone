@@ -25,9 +25,7 @@ var QuestionDetail =  React.createClass({
     console.log("hit the handle");
     ApiUtil.destroyQuestion(this.state.question.id, function () {
       this.context.router.push('/');
-      // this.props.history.push("/");
     }.bind(this));
-    // redirect here
 
   },
   // fetchDetails: function (props) {

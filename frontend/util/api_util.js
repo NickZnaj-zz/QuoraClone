@@ -26,7 +26,6 @@ var ApiUtil = {
     $.ajax({
       method: "DELETE",
       url: "/api/questions/" + id,
-      // data: {question: question},
       success: function(id) {
         QuestionActions.destroyQuestion(id);
         callback && callback();

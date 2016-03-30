@@ -54,19 +54,6 @@
 	var Route = __webpack_require__(187).Route;
 	var IndexRoute = __webpack_require__(187).IndexRoute;
 	var hashHistory = __webpack_require__(187).hashHistory;
-	// document.AddEventListener("DOMContentLoaded", function() {
-	//   ReactDOM.render(
-	//     <Index />,
-	//     document.getElementById('content')
-	//   );
-	// });
-	
-	// $( document ).ready(function() {
-	//   ReactDOM.render(
-	//     <QuestionsIndex />,
-	//     document.getElementById('content')
-	//   );
-	// });
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -26609,7 +26596,6 @@
 	    $.ajax({
 	      method: "DELETE",
 	      url: "/api/questions/" + id,
-	      // data: {question: question},
 	      success: function (id) {
 	        QuestionActions.destroyQuestion(id);
 	        callback && callback();
@@ -26703,7 +26689,6 @@
 	var QuestionForm = React.createClass({
 	  displayName: 'QuestionForm',
 	
-	  // mixins: [History],
 	
 	  contextTypes: {
 	    router: React.PropTypes.object.isRequired
@@ -26723,11 +26708,8 @@
 	
 	  handleSubmit: function (event) {
 	    event.preventDefault();
-	
 	    var title = { title: this.state.title };
-	    // ApiUtil.createQuestion(title, function(id) {
-	    //   this.history.pushState(null, "/question/" + id, {});
-	    // }.bind(this));
+	
 	    ApiUtil.createQuestion(title, function (id) {
 	      this.context.router.push('/questions/' + id);
 	    }.bind(this));
@@ -31846,9 +31828,7 @@
 	    console.log("hit the handle");
 	    ApiUtil.destroyQuestion(this.state.question.id, function () {
 	      this.context.router.push('/');
-	      // this.props.history.push("/");
 	    }.bind(this));
-	    // redirect here
 	  },
 	  // fetchDetails: function (props) {
 	  //   // if you want to factor out the ApiUtil call
