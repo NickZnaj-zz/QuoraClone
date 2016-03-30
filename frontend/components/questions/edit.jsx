@@ -19,19 +19,6 @@ var QuestionEdit =  React.createClass({
     return this.getStateFromStore();
   },
 
-  handleDelete: function(event) {
-    event.preventDefault();
-
-    console.log("hit the handle");
-    ApiUtil.destroyQuestion(this.state.question.id, function () {
-      this.context.router.push('/');
-    }.bind(this));
-
-  },
-  // fetchEdits: function (props) {
-  //   // if you want to factor out the ApiUtil call
-  // },
-
   componentWillReceiveProps: function (newProps) {
     ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
   },
@@ -45,15 +32,27 @@ var QuestionEdit =  React.createClass({
     this.questionListener.remove();
   },
 
+  handleEdit: function(event) {
+    event.preventDefault();
+
+    console.log("hit the handle EDIT");
+    ApiUtil.editQuestion(this.state.question.id, function () {
+      this.context.router.push('/questions/' + this.state.question.id);
+    }.bind(this));
+
+  },
+
   render: function () {
     if(this.state.question === undefined) { return <div></div>; }
+
     return(
       <div>
-        <div className="question-show-page" onSubmit={this.handleDelete}>
+        <div className="question-show-page" onSubmit={this.handleEdit}>
           <div className="question">
             {this.state.question.title}
           </div>
-          <input type="submit" value="Delete" onClick={this.handleDelete} />
+          <input type="text" className="question-update" value={this.state.question.title} />
+          <input type="submit" value="Update" onClick={this.handleEdit} />
         </div>
       </div>
     );

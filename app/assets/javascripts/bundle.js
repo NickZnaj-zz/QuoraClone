@@ -31831,6 +31831,12 @@
 	      this.context.router.push('/');
 	    }.bind(this));
 	  },
+	
+	  renderEdit: function (event) {
+	    event.preventDefault();
+	
+	    return React.createElement(QuestionEdit, null);
+	  },
 	  // fetchDetails: function (props) {
 	  //   // if you want to factor out the ApiUtil call
 	  // },
@@ -31863,7 +31869,8 @@
 	          { className: 'question' },
 	          this.state.question.title
 	        ),
-	        React.createElement('input', { type: 'submit', value: 'Delete', onClick: this.handleDelete })
+	        React.createElement('input', { type: 'submit', value: 'Delete', onClick: this.handleDelete }),
+	        React.createElement('input', { type: 'button', value: 'Edit', onClick: this.renderEdit })
 	      )
 	    );
 	  }
@@ -31898,18 +31905,6 @@
 	    return this.getStateFromStore();
 	  },
 	
-	  handleDelete: function (event) {
-	    event.preventDefault();
-	
-	    console.log("hit the handle");
-	    ApiUtil.destroyQuestion(this.state.question.id, function () {
-	      this.context.router.push('/');
-	    }.bind(this));
-	  },
-	  // fetchEdits: function (props) {
-	  //   // if you want to factor out the ApiUtil call
-	  // },
-	
 	  componentWillReceiveProps: function (newProps) {
 	    ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
 	  },
@@ -31923,22 +31918,33 @@
 	    this.questionListener.remove();
 	  },
 	
+	  handleEdit: function (event) {
+	    event.preventDefault();
+	
+	    console.log("hit the handle EDIT");
+	    ApiUtil.editQuestion(this.state.question.id, function () {
+	      this.context.router.push('/questions/' + this.state.question.id);
+	    }.bind(this));
+	  },
+	
 	  render: function () {
 	    if (this.state.question === undefined) {
 	      return React.createElement('div', null);
 	    }
+	
 	    return React.createElement(
 	      'div',
 	      null,
 	      React.createElement(
 	        'div',
-	        { className: 'question-show-page', onSubmit: this.handleDelete },
+	        { className: 'question-show-page', onSubmit: this.handleEdit },
 	        React.createElement(
 	          'div',
 	          { className: 'question' },
 	          this.state.question.title
 	        ),
-	        React.createElement('input', { type: 'submit', value: 'Delete', onClick: this.handleDelete })
+	        React.createElement('input', { type: 'text', className: 'question-update', value: this.state.question.title }),
+	        React.createElement('input', { type: 'submit', value: 'Update', onClick: this.handleEdit })
 	      )
 	    );
 	  }

@@ -29,6 +29,12 @@ var QuestionDetail =  React.createClass({
     }.bind(this));
 
   },
+
+  renderEdit: function(event) {
+    event.preventDefault();
+
+    return (<QuestionEdit />);
+  },
   // fetchDetails: function (props) {
   //   // if you want to factor out the ApiUtil call
   // },
@@ -46,6 +52,8 @@ var QuestionDetail =  React.createClass({
     this.questionListener.remove();
   },
 
+
+
   render: function () {
     if(this.state.question === undefined) { return <div></div>; }
     return(
@@ -55,6 +63,7 @@ var QuestionDetail =  React.createClass({
             {this.state.question.title}
           </div>
           <input type="submit" value="Delete" onClick={this.handleDelete} />
+          <input type="button" value="Edit" onClick={this.renderEdit} />
         </div>
       </div>
     );
