@@ -16,6 +16,12 @@ var QuestionDetail =  React.createClass({
     return this.getStateFromStore();
   },
 
+  handleDelete: function(event) {
+    event.preventDefault();
+    console.log("hit the handle");
+    ApiUtil.destroyQuestion(this.state.question.id);
+
+  },
   // fetchDetails: function (props) {
   //   // if you want to factor out the ApiUtil call
   // },
@@ -35,13 +41,13 @@ var QuestionDetail =  React.createClass({
 
   render: function () {
     if(this.state.question === undefined) { return <div></div>; }
-
     return(
       <div>
-        <div className="question-show-page">
+        <div className="question-show-page" onSubmit={this.handleDelete}>
           <div className="question">
             {this.state.question.title}
           </div>
+          // <input type="submit" value="Delete" onClick={this.handleDelete} />
         </div>
       </div>
     );

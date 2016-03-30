@@ -26608,7 +26608,7 @@
 	    $.ajax({
 	      method: "DELETE",
 	      url: "/api/questions/" + id,
-	      data: { question: question },
+	      // data: {question: question},
 	      success: function (question) {
 	        QuestionActions.destroyQuestion(question);
 	      }
@@ -26618,7 +26618,7 @@
 	  createQuestion: function (question, callback) {
 	    $.ajax({
 	      method: "POST",
-	      url: "/api/questions",
+	      url: "/api/questions/",
 	      data: { question: question },
 	      success: function (question) {
 	        QuestionActions.receiveSingleQuestion(question);
@@ -31835,6 +31835,11 @@
 	    return this.getStateFromStore();
 	  },
 	
+	  handleDelete: function (event) {
+	    event.preventDefault();
+	    console.log("hit the handle");
+	    ApiUtil.destroyQuestion(this.state.question.id);
+	  },
 	  // fetchDetails: function (props) {
 	  //   // if you want to factor out the ApiUtil call
 	  // },
@@ -31856,18 +31861,19 @@
 	    if (this.state.question === undefined) {
 	      return React.createElement('div', null);
 	    }
-	
 	    return React.createElement(
 	      'div',
 	      null,
 	      React.createElement(
 	        'div',
-	        { className: 'question-show-page' },
+	        { className: 'question-show-page', onSubmit: this.handleDelete },
 	        React.createElement(
 	          'div',
 	          { className: 'question' },
 	          this.state.question.title
-	        )
+	        ),
+	        '// ',
+	        React.createElement('input', { type: 'submit', value: 'Delete', onClick: this.handleDelete })
 	      )
 	    );
 	  }

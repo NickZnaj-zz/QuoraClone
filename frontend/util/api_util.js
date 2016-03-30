@@ -26,17 +26,17 @@ var ApiUtil = {
     $.ajax({
       method: "DELETE",
       url: "/api/questions/" + id,
-      data: {question: question},
-      success: function(question){
+      // data: {question: question},
+      success: function(question) {
         QuestionActions.destroyQuestion(question);
       }
     });
   },
-  
+
   createQuestion: function(question, callback) {
     $.ajax({
       method: "POST",
-      url: "/api/questions",
+      url: "/api/questions/",
       data: {question: question},
       success: function(question) {
         QuestionActions.receiveSingleQuestion(question);
