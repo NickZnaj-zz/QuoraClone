@@ -52,6 +52,7 @@ var ApiUtil = {
     $.ajax({
       method: "PATCH",
       url: "/api/questions/" + question.id,
+      data: { question: question },
       success: function(question) {
         QuestionActions.editQuestion(question);
         callback && callback();

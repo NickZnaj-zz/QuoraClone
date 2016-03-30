@@ -30,7 +30,7 @@ class Api::QuestionsController < ApplicationController
 
   def update
     @question = Question.find(params[:id])
-    if @question.update_attributes(question)
+    if @question.update_attributes(question_params)
       render :show
     else
       render json: @question.errors.full_messages, status: 422

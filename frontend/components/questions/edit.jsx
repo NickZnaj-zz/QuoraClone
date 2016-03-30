@@ -11,12 +11,14 @@ var QuestionEdit =  React.createClass({
 
   _onChange: function (event) {
 
-    this.setState({ title: this.state.question.title + event.target.value });
+    this.setState({ title: event.target.value });
   },
 
   getInitialState: function () {
-    debugger
-    return { question: QuestionStore.all()[QuestionStore.all().length -1] };
+    // debugger
+    var relevant = QuestionStore.all()[QuestionStore.all().length -1];
+    return { question: relevant, title: relevant.title };
+    // return { title: this.state.question.title };
   },
 
   componentDidMount: function () {
@@ -32,7 +34,7 @@ var QuestionEdit =  React.createClass({
     event.preventDefault();
 
     console.log("hit the handle EDIT");
-    ApiUtil.editQuestion(this.state.question.id, function () {
+    ApiUtil.editQuestion(this.state.question, function () {
       this.context.router.push('/questions/' + this.state.question.id);
     }.bind(this));
 
@@ -44,7 +46,9 @@ var QuestionEdit =  React.createClass({
     return(
       <div>
         <form className="question-edit" onSubmit={this.handleEdit}>
-          <input type="text" className="question-update" value={this.state.question.title} onChange={this._onChange} />
+          <input type="text" className="question-update" onChange={this._onChange} value={this.state.title}>
+
+          </input>
           <input type="submit" value="Update"  />
         </form>
       </div>

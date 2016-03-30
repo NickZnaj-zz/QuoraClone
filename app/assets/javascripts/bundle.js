@@ -26631,6 +26631,7 @@
 	    $.ajax({
 	      method: "PATCH",
 	      url: "/api/questions/" + question.id,
+	      data: { question: question },
 	      success: function (question) {
 	        QuestionActions.editQuestion(question);
 	        callback && callback();
@@ -31926,12 +31927,14 @@
 	
 	  _onChange: function (event) {
 	
-	    this.setState({ title: this.state.question.title + event.target.value });
+	    this.setState({ title: event.target.value });
 	  },
 	
 	  getInitialState: function () {
-	    debugger;
-	    return { question: QuestionStore.all()[QuestionStore.all().length - 1] };
+	    // debugger
+	    var relevant = QuestionStore.all()[QuestionStore.all().length - 1];
+	    return { question: relevant, title: relevant.title };
+	    // return { title: this.state.question.title };
 	  },
 	
 	  componentDidMount: function () {
@@ -31947,7 +31950,7 @@
 	    event.preventDefault();
 	
 	    console.log("hit the handle EDIT");
-	    ApiUtil.editQuestion(this.state.question.id, function () {
+	    ApiUtil.editQuestion(this.state.question, function () {
 	      this.context.router.push('/questions/' + this.state.question.id);
 	    }.bind(this));
 	  },
@@ -31963,7 +31966,7 @@
 	      React.createElement(
 	        'form',
 	        { className: 'question-edit', onSubmit: this.handleEdit },
-	        React.createElement('input', { type: 'text', className: 'question-update', value: this.state.question.title, onChange: this._onChange }),
+	        React.createElement('input', { type: 'text', className: 'question-update', onChange: this._onChange, value: this.state.title }),
 	        React.createElement('input', { type: 'submit', value: 'Update' })
 	      )
 	    );
