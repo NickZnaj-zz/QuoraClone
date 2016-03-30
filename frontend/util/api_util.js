@@ -59,9 +59,10 @@ var ApiUtil = {
       error: function(e) {
         console.log("api_util#editQuestion error");
     }
-  })
+    });
+  }
 
-}
+};
 
 
 module.exports = ApiUtil;
