@@ -1,9 +1,8 @@
 var React = require('react');
 var QuestionStore = require('../../stores/question_store.js');
 var ApiUtil = require('../../util/api_util.js');
-var QuestionEdit = require('./edit');
 
-var QuestionDetail =  React.createClass({
+var QuestionEdit =  React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired
   },
@@ -29,7 +28,7 @@ var QuestionDetail =  React.createClass({
     }.bind(this));
 
   },
-  // fetchDetails: function (props) {
+  // fetchEdits: function (props) {
   //   // if you want to factor out the ApiUtil call
   // },
 
@@ -61,4 +60,4 @@ var QuestionDetail =  React.createClass({
   }
 });
 
-module.exports = QuestionDetail;
+module.exports = QuestionEdit;

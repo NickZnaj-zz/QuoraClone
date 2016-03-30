@@ -31802,6 +31802,7 @@
 	var React = __webpack_require__(1);
 	var QuestionStore = __webpack_require__(160);
 	var ApiUtil = __webpack_require__(183);
+	var QuestionEdit = __webpack_require__(245);
 	
 	var QuestionDetail = React.createClass({
 	  displayName: 'QuestionDetail',
@@ -31869,6 +31870,81 @@
 	});
 	
 	module.exports = QuestionDetail;
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var QuestionStore = __webpack_require__(160);
+	var ApiUtil = __webpack_require__(183);
+	
+	var QuestionEdit = React.createClass({
+	  displayName: 'QuestionEdit',
+	
+	  contextTypes: {
+	    router: React.PropTypes.object.isRequired
+	  },
+	
+	  getStateFromStore: function () {
+	    return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
+	  },
+	
+	  _onChange: function () {
+	    this.setState(this.getStateFromStore());
+	  },
+	
+	  getInitialState: function () {
+	    return this.getStateFromStore();
+	  },
+	
+	  handleDelete: function (event) {
+	    event.preventDefault();
+	
+	    console.log("hit the handle");
+	    ApiUtil.destroyQuestion(this.state.question.id, function () {
+	      this.context.router.push('/');
+	    }.bind(this));
+	  },
+	  // fetchEdits: function (props) {
+	  //   // if you want to factor out the ApiUtil call
+	  // },
+	
+	  componentWillReceiveProps: function (newProps) {
+	    ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
+	  },
+	
+	  componentDidMount: function () {
+	    this.questionListener = QuestionStore.addListener(this._onChange);
+	    ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.questionListener.remove();
+	  },
+	
+	  render: function () {
+	    if (this.state.question === undefined) {
+	      return React.createElement('div', null);
+	    }
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'question-show-page', onSubmit: this.handleDelete },
+	        React.createElement(
+	          'div',
+	          { className: 'question' },
+	          this.state.question.title
+	        ),
+	        React.createElement('input', { type: 'submit', value: 'Delete', onClick: this.handleDelete })
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = QuestionEdit;
 
 /***/ }
 /******/ ]);
