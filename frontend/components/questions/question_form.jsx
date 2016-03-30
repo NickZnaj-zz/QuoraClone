@@ -20,6 +20,7 @@ var QuestionForm = React.createClass({
 
   handleSubmit: function(event){
     event.preventDefault();
+    debugger
 
     var title = {title: this.state.title};
     ApiUtil.createQuestion(title, function(id) {

@@ -49,6 +49,9 @@
 	var content = document.getElementById('content');
 	var QuestionsIndex = __webpack_require__(159);
 	
+	var Router = __webpack_require__(187).Router;
+	var Route = __webpack_require__(187).Route;
+	var IndexRoute = __webpack_require__(187).IndexRoute;
 	// document.AddEventListener("DOMContentLoaded", function() {
 	//   ReactDOM.render(
 	//     <Index />,
@@ -56,8 +59,46 @@
 	//   );
 	// });
 	
+	// $( document ).ready(function() {
+	//   ReactDOM.render(
+	//     <QuestionsIndex />,
+	//     document.getElementById('content')
+	//   );
+	// });
+	
+	var App = React.createClass({
+	  displayName: 'App',
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'header',
+	        null,
+	        React.createElement(
+	          'h1',
+	          { className: 'logo' },
+	          'Shmora'
+	        )
+	      ),
+	      this.props.children
+	    );
+	  }
+	});
+	
+	var routes = React.createElement(
+	  Route,
+	  { path: '/', component: App },
+	  React.createElement(IndexRoute, { component: QuestionsIndex })
+	);
+	
 	$(document).ready(function () {
-	  ReactDOM.render(React.createElement(QuestionsIndex, null), document.getElementById('content'));
+	  ReactDOM.render(React.createElement(
+	    Router,
+	    null,
+	    routes
+	  ), document.getElementById('content'));
 	});
 
 /***/ },
@@ -26539,7 +26580,6 @@
 	  },
 	
 	  createQuestion: function (question, callback) {
-	    debugger;
 	    $.ajax({
 	      method: "POST",
 	      url: "/api/questions",
@@ -26572,7 +26612,7 @@
 	    });
 	  },
 	
-	  receiveSingleQuestion: function (questions) {
+	  receiveSingleQuestion: function (question) {
 	    Dispatcher.dispatch({
 	      actionType: QuestionConstants.QUESTION_RECEIVED,
 	      question: question
@@ -26633,6 +26673,7 @@
 	
 	  handleSubmit: function (event) {
 	    event.preventDefault();
+	    debugger;
 	
 	    var title = { title: this.state.title };
 	    ApiUtil.createQuestion(title, function (id) {

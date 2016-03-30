@@ -13,7 +13,6 @@ var ApiUtil = {
   },
 
   createQuestion: function(question, callback) {
-    debugger
     $.ajax({
       method: "POST",
       url: "/api/questions",

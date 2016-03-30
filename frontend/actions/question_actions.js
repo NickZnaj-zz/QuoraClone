@@ -9,7 +9,7 @@ var QuestionActions = {
     });
   },
 
-  receiveSingleQuestion: function(questions) {
+  receiveSingleQuestion: function(question) {
     Dispatcher.dispatch({
       actionType: QuestionConstants.QUESTION_RECEIVED,
       question: question
