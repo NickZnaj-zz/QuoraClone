@@ -53,6 +53,7 @@
 	var Router = __webpack_require__(187).Router;
 	var Route = __webpack_require__(187).Route;
 	var IndexRoute = __webpack_require__(187).IndexRoute;
+	var hashHistory = __webpack_require__(187).hashHistory;
 	// document.AddEventListener("DOMContentLoaded", function() {
 	//   ReactDOM.render(
 	//     <Index />,
@@ -98,7 +99,7 @@
 	$(document).ready(function () {
 	  ReactDOM.render(React.createElement(
 	    Router,
-	    null,
+	    { history: hashHistory },
 	    routes
 	  ), document.getElementById('content'));
 	});
@@ -26604,13 +26605,14 @@
 	    });
 	  },
 	
-	  destroyQuestion: function (id) {
+	  destroyQuestion: function (id, callback) {
 	    $.ajax({
 	      method: "DELETE",
 	      url: "/api/questions/" + id,
 	      // data: {question: question},
 	      success: function (id) {
 	        QuestionActions.destroyQuestion(id);
+	        callback && callback();
 	      }
 	    });
 	  },
@@ -31822,6 +31824,10 @@
 	var QuestionDetail = React.createClass({
 	  displayName: 'QuestionDetail',
 	
+	  contextTypes: {
+	    router: React.PropTypes.object.isRequired
+	  },
+	
 	  getStateFromStore: function () {
 	    return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
 	  },
@@ -31831,14 +31837,18 @@
 	  },
 	
 	  getInitialState: function () {
-	
 	    return this.getStateFromStore();
 	  },
 	
 	  handleDelete: function (event) {
 	    event.preventDefault();
+	
 	    console.log("hit the handle");
-	    ApiUtil.destroyQuestion(this.state.question.id);
+	    ApiUtil.destroyQuestion(this.state.question.id, function () {
+	      this.context.router.push('/');
+	      // this.props.history.push("/");
+	    }.bind(this));
+	    // redirect here
 	  },
 	  // fetchDetails: function (props) {
 	  //   // if you want to factor out the ApiUtil call
@@ -31872,7 +31882,6 @@
 	          { className: 'question' },
 	          this.state.question.title
 	        ),
-	        '// ',
 	        React.createElement('input', { type: 'submit', value: 'Delete', onClick: this.handleDelete })
 	      )
 	    );

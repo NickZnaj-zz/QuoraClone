@@ -22,13 +22,14 @@ var ApiUtil = {
     });
   },
 
-  destroyQuestion: function(id) {
+  destroyQuestion: function(id, callback) {
     $.ajax({
       method: "DELETE",
       url: "/api/questions/" + id,
       // data: {question: question},
       success: function(id) {
         QuestionActions.destroyQuestion(id);
+        callback && callback();
       }
     });
   },

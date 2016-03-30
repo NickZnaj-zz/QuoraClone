@@ -7,6 +7,7 @@ var QuestionDetail = require('./components/questions/detail');
 var Router = require('react-router').Router;
 var Route = require('react-router').Route;
 var IndexRoute = require('react-router').IndexRoute;
+var hashHistory = require('react-router').hashHistory;
 // document.AddEventListener("DOMContentLoaded", function() {
 //   ReactDOM.render(
 //     <Index />,
@@ -44,7 +45,7 @@ var routes = (
 
 $( document ).ready(function() {
   ReactDOM.render(
-    <Router>{routes}</Router>,
+    <Router history={hashHistory}>{routes}</Router>,
     document.getElementById('content')
   );
 });

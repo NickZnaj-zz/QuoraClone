@@ -3,6 +3,10 @@ var QuestionStore = require('../../stores/question_store.js');
 var ApiUtil = require('../../util/api_util.js');
 
 var QuestionDetail =  React.createClass({
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
+
   getStateFromStore: function () {
     return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
   },
@@ -12,14 +16,18 @@ var QuestionDetail =  React.createClass({
   },
 
   getInitialState: function () {
-
     return this.getStateFromStore();
   },
 
   handleDelete: function(event) {
     event.preventDefault();
+
     console.log("hit the handle");
-    ApiUtil.destroyQuestion(this.state.question.id);
+    ApiUtil.destroyQuestion(this.state.question.id, function () {
+      this.context.router.push('/');
+      // this.props.history.push("/");
+    }.bind(this));
+    // redirect here
 
   },
   // fetchDetails: function (props) {
@@ -47,7 +55,7 @@ var QuestionDetail =  React.createClass({
           <div className="question">
             {this.state.question.title}
           </div>
-          // <input type="submit" value="Delete" onClick={this.handleDelete} />
+          <input type="submit" value="Delete" onClick={this.handleDelete} />
         </div>
       </div>
     );

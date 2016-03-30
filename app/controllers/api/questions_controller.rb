@@ -19,11 +19,9 @@ class Api::QuestionsController < ApplicationController
   end
 
   def destroy
-    question = Question.find(params[:id])
-    question.destroy
-    if question.destroy
-      redirect_to root_url
-    end
+    @question = Question.find(params[:id])
+    @question.destroy
+    render :show
   end
 
 
