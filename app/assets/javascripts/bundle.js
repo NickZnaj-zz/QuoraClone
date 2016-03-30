@@ -62,6 +62,7 @@
 	    return React.createElement(
 	      'div',
 	      null,
+	      '//render navbar here.',
 	      React.createElement(
 	        'header',
 	        null,

@@ -14,6 +14,7 @@ var App = React.createClass({
   render: function(){
     return (
       <div>
+        //render navbar here. 
         <header><h1 className="logo">Shmora</h1></header>
         {this.props.children}
       </div>

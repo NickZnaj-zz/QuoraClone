@@ -13,3 +13,50 @@
  *= require_tree .
  *= require_self
  */
+
+ /* --- RESET --- */
+
+ html, body, header, nav, h1, a, ul, li,
+ strong, main, section, img, div, h2, p,
+ form, fieldset, label, input, textarea,
+ button, article, footer, small, {
+   margin: 0;
+   padding: 0;
+   border: 0;
+   outline: 0;
+   font: inherit;
+   box-sizing: inherit;
+   text-align: inherit;
+   text-decoration: inherit;
+   vertical-align: inherit;
+   color: inherit;
+   background: transparent;
+ }
+
+ .content {
+   font-family: sans-serif;
+   width: 1000px;
+   border-top: 2px solid #b92b27;
+   margin: 0 auto;
+ }
+
+
+ /* --- CLEARFIX --- */
+
+ .group:after {
+   content: "";
+   clear: both;
+   display: block;
+ }
+
+ /* --- NAVBAR --- */
+
+  .logo {
+    font-weight: 400;
+    font-size: 24px;
+    color: darkred;
+  }
+
+
+
+/* --- HOME --- */
