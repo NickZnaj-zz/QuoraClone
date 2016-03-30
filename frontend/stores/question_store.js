@@ -13,6 +13,11 @@ var resetQuestion = function(question){
   _questions[question.id] = question;
 };
 
+var deleteQuestion = function(question){
+  var deleted = _questions.indexOf(_questions[question.id]);
+  _questions.splice(deleted, 1);
+};
+
 QuestionStore.all = function () {
   return _questions.slice(0);
 };
@@ -29,6 +34,10 @@ switch(payload.actionType) {
     break;
   case QuestionConstants.QUESTION_RECEIVED:
     resetQuestion(payload.question);
+    QuestionStore.__emitChange();
+    break;
+  case QuestionConstants.QUESTION_DELETED:
+    deleteQuestion(payload.question);
     QuestionStore.__emitChange();
     break;
   }

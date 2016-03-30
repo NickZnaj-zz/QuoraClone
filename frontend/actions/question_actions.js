@@ -14,6 +14,13 @@ var QuestionActions = {
       actionType: QuestionConstants.QUESTION_RECEIVED,
       question: question
     });
+  },
+
+  destroyQuestion: function(question) {
+    Dispatcher.dispatch({
+      actionType: QuestionConstants.QUESTION_DELETED,
+      question: question
+    })
   }
 };
 

@@ -19772,6 +19772,11 @@
 	  _questions[question.id] = question;
 	};
 	
+	var deleteQuestion = function (question) {
+	  var deleted = _questions.indexOf(_questions[question.id]);
+	  _questions.splice(deleted, 1);
+	};
+	
 	QuestionStore.all = function () {
 	  return _questions.slice(0);
 	};
@@ -19788,6 +19793,10 @@
 	      break;
 	    case QuestionConstants.QUESTION_RECEIVED:
 	      resetQuestion(payload.question);
+	      QuestionStore.__emitChange();
+	      break;
+	    case QuestionConstants.QUESTION_DELETED:
+	      deleteQuestion(payload.question);
 	      QuestionStore.__emitChange();
 	      break;
 	  }
@@ -26564,7 +26573,8 @@
 
 	module.exports = {
 	  QUESTIONS_RECEIVED: "QUESTIONS_RECEIVED",
-	  QUESTION_RECEIVED: "QUESTION_RECEIVED"
+	  QUESTION_RECEIVED: "QUESTION_RECEIVED",
+	  QUESTION_DELETED: "QUESTION_DELETED"
 	};
 
 /***/ },
@@ -26642,6 +26652,13 @@
 	  receiveSingleQuestion: function (question) {
 	    Dispatcher.dispatch({
 	      actionType: QuestionConstants.QUESTION_RECEIVED,
+	      question: question
+	    });
+	  },
+	
+	  destroyQuestion: function (question) {
+	    Dispatcher.dispatch({
+	      actionType: QuestionConstants.QUESTION_DELETED,
 	      question: question
 	    });
 	  }
