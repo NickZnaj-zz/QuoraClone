@@ -33,11 +33,11 @@ var QuestionForm = React.createClass({
 
   render: function() {
     return(
-      <div className="QuestionForm">
+      <div className="question-form">
         <form onSubmit={this.handleSubmit}>
 
-          <input name="title" type="text" onChange={this._onChange} value={this.state.title}/>
-          <input type="submit" />
+          <input name="title" type="text" onChange={this._onChange} value={this.state.title} className="nav-bar-input"/>
+          <input type="submit" className="question-submit" value="Submit Question" />
 
         </form>
 

@@ -26,7 +26,6 @@ render: function() {
 
   return(
     <div>
-      <QuestionForm />
       <ul>
         {this.state.questions.map(function(question) {
           return <IndexItem key={question.id} question={question} />;

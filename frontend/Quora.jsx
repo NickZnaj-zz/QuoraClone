@@ -1,8 +1,12 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+
 var content = document.getElementById('content');
 var QuestionsIndex = require('./components/questions/index');
 var QuestionDetail = require('./components/questions/detail');
+var NavBar = require('./components/main/navbar');
+var SideBar = require('./components/main/sidebar');
+
 
 var Router = require('react-router').Router;
 var Route = require('react-router').Route;
@@ -14,8 +18,8 @@ var App = React.createClass({
   render: function(){
     return (
       <div>
-        //render navbar here. 
-        <header><h1 className="logo">Shmora</h1></header>
+        <NavBar />
+        <SideBar />
         {this.props.children}
       </div>
     );

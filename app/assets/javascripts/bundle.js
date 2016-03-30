@@ -46,9 +46,12 @@
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
+	
 	var content = document.getElementById('content');
 	var QuestionsIndex = __webpack_require__(159);
 	var QuestionDetail = __webpack_require__(244);
+	var NavBar = __webpack_require__(246);
+	var SideBar = __webpack_require__(247);
 	
 	var Router = __webpack_require__(187).Router;
 	var Route = __webpack_require__(187).Route;
@@ -62,16 +65,8 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      '//render navbar here.',
-	      React.createElement(
-	        'header',
-	        null,
-	        React.createElement(
-	          'h1',
-	          { className: 'logo' },
-	          'Shmora'
-	        )
-	      ),
+	      React.createElement(NavBar, null),
+	      React.createElement(SideBar, null),
 	      this.props.children
 	    );
 	  }
@@ -19728,7 +19723,6 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(QuestionForm, null),
 	      React.createElement(
 	        'ul',
 	        null,
@@ -26700,9 +26694,13 @@
 	      "li",
 	      { className: "question-list-item" },
 	      React.createElement(
-	        "h3",
-	        null,
-	        this.props.question.title
+	        "div",
+	        { className: "question-index-item" },
+	        React.createElement(
+	          "h3",
+	          { className: "question-title-index" },
+	          this.props.question.title
+	        )
 	      )
 	    );
 	  }
@@ -26751,12 +26749,12 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'QuestionForm' },
+	      { className: 'question-form' },
 	      React.createElement(
 	        'form',
 	        { onSubmit: this.handleSubmit },
-	        React.createElement('input', { name: 'title', type: 'text', onChange: this._onChange, value: this.state.title }),
-	        React.createElement('input', { type: 'submit' })
+	        React.createElement('input', { name: 'title', type: 'text', onChange: this._onChange, value: this.state.title, className: 'nav-bar-input' }),
+	        React.createElement('input', { type: 'submit', className: 'question-submit', value: 'Submit Question' })
 	      )
 	    );
 	  }
@@ -31978,6 +31976,52 @@
 	});
 	
 	module.exports = QuestionEdit;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var QuestionForm = __webpack_require__(186);
+	
+	var NavBar = React.createClass({
+	  displayName: 'NavBar',
+	
+	  render: function () {
+	    return React.createElement(
+	      'header',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'header-nav group' },
+	        React.createElement(
+	          'div',
+	          { className: 'logo' },
+	          'Shmora'
+	        ),
+	        React.createElement(QuestionForm, null)
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = NavBar;
+
+/***/ },
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var SideBar = React.createClass({
+	  displayName: "SideBar",
+	
+	  render: function () {
+	    return React.createElement("div", { className: "sidebar group" });
+	  }
+	});
+	
+	module.exports = SideBar;
 
 /***/ }
 /******/ ]);
