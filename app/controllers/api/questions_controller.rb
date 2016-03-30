@@ -21,6 +21,9 @@ class Api::QuestionsController < ApplicationController
   def destroy
     question = Question.find(params[:id])
     question.destroy
+    if question.destroy
+      redirect_to root_url
+    end
   end
 
 
@@ -28,6 +31,5 @@ class Api::QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title)
-    redirect_to api_questions_url
   end
 end

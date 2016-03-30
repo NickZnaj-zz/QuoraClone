@@ -27,8 +27,8 @@ var ApiUtil = {
       method: "DELETE",
       url: "/api/questions/" + id,
       // data: {question: question},
-      success: function(question) {
-        QuestionActions.destroyQuestion(question);
+      success: function(id) {
+        QuestionActions.destroyQuestion(id);
       }
     });
   },

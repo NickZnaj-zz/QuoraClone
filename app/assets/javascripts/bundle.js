@@ -19772,8 +19772,8 @@
 	  _questions[question.id] = question;
 	};
 	
-	var deleteQuestion = function (question) {
-	  var deleted = _questions.indexOf(_questions[question.id]);
+	var deleteQuestion = function (id) {
+	  var deleted = _questions.indexOf(_questions[id]);
 	  _questions.splice(deleted, 1);
 	};
 	
@@ -19796,7 +19796,7 @@
 	      QuestionStore.__emitChange();
 	      break;
 	    case QuestionConstants.QUESTION_DELETED:
-	      deleteQuestion(payload.question);
+	      deleteQuestion(payload.id);
 	      QuestionStore.__emitChange();
 	      break;
 	  }
@@ -26609,8 +26609,8 @@
 	      method: "DELETE",
 	      url: "/api/questions/" + id,
 	      // data: {question: question},
-	      success: function (question) {
-	        QuestionActions.destroyQuestion(question);
+	      success: function (id) {
+	        QuestionActions.destroyQuestion(id);
 	      }
 	    });
 	  },
@@ -26656,10 +26656,10 @@
 	    });
 	  },
 	
-	  destroyQuestion: function (question) {
+	  destroyQuestion: function (id) {
 	    Dispatcher.dispatch({
 	      actionType: QuestionConstants.QUESTION_DELETED,
-	      question: question
+	      id: id
 	    });
 	  }
 	};

@@ -16,10 +16,10 @@ var QuestionActions = {
     });
   },
 
-  destroyQuestion: function(question) {
+  destroyQuestion: function(id) {
     Dispatcher.dispatch({
       actionType: QuestionConstants.QUESTION_DELETED,
-      question: question
+      id: id
     });
   }
 };
