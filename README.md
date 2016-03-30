@@ -7,7 +7,7 @@ This is a clone of the popular Quora built using Ruby on Rails and React.js. Thi
 
 - [ ] Create an Account
 - [ ] Log in / Log out
-- [ ] Submit questions
+- [x] Submit questions
 - [ ] Subscribe to select topics
 - [ ] Browse a feed of answered questions
 - [ ] Narrow that feed by topic
@@ -33,19 +33,19 @@ This is a clone of the popular Quora built using Ruby on Rails and React.js. Thi
 
 **Objective:** Have a readable feed of Questions on main page.
 
-- [ ] create new project
-- [ ] setup React Router
-- [ ] setup Webpack and Flux scaffold
-- [ ] create `Question` model
-- [ ] implement Question Component, implement Flux loop
-  - [ ] `QuestionsIndex`
-  - [ ] `QuestionsIndexItem`
-- [ ] set up `APIUtil` to interact with the API
+- [x] create new project
+- [x] setup React Router
+- [x] setup Webpack and Flux scaffold
+- [x] create `Question` model
+- [x] implement Question Component, implement Flux loop
+  - [x] `QuestionsIndex`
+  - [x] `QuestionsIndexItem`
+- [x] set up `APIUtil` to interact with the API
 - [ ] users can submit questions in a nav bar
-- [ ] create question show page
-  - [ ] CRUD API for questions (`QuestionsController`)
-- [ ] seed the database with sample questions
-- [ ] questions added to DB
+- [x] create question show page
+  - [x] CRUD API for questions (`QuestionsController`)
+- [x] seed the database with sample questions
+- [x] questions added to DB
 
 ### Phase 2: Answer Feature (2 Days)
 **Objective:** Anyone can now answer questions through a form and a question's show page will display all of its answers
