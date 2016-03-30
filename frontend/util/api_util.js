@@ -22,6 +22,17 @@ var ApiUtil = {
     });
   },
 
+  destroyQuestion: function(id) {
+    $.ajax({
+      method: "DELETE",
+      url: "/api/questions/" + id,
+      data: {question: question},
+      success: function(question){
+        QuestionActions.destroyQuestion(question);
+      }
+    });
+  },
+  
   createQuestion: function(question, callback) {
     $.ajax({
       method: "POST",
@@ -37,16 +48,6 @@ var ApiUtil = {
     });
   },
 
-  destroyQuestion: function(id) {
-    $.ajax({
-      method: "DELETE",
-      url: "/api/questions/" + id,
-      data: {question: question},
-      success: function(question){
-        QuestionActions.destroyQuestion
-      }
-    })
-  }
 };
 
 
