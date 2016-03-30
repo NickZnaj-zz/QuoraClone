@@ -52,6 +52,7 @@
 	var QuestionDetail = __webpack_require__(244);
 	var NavBar = __webpack_require__(246);
 	var SideBar = __webpack_require__(247);
+	var Main = __webpack_require__(248);
 	
 	var Router = __webpack_require__(187).Router;
 	var Route = __webpack_require__(187).Route;
@@ -67,6 +68,7 @@
 	      null,
 	      React.createElement(NavBar, null),
 	      React.createElement(SideBar, null),
+	      React.createElement(Main, null),
 	      this.props.children
 	    );
 	  }
@@ -19722,7 +19724,7 @@
 	
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: 'questions' },
 	      React.createElement(
 	        'ul',
 	        null,
@@ -32022,6 +32024,31 @@
 	});
 	
 	module.exports = SideBar;
+
+/***/ },
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var QuestionsIndex = __webpack_require__(159);
+	
+	var Main = React.createClass({
+	  displayName: 'Main',
+	
+	  render: function () {
+	    return React.createElement(
+	      'header',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'main group' },
+	        React.createElement(QuestionsIndex, null)
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Main;
 
 /***/ }
 /******/ ]);

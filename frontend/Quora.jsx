@@ -6,6 +6,7 @@ var QuestionsIndex = require('./components/questions/index');
 var QuestionDetail = require('./components/questions/detail');
 var NavBar = require('./components/main/navbar');
 var SideBar = require('./components/main/sidebar');
+var Main = require('./components/main/main');
 
 
 var Router = require('react-router').Router;
@@ -20,6 +21,7 @@ var App = React.createClass({
       <div>
         <NavBar />
         <SideBar />
+        <Main />
         {this.props.children}
       </div>
     );

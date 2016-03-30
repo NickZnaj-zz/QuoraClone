@@ -105,8 +105,10 @@
 /* --- SIDEBAR --- */
 
   .sidebar {
-    height: 300px;
+    height: 350px;
     width: 140px;
     float:left;
     background: orange;
   }
+
+/* --- MAIN --- */
