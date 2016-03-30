@@ -2,6 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var content = document.getElementById('content');
 var QuestionsIndex = require('./components/questions/index');
+var QuestionDetail = require('./components/questions/detail');
 
 var Router = require('react-router').Router;
 var Route = require('react-router').Route;
@@ -36,7 +37,7 @@ var App = React.createClass({
 var routes = (
     <Route path='/' component={App}>
       <IndexRoute component={QuestionsIndex}/>
-      <Route path="questions/:questionId" />
+      <Route path="questions/:questionId" component={QuestionDetail} />
     </Route>
 );
 

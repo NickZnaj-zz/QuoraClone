@@ -1,8 +1,8 @@
 var React = require('react');
-var QuestionStore = require('../../stores/question.js');
-var ApiUtil = require('../../util/apiUtil.js');
+var QuestionStore = require('../../stores/question_store.js');
+var ApiUtil = require('../../util/api_util.js');
 
-module.exports = React.createClass({
+var QuestionDetail =  React.createClass({
   getStateFromStore: function () {
     return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
   },
@@ -12,6 +12,7 @@ module.exports = React.createClass({
   },
 
   getInitialState: function () {
+
     return this.getStateFromStore();
   },
 
@@ -39,9 +40,12 @@ module.exports = React.createClass({
       <div>
         <div className="question-show-page">
           <div className="question">
+            {this.state.question.title}
           </div>
         </div>
       </div>
     );
   }
 });
+
+module.exports = QuestionDetail;

@@ -17,6 +17,9 @@ QuestionStore.all = function () {
   return _questions.slice(0);
 };
 
+QuestionStore.find = function(id) {
+  return _questions[id];
+};
 
 QuestionStore.__onDispatch = function (payload) {
 switch(payload.actionType) {

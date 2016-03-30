@@ -48,6 +48,7 @@
 	var ReactDOM = __webpack_require__(158);
 	var content = document.getElementById('content');
 	var QuestionsIndex = __webpack_require__(159);
+	var QuestionDetail = __webpack_require__(244);
 	
 	var Router = __webpack_require__(187).Router;
 	var Route = __webpack_require__(187).Route;
@@ -91,7 +92,7 @@
 	  Route,
 	  { path: '/', component: App },
 	  React.createElement(IndexRoute, { component: QuestionsIndex }),
-	  React.createElement(Route, { path: 'questions/:questionId' })
+	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail })
 	);
 	
 	$(document).ready(function () {
@@ -19775,6 +19776,10 @@
 	  return _questions.slice(0);
 	};
 	
+	QuestionStore.find = function (id) {
+	  return _questions[id];
+	};
+	
 	QuestionStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case QuestionConstants.QUESTIONS_RECEIVED:
@@ -26579,6 +26584,16 @@
 	    });
 	  },
 	
+	  fetchSingleQuestion: function (id) {
+	    $.ajax({
+	      type: "GET",
+	      url: "/api/questions/" + id,
+	      success: function (question) {
+	        QuestionActions.receiveSingleQuestion(question);
+	      }
+	    });
+	  },
+	
 	  createQuestion: function (question, callback) {
 	    $.ajax({
 	      method: "POST",
@@ -26590,6 +26605,17 @@
 	      },
 	      error: function (e) {
 	        console.log("api_util#createQuestion");
+	      }
+	    });
+	  },
+	
+	  destroyQuestion: function (id) {
+	    $.ajax({
+	      method: "DELETE",
+	      url: "/api/questions/" + id,
+	      data: { question: question },
+	      success: function (question) {
+	        QuestionActions.destroyQuestion;
 	      }
 	    });
 	  }
@@ -31766,6 +31792,70 @@
 	
 	exports['default'] = _createRouterHistory2['default'](_historyLibCreateHashHistory2['default']);
 	module.exports = exports['default'];
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var QuestionStore = __webpack_require__(160);
+	var ApiUtil = __webpack_require__(183);
+	
+	var QuestionDetail = React.createClass({
+	  displayName: 'QuestionDetail',
+	
+	  getStateFromStore: function () {
+	    return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
+	  },
+	
+	  _onChange: function () {
+	    this.setState(this.getStateFromStore());
+	  },
+	
+	  getInitialState: function () {
+	
+	    return this.getStateFromStore();
+	  },
+	
+	  // fetchDetails: function (props) {
+	  //   // if you want to factor out the ApiUtil call
+	  // },
+	
+	  componentWillReceiveProps: function (newProps) {
+	    ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
+	  },
+	
+	  componentDidMount: function () {
+	    this.questionListener = QuestionStore.addListener(this._onChange);
+	    ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.questionListener.remove();
+	  },
+	
+	  render: function () {
+	    if (this.state.question === undefined) {
+	      return React.createElement('div', null);
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'question-show-page' },
+	        React.createElement(
+	          'div',
+	          { className: 'question' },
+	          this.state.question.title
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = QuestionDetail;
 
 /***/ }
 /******/ ]);

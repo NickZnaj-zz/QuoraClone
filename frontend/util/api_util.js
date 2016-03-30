@@ -12,6 +12,16 @@ var ApiUtil = {
     });
   },
 
+  fetchSingleQuestion: function(id) {
+    $.ajax({
+      type: "GET",
+      url: "/api/questions/" + id,
+      success: function(question) {
+        QuestionActions.receiveSingleQuestion(question);
+      }
+    });
+  },
+
   createQuestion: function(question, callback) {
     $.ajax({
       method: "POST",
@@ -25,6 +35,17 @@ var ApiUtil = {
         console.log("api_util#createQuestion");
       }
     });
+  },
+
+  destroyQuestion: function(id) {
+    $.ajax({
+      method: "DELETE",
+      url: "/api/questions/" + id,
+      data: {question: question},
+      success: function(question){
+        QuestionActions.destroyQuestion
+      }
+    })
   }
 };
 
