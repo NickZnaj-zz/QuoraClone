@@ -19698,7 +19698,7 @@
 
 	var React = __webpack_require__(1);
 	var QuestionStore = __webpack_require__(160);
-	var ApiUtil = __webpack_require__(183);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var IndexItem = __webpack_require__(185);
 	var QuestionForm = __webpack_require__(186);
 	
@@ -19785,6 +19785,10 @@
 	      break;
 	    case QuestionConstants.QUESTION_DELETED:
 	      deleteQuestion(payload.id);
+	      QuestionStore.__emitChange();
+	      break;
+	    case QuestionConstants.QUESTION_EDITED:
+	      editQuestion(payload.question);
 	      QuestionStore.__emitChange();
 	      break;
 	  }
@@ -26562,99 +26566,13 @@
 	module.exports = {
 	  QUESTIONS_RECEIVED: "QUESTIONS_RECEIVED",
 	  QUESTION_RECEIVED: "QUESTION_RECEIVED",
-	  QUESTION_DELETED: "QUESTION_DELETED"
+	  QUESTION_DELETED: "QUESTION_DELETED",
+	  QUESTION_EDITED: "QUESTION_EDITED"
 	};
 
 /***/ },
-/* 183 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var QuestionActions = __webpack_require__(184);
-	
-	var ApiUtil = {
-	  fetchAllQuestions: function () {
-	    $.ajax({
-	      type: "GET",
-	      url: "/api/questions",
-	      success: function (questions) {
-	        QuestionActions.receiveAllQuestions(questions);
-	      }
-	    });
-	  },
-	
-	  fetchSingleQuestion: function (id) {
-	    $.ajax({
-	      type: "GET",
-	      url: "/api/questions/" + id,
-	      success: function (question) {
-	        QuestionActions.receiveSingleQuestion(question);
-	      }
-	    });
-	  },
-	
-	  destroyQuestion: function (id, callback) {
-	    $.ajax({
-	      method: "DELETE",
-	      url: "/api/questions/" + id,
-	      success: function (id) {
-	        QuestionActions.destroyQuestion(id);
-	        callback && callback();
-	      }
-	    });
-	  },
-	
-	  createQuestion: function (question, callback) {
-	    $.ajax({
-	      method: "POST",
-	      url: "/api/questions/",
-	      data: { question: question },
-	      success: function (question) {
-	        QuestionActions.receiveSingleQuestion(question);
-	        callback && callback(question.id);
-	      },
-	      error: function (e) {
-	        console.log("api_util#createQuestion");
-	      }
-	    });
-	  }
-	
-	};
-	
-	module.exports = ApiUtil;
-
-/***/ },
-/* 184 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(179),
-	    QuestionConstants = __webpack_require__(182);
-	
-	var QuestionActions = {
-	  receiveAllQuestions: function (questions) {
-	    Dispatcher.dispatch({
-	      actionType: QuestionConstants.QUESTIONS_RECEIVED,
-	      questions: questions
-	    });
-	  },
-	
-	  receiveSingleQuestion: function (question) {
-	    Dispatcher.dispatch({
-	      actionType: QuestionConstants.QUESTION_RECEIVED,
-	      question: question
-	    });
-	  },
-	
-	  destroyQuestion: function (id) {
-	    Dispatcher.dispatch({
-	      actionType: QuestionConstants.QUESTION_DELETED,
-	      id: id
-	    });
-	  }
-	};
-	
-	module.exports = QuestionActions;
-
-/***/ },
+/* 183 */,
+/* 184 */,
 /* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -26683,7 +26601,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(183);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var History = __webpack_require__(187).History;
 	
 	var QuestionForm = React.createClass({
@@ -31801,7 +31719,7 @@
 
 	var React = __webpack_require__(1);
 	var QuestionStore = __webpack_require__(160);
-	var ApiUtil = __webpack_require__(183);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var QuestionEdit = __webpack_require__(245);
 	
 	var QuestionDetail = React.createClass({
@@ -31885,7 +31803,7 @@
 
 	var React = __webpack_require__(1);
 	var QuestionStore = __webpack_require__(160);
-	var ApiUtil = __webpack_require__(183);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	var QuestionEdit = React.createClass({
 	  displayName: 'QuestionEdit',

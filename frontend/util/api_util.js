@@ -48,7 +48,20 @@ var ApiUtil = {
     });
   },
 
-};
+  editQuestion: function(question, callback) {
+    $.ajax({
+      method: "PATCH",
+      url: "/api/questions/" + question.id,
+      success: function(question) {
+        QuestionActions.editQuestion(question);
+        callback && callback();
+      },
+      error: function(e) {
+        console.log("api_util#editQuestion error");
+    }
+  })
+
+}
 
 
 module.exports = ApiUtil;

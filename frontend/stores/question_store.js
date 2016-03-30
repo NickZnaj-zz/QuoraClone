@@ -40,6 +40,10 @@ switch(payload.actionType) {
     deleteQuestion(payload.id);
     QuestionStore.__emitChange();
     break;
+  case QuestionConstants.QUESTION_EDITED:
+    editQuestion(payload.question);
+    QuestionStore.__emitChange();
+    break;
   }
 };
 

@@ -21,6 +21,13 @@ var QuestionActions = {
       actionType: QuestionConstants.QUESTION_DELETED,
       id: id
     });
+  },
+
+  editQuestion: function(question) {
+    Dispatcher.dispatch({
+      actionType: QuestionConstants.QUESTION_EDITED,
+      question: question
+    });
   }
 };
 
