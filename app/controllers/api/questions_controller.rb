@@ -24,6 +24,20 @@ class Api::QuestionsController < ApplicationController
     render :show
   end
 
+  def edit
+    @question = Question.find(params[:id])
+  end
+
+  def update
+    @question = Question.find(params[:id])
+    if @question.update_attributes(question)
+      render :show
+    else
+      render json: @question.errors.full_messages, status: 422
+      render :edit
+    end
+  end
+
 
   private
 
