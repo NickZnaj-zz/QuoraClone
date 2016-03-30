@@ -32,8 +32,9 @@ var QuestionDetail =  React.createClass({
 
   renderEdit: function(event) {
     event.preventDefault();
+    console.log("hit the other render");
+    render(<div component={QuestionEdit} />);
 
-    return (<QuestionEdit />);
   },
   // fetchDetails: function (props) {
   //   // if you want to factor out the ApiUtil call

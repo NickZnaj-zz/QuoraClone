@@ -31834,8 +31834,8 @@
 	
 	  renderEdit: function (event) {
 	    event.preventDefault();
-	
-	    return React.createElement(QuestionEdit, null);
+	    console.log("hit the other render");
+	    render(React.createElement('div', { component: QuestionEdit }));
 	  },
 	  // fetchDetails: function (props) {
 	  //   // if you want to factor out the ApiUtil call
