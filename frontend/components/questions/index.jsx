@@ -25,7 +25,8 @@ componentWillUnmount: function() {
 render: function() {
 
   return(
-    <div> <QuestionForm />
+    <div>
+      <QuestionForm />
       <ul>
         {this.state.questions.map(function(question) {
           return <IndexItem key={question.id} question={question} />;

@@ -90,7 +90,8 @@
 	var routes = React.createElement(
 	  Route,
 	  { path: '/', component: App },
-	  React.createElement(IndexRoute, { component: QuestionsIndex })
+	  React.createElement(IndexRoute, { component: QuestionsIndex }),
+	  React.createElement(Route, { path: 'questions/:questionId' })
 	);
 	
 	$(document).ready(function () {
@@ -19737,7 +19738,6 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      ' ',
 	      React.createElement(QuestionForm, null),
 	      React.createElement(
 	        'ul',
@@ -26657,7 +26657,11 @@
 	var QuestionForm = React.createClass({
 	  displayName: 'QuestionForm',
 	
-	  mixins: [History],
+	  // mixins: [History],
+	
+	  contextTypes: {
+	    router: React.PropTypes.object.isRequired
+	  },
 	
 	  getInitialState: function () {
 	    return { title: '' };
@@ -26673,11 +26677,13 @@
 	
 	  handleSubmit: function (event) {
 	    event.preventDefault();
-	    debugger;
 	
 	    var title = { title: this.state.title };
+	    // ApiUtil.createQuestion(title, function(id) {
+	    //   this.history.pushState(null, "/question/" + id, {});
+	    // }.bind(this));
 	    ApiUtil.createQuestion(title, function (id) {
-	      this.history.pushState(null, "/question/" + id, {});
+	      this.context.router.push('/questions/' + id);
 	    }.bind(this));
 	    this.setState(this.blankAttrs);
 	  },

@@ -4,7 +4,11 @@ var History = require('react-router').History;
 
 
 var QuestionForm = React.createClass({
-  mixins: [History],
+  // mixins: [History],
+
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
 
   getInitialState: function() {
     return ({title: ''});
@@ -20,11 +24,14 @@ var QuestionForm = React.createClass({
 
   handleSubmit: function(event){
     event.preventDefault();
-    debugger
+
 
     var title = {title: this.state.title};
+    // ApiUtil.createQuestion(title, function(id) {
+    //   this.history.pushState(null, "/question/" + id, {});
+    // }.bind(this));
     ApiUtil.createQuestion(title, function(id) {
-      this.history.pushState(null, "/question/" + id, {});
+      this.context.router.push('/questions/' + id);
     }.bind(this));
     this.setState(this.blankAttrs);
   },
