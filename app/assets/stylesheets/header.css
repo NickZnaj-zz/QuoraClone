@@ -16,7 +16,8 @@
  }
 
  .logo {
-   font-weight: 900;
+   font-family: 'Inknut Antiqua', serif;
+   font-weight: 800;
    font-size: 24px;
    color: #b92b27;
    float: left;

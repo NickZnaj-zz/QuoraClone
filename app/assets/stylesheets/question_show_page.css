@@ -4,6 +4,8 @@
 }
 
 .question {
-  size: 24px;
+  font-size: 24px;
+  padding-top: 20px;
+  padding-bottom: 10px;
   font-weight: bold;
 }
