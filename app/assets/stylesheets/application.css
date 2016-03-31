@@ -40,7 +40,6 @@
    font-size: 16px;
    background: #fff;
    color: #000;
-   width: 1000px;
    margin: auto;
  }
 
@@ -59,18 +58,21 @@
 
  /* --- HEADER --- */
 
-  header {
+  .header {
+    width: 100%;
     border-top: 2px solid #b92b27;
     border-bottom: 1px solid #dddddd;
     padding-bottom: 5px;
-    position: fixed;
     background: #fff;
     z-index: 1;
+    position: fixed;
   }
 
   .header-nav {
-    max-width: 1000px;
-    margin: auto;
+    width: 1000px;
+    margin: 0 auto;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
   }
 
   .logo {
@@ -94,6 +96,7 @@
     padding: 3px 8px;
     margin: 10px 0px 11px 14px
   }
+
   .question-submit {
     font-size: 13px;
     color: white;
@@ -114,37 +117,46 @@
   .main {
     margin: 0 auto;
     width: 1000px;
-    padding-top: 20px;
+    padding-top: 58px;
+    position: relative;
   }
 
   .sidebar {
+    /*display: block;*/
     height: 350px;
-    width: 20%;
-    min-width: 140px;
-    left:0;
+    /*width: 20%;*/
+    /*min-width: 140px;*/
+    width: 140px;
+    float: left;
     background: orange;
     position: fixed;
+    /*padding-top: 20px;*/
+    margin-top: 20px;
   }
 
   .center-panel {
-    float: left;
+    /*float: left;*/
     width: 570px;
     padding: 0px 20px;
     margin: auto;
-    position: absolute;
+    position: relative;
+    right: 70px;
   }
 
   .rightbar {
-    float:right;
-    width: 20%;
-    min-width: 140px;
-    position: fixed;
-    background: orange;
+    /*display: block;*/
     height: 350px;
-    right: 0;
+    width: 230px;
+    float: right;
+    background: orange;
+    position: fixed;
+    right: 17%;
+    margin-top: 20px;
+
   }
 
   /* --- CENTER PANEL --- */
+
 
   .questions {
 

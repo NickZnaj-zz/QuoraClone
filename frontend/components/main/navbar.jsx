@@ -4,7 +4,7 @@ var QuestionForm = require('../questions/question_form');
 var NavBar = React.createClass({
   render: function () {
     return (
-      <header>
+      <header className="header">
         <div className="header-nav group">
           <div className="logo">Shmora</div>
           <QuestionForm />

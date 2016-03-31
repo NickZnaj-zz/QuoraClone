@@ -31997,7 +31997,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'header',
-	      null,
+	      { className: 'header' },
 	      React.createElement(
 	        'div',
 	        { className: 'header-nav group' },
