@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   namespace :api, defaults: {format: :json} do
-    resources :questions
-    resources :answers
+    resources :questions do
+      resources :answers
+    end
   end
   root "static_pages#root"
 end
