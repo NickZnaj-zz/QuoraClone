@@ -65,7 +65,7 @@ var QuestionDetail =  React.createClass({
 
     else{
       return(
-        <div className="question-show-page" onSubmit={this.handleDelete}>
+        <div className="question-show-page group" onSubmit={this.handleDelete}>
           <div className="question">
             {this.state.question.title}
           </div>

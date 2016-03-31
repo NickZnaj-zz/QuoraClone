@@ -22,7 +22,6 @@ var App = React.createClass({
       <div>
         <NavBar />
         <div className="main group">
-          <SideBar />
           <RightBar />
           {this.props.children}
         </div>

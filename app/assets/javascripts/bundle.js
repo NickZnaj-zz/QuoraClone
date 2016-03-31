@@ -71,7 +71,6 @@
 	      React.createElement(
 	        'div',
 	        { className: 'main group' },
-	        React.createElement(SideBar, null),
 	        React.createElement(RightBar, null),
 	        this.props.children
 	      )
@@ -31905,7 +31904,7 @@
 	    } else {
 	      return React.createElement(
 	        'div',
-	        { className: 'question-show-page', onSubmit: this.handleDelete },
+	        { className: 'question-show-page group', onSubmit: this.handleDelete },
 	        React.createElement(
 	          'div',
 	          { className: 'question' },
@@ -32036,6 +32035,7 @@
 
 	var React = __webpack_require__(1);
 	var QuestionsIndex = __webpack_require__(159);
+	var SideBar = __webpack_require__(247);
 	
 	var Main = React.createClass({
 	  displayName: 'Main',
@@ -32043,11 +32043,16 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'center-panel group' },
+	      null,
+	      React.createElement(SideBar, null),
 	      React.createElement(
 	        'div',
-	        { className: 'questions-list group' },
-	        React.createElement(QuestionsIndex, null)
+	        { className: 'center-panel group' },
+	        React.createElement(
+	          'div',
+	          { className: 'questions-list group' },
+	          React.createElement(QuestionsIndex, null)
+	        )
 	      )
 	    );
 	  }
