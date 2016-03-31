@@ -4,11 +4,11 @@ var QuestionsIndex = require('../questions/index');
 var Main = React.createClass({
   render: function () {
     return (
-      <header>
-        <div className="main group">
+      <div className="center-panel group">
+        <div className="questions-list group">
           <QuestionsIndex />
         </div>
-      </header>
+      </div>
     );
   }
 });

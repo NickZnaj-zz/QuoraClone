@@ -7,6 +7,7 @@ var QuestionDetail = require('./components/questions/detail');
 var NavBar = require('./components/main/navbar');
 var SideBar = require('./components/main/sidebar');
 var Main = require('./components/main/main');
+var RightBar = require('./components/main/rightbar');
 
 
 var Router = require('react-router').Router;
@@ -20,9 +21,11 @@ var App = React.createClass({
     return (
       <div>
         <NavBar />
-        <SideBar />
-        <Main />
-        {this.props.children}
+        <div className="main group">
+          <SideBar />
+          <RightBar />
+          {this.props.children}
+        </div>
       </div>
     );
   }
@@ -30,7 +33,7 @@ var App = React.createClass({
 
 var routes = (
     <Route path='/' component={App}>
-      <IndexRoute component={QuestionsIndex}/>
+      <IndexRoute component={Main}/>
       <Route path="questions/:questionId" component={QuestionDetail} />
     </Route>
 );

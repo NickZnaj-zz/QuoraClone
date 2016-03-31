@@ -53,6 +53,7 @@
 	var NavBar = __webpack_require__(246);
 	var SideBar = __webpack_require__(247);
 	var Main = __webpack_require__(248);
+	var RightBar = __webpack_require__(249);
 	
 	var Router = __webpack_require__(187).Router;
 	var Route = __webpack_require__(187).Route;
@@ -67,9 +68,13 @@
 	      'div',
 	      null,
 	      React.createElement(NavBar, null),
-	      React.createElement(SideBar, null),
-	      React.createElement(Main, null),
-	      this.props.children
+	      React.createElement(
+	        'div',
+	        { className: 'main group' },
+	        React.createElement(SideBar, null),
+	        React.createElement(RightBar, null),
+	        this.props.children
+	      )
 	    );
 	  }
 	});
@@ -77,7 +82,7 @@
 	var routes = React.createElement(
 	  Route,
 	  { path: '/', component: App },
-	  React.createElement(IndexRoute, { component: QuestionsIndex }),
+	  React.createElement(IndexRoute, { component: Main }),
 	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail })
 	);
 	
@@ -19724,10 +19729,10 @@
 	
 	    return React.createElement(
 	      'div',
-	      { className: 'questions' },
+	      null,
 	      React.createElement(
 	        'ul',
-	        null,
+	        { className: 'questions' },
 	        this.state.questions.map(function (question) {
 	          return React.createElement(IndexItem, { key: question.id, question: question });
 	        })
@@ -32037,11 +32042,11 @@
 	
 	  render: function () {
 	    return React.createElement(
-	      'header',
-	      null,
+	      'div',
+	      { className: 'center-panel group' },
 	      React.createElement(
 	        'div',
-	        { className: 'main group' },
+	        { className: 'questions-list group' },
 	        React.createElement(QuestionsIndex, null)
 	      )
 	    );
@@ -32049,6 +32054,22 @@
 	});
 	
 	module.exports = Main;
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var RightBar = React.createClass({
+	  displayName: "RightBar",
+	
+	  render: function () {
+	    return React.createElement("div", { className: "rightbar group" });
+	  }
+	});
+	
+	module.exports = RightBar;
 
 /***/ }
 /******/ ]);

@@ -25,8 +25,8 @@ componentWillUnmount: function() {
 render: function() {
 
   return(
-    <div className="questions">
-      <ul>
+    <div>
+      <ul className="questions">
         {this.state.questions.map(function(question) {
           return <IndexItem key={question.id} question={question} />;
         })}

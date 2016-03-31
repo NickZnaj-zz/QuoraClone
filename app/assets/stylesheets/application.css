@@ -61,11 +61,15 @@
 
   header {
     border-top: 2px solid #b92b27;
-    border-bottom: 1px solid #dddddd
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 5px;
+    position: fixed;
+    background: #fff;
+    z-index: 1;
   }
 
   .header-nav {
-    width: 1000px;
+    max-width: 1000px;
     margin: auto;
   }
 
@@ -104,11 +108,54 @@
 
 /* --- SIDEBAR --- */
 
-  .sidebar {
-    height: 350px;
-    width: 140px;
-    float:left;
-    background: orange;
-  }
 
 /* --- MAIN --- */
+
+  .main {
+    margin: 0 auto;
+    width: 1000px;
+    padding-top: 20px;
+  }
+
+  .sidebar {
+    height: 350px;
+    width: 20%;
+    min-width: 140px;
+    left:0;
+    background: orange;
+    position: fixed;
+  }
+
+  .center-panel {
+    float: left;
+    width: 570px;
+    padding: 0px 20px;
+    margin: auto;
+    position: absolute;
+  }
+
+  .rightbar {
+    float:right;
+    width: 20%;
+    min-width: 140px;
+    position: fixed;
+    background: orange;
+    height: 350px;
+    right: 0;
+  }
+
+  /* --- CENTER PANEL --- */
+
+  .questions {
+
+  }
+
+  .question-list-item {
+    padding: 20px 0;
+    border-top: 1px solid #ccc
+    border-bottom: 1px solid #ccc
+  }
+
+  .question-list-item:first-child {
+    padding: 0 0 20px 0
+  }
