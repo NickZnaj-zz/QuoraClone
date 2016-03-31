@@ -9,3 +9,5 @@ var AnswerActions = {
     });
   }
 };
+
+module.exports = AnswerActions;
