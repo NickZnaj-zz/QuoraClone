@@ -1,0 +1,51 @@
+/* --- HEADER --- */
+
+ .header {
+   width: 100%;
+   border-top: 2px solid #b92b27;
+   border-bottom: 1px solid #dddddd;
+   padding-bottom: 5px;
+   background: #fff;
+   z-index: 1;
+   position: fixed;
+ }
+
+ .header-nav {
+   width: 1000px;
+   margin: 0 auto;
+   border-left: 1px solid black;
+   border-right: 1px solid black;
+ }
+
+ .logo {
+   font-weight: 400;
+   font-size: 24px;
+   color: darkred;
+   float: left;
+   padding: 11px 0;
+ }
+
+ .question-form {
+   float: left;
+ }
+
+ .nav-bar-input {
+   border: 1px solid #e2e2e2;
+   background: #fff;
+   border-radius: 2px;
+   width: 609px;
+   height: 21px;
+   padding: 3px 8px;
+   margin: 10px 0px 11px 14px
+ }
+
+ .question-submit {
+   font-size: 13px;
+   color: white;
+   background: #3e78ad;
+   width:auto;
+   padding: 3px 7px 4px 7px;
+   border: 1px solid #3a66ad;
+   border-radius: 2px;
+   margin-left: 20px;
+ }

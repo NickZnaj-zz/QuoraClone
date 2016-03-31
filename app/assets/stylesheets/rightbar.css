@@ -1,0 +1,15 @@
+.rightbar-wrapper{
+  position: absolute;
+  float: right;
+  width: 350px;
+  right: -120px;
+}
+
+.rightbar {
+  height: 350px;
+  width: 230px;
+  float: right;
+  background: orange;
+  position: fixed;
+  margin-top: 20px;
+}

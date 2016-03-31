@@ -31,7 +31,6 @@
    vertical-align: inherit;
    color: inherit;
    background: transparent;
-
  }
 
  body {
@@ -46,8 +45,6 @@
  ul {
    list-style: none;
  }
-
-
  /* --- CLEARFIX --- */
 
  .group:after {
@@ -56,117 +53,18 @@
    display: block;
  }
 
- /* --- HEADER --- */
-
-  .header {
-    width: 100%;
-    border-top: 2px solid #b92b27;
-    border-bottom: 1px solid #dddddd;
-    padding-bottom: 5px;
-    background: #fff;
-    z-index: 1;
-    position: fixed;
-  }
-
-  .header-nav {
-    width: 1000px;
-    margin: 0 auto;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-  }
-
-  .logo {
-    font-weight: 400;
-    font-size: 24px;
-    color: darkred;
-    float: left;
-    padding: 11px 0;
-  }
-
-  .question-form {
-    float: left;
-  }
-
-  .nav-bar-input {
-    border: 1px solid #e2e2e2;
-    background: #fff;
-    border-radius: 2px;
-    width: 609px;
-    height: 21px;
-    padding: 3px 8px;
-    margin: 10px 0px 11px 14px
-  }
-
-  .question-submit {
-    font-size: 13px;
-    color: white;
-    background: #3e78ad;
-    width:auto;
-    padding: 3px 7px 4px 7px;
-    border: 1px solid #3a66ad;
-    border-radius: 2px;
-    margin-left: 20px;
-  }
-
-
-/* --- SIDEBAR --- */
-
-
 /* --- MAIN --- */
 
-  .main {
-    margin: 0 auto;
-    width: 1000px;
-    padding-top: 58px;
-    position: relative;
-  }
-
-  .sidebar {
-    width: 140px;
-    height: 350px;
-    float: left;
-    background: orange;
-    position: fixed;
-    margin-top: 20px;
-  }
-
-  .rightbar-wrapper{
-    position: absolute;
-    float: right;
-    width: 350px;
-    right: -120px;
-  }
-
-  .rightbar {
-    height: 350px;
-    width: 230px;
-    float: right;
-    background: orange;
-    position: fixed;
-    margin-top: 20px;
-  }
-  .center-panel {
-    width: 570px;
-    padding: 0px 20px;
-    margin: auto;
-    position: relative;
-    right: 70px;
-  }
-
-
-  /* --- CENTER PANEL --- */
-
-
-  .questions {
-
-  }
-
-  .question-list-item {
-    padding: 20px 0;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .question-list-item:first-child {
-    padding: 0 0 20px 0;
-  }
+.main {
+  margin: 0 auto;
+  width: 1000px;
+  padding-top: 58px;
+  position: relative;
+}
+.center-panel {
+  width: 570px;
+  padding: 0px 20px;
+  margin: auto;
+  position: relative;
+  right: 70px;
+}
