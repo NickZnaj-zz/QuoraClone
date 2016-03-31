@@ -13,8 +13,6 @@
  .header-nav {
    width: 1000px;
    margin: 0 auto;
-   border-left: 1px solid black;
-   border-right: 1px solid black;
  }
 
  .logo {
@@ -23,6 +21,7 @@
    color: darkred;
    float: left;
    padding: 11px 0;
+   text-decoration: none;
  }
 
  .question-form {

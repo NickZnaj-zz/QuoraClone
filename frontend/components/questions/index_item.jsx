@@ -5,7 +5,7 @@ var IndexItem = React.createClass({
     return (
       <li className="question-list-item">
         <div className="question-index-item">
-          <h3 className="question-title-index">{this.props.question.title}</h3>
+          <a href={"/#/questions/" + this.props.question.id} className="question-title-index">{this.props.question.title}</a>
         </div>
       </li>
     );

@@ -6,7 +6,7 @@ var NavBar = React.createClass({
     return (
       <header className="header">
         <div className="header-nav group">
-          <div className="logo">Shmora</div>
+          <a href="/#/" className="logo">Shmora</a>
           <QuestionForm />
         </div>
       </header>

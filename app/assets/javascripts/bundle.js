@@ -26703,8 +26703,8 @@
 	        "div",
 	        { className: "question-index-item" },
 	        React.createElement(
-	          "h3",
-	          { className: "question-title-index" },
+	          "a",
+	          { href: "/#/questions/" + this.props.question.id, className: "question-title-index" },
 	          this.props.question.title
 	        )
 	      )
@@ -32001,8 +32001,8 @@
 	        'div',
 	        { className: 'header-nav group' },
 	        React.createElement(
-	          'div',
-	          { className: 'logo' },
+	          'a',
+	          { href: '/#/', className: 'logo' },
 	          'Shmora'
 	        ),
 	        React.createElement(QuestionForm, null)
