@@ -1,8 +1,14 @@
 class Api::AnswersController < ApplicationController
 
   def index
-    @answers = Answer.all
-    render :index
+    # @answers = Answer.all
+    # render :index
+    if params.has_key?(:question_id)
+      @answers = Answer.where(question_id: params[:question_id])
+    else
+      @answers = Answer.all
+    end
+    render json: @answers
   end
 
   def create
