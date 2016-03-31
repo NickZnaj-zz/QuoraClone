@@ -122,20 +122,30 @@
   }
 
   .sidebar {
-    /*display: block;*/
-    height: 350px;
-    /*width: 20%;*/
-    /*min-width: 140px;*/
     width: 140px;
+    height: 350px;
     float: left;
     background: orange;
     position: fixed;
-    /*padding-top: 20px;*/
     margin-top: 20px;
   }
 
+  .rightbar-wrapper{
+    position: absolute;
+    float: right;
+    width: 350px;
+    right: -120px;
+  }
+
+  .rightbar {
+    height: 350px;
+    width: 230px;
+    float: right;
+    background: orange;
+    position: fixed;
+    margin-top: 20px;
+  }
   .center-panel {
-    /*float: left;*/
     width: 570px;
     padding: 0px 20px;
     margin: auto;
@@ -143,17 +153,6 @@
     right: 70px;
   }
 
-  .rightbar {
-    /*display: block;*/
-    height: 350px;
-    width: 230px;
-    float: right;
-    background: orange;
-    position: fixed;
-    right: 17%;
-    margin-top: 20px;
-
-  }
 
   /* --- CENTER PANEL --- */
 

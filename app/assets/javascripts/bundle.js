@@ -32065,7 +32065,11 @@
 	  displayName: "RightBar",
 	
 	  render: function () {
-	    return React.createElement("div", { className: "rightbar group" });
+	    return React.createElement(
+	      "div",
+	      { className: "rightbar-wrapper group" },
+	      React.createElement("div", { className: "rightbar group" })
+	    );
 	  }
 	});
 	
