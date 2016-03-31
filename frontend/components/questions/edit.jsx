@@ -1,6 +1,8 @@
 var React = require('react');
 var QuestionStore = require('../../stores/question_store.js');
 var ApiUtil = require('../../util/api_util.js');
+var QuestionDetail = require('./detail');
+
 
 var QuestionEdit =  React.createClass({
   contextTypes: {
@@ -45,7 +47,8 @@ var QuestionEdit =  React.createClass({
   },
 
   render: function () {
-
+    
+    var butts = "";
     return(
       <div>
         <form className="question-edit-form group" onSubmit={this.handleEdit}>
@@ -60,7 +63,13 @@ var QuestionEdit =  React.createClass({
                  onChange={this._onDetailChange}
                  value={this.state.details}>
           </input>
-          <input type="submit" value="Update" />
+          <div className="submit-area group">
+            <input type="submit" className="submit-button" value="Update" />
+            <a href={"/#/questions/" + this.props.question.id}
+               onClick={this.props.onEditEnd}
+               className="cancel-link"
+               value="Cancel">Cancel</a>
+          </div>
         </form>
       </div>
     );

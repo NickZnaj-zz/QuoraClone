@@ -31916,7 +31916,7 @@
 	          this.state.question.details
 	        ),
 	        React.createElement('input', { type: 'submit', value: 'Delete', onClick: this.handleDelete }),
-	        React.createElement('input', { type: 'submit', value: 'Edit', onClick: this.startEdit })
+	        React.createElement('input', { type: 'submit', value: 'Edit Question and Details', onClick: this.startEdit })
 	      );
 	    }
 	  }
@@ -31931,6 +31931,7 @@
 	var React = __webpack_require__(1);
 	var QuestionStore = __webpack_require__(160);
 	var ApiUtil = __webpack_require__(183);
+	var QuestionDetail = __webpack_require__(244);
 	
 	var QuestionEdit = React.createClass({
 	  displayName: 'QuestionEdit',
@@ -31975,6 +31976,7 @@
 	
 	  render: function () {
 	
+	    var butts = "";
 	    return React.createElement(
 	      'div',
 	      null,
@@ -31989,7 +31991,19 @@
 	          className: 'question-details-input',
 	          onChange: this._onDetailChange,
 	          value: this.state.details }),
-	        React.createElement('input', { type: 'submit', value: 'Update' })
+	        React.createElement(
+	          'div',
+	          { className: 'submit-area group' },
+	          React.createElement('input', { type: 'submit', className: 'submit-button', value: 'Update' }),
+	          React.createElement(
+	            'a',
+	            { href: "/#/questions/" + this.props.question.id,
+	              onClick: this.props.onEditEnd,
+	              className: 'cancel-link',
+	              value: 'Cancel' },
+	            'Cancel'
+	          )
+	        )
 	      )
 	    );
 	  }

@@ -1,11 +1,59 @@
 .question-edit-form {
-  width: 600px
+  border: 1px solid #ccc;
+}
+.question-edit-form {
+  width: 598px;
+  margin-top: 50px;
+  background: blue;
 }
 
-.question-update{
-  width: 598px;
-  border: 1px solid #ccc;
+.question-edit-form > input {
+  border: none;
+  border-bottom:  1px solid #ccc;
+  padding: 10px;
+  width: 578px;
+}
+
+.question-update {
   font-weight: bold;
   font-size: 24px;
+}
+
+.question-details-input {
+  height: 140px;
+  font-size: 16px;
+}
+
+.question-details-input > input {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.submit-area {
+  height: 40px;
+  width: 588px;
   padding: 5px;
+  background: #f6f6f6;
+
+}
+
+.submit-button {
+  float: right;
+  font-size: 13px;
+  color: white;
+  background: #3e78ad;
+  width:auto;
+  padding: 3px 7px 4px 7px;
+  border: 1px solid #3a66ad;
+  border-radius: 2px;
+  margin: 6px 5px 0 0
+}
+
+.cancel-link {
+  font-size: 13px;
+  color: #999;
+  text-decoration: none;
+  margin: 13px 0;
+  float: right
+  margin-right: 10px;
 }

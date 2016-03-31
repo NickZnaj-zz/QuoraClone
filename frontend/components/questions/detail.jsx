@@ -73,7 +73,7 @@ var QuestionDetail =  React.createClass({
             {this.state.question.details}
           </div>
           <input type="submit" value="Delete" onClick={this.handleDelete} />
-          <input type="submit" value="Edit" onClick={this.startEdit} />
+          <input type="submit" value="Edit Question and Details" onClick={this.startEdit} />
         </div>
       );
     }
