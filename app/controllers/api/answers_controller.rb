@@ -1,9 +1,9 @@
 class Api::AnswersController < ApplicationController
 
-  # def index
-  #   @answers = Answer.all
-  #   render :index
-  # end
+  def index
+    @answers = Answer.all
+    render :index
+  end
 
   def create
     @answer = Answer.new(answer_params)
@@ -43,7 +43,7 @@ class Api::AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:question).permit(:title, :details)
+    params.require(:answer).permit(:body, :user_id, :question_id)
   end
 
 end
