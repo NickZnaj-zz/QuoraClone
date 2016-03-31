@@ -31845,6 +31845,7 @@
 	var QuestionStore = __webpack_require__(160);
 	var ApiUtil = __webpack_require__(183);
 	var QuestionEdit = __webpack_require__(245);
+	var AnswersIndex = __webpack_require__(250);
 	
 	var QuestionDetail = React.createClass({
 	  displayName: 'QuestionDetail',
@@ -31920,6 +31921,11 @@
 	          'div',
 	          { className: 'question-details' },
 	          this.state.question.details
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'answers-index' },
+	          React.createElement(AnswersIndex, null)
 	        ),
 	        React.createElement('input', { type: 'submit', value: 'Delete', onClick: this.handleDelete }),
 	        React.createElement('input', { type: 'submit', value: 'Edit Question and Details', onClick: this.startEdit })
@@ -32113,6 +32119,125 @@
 	});
 	
 	module.exports = RightBar;
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var AnswerStore = __webpack_require__(251);
+	var IndexItem = __webpack_require__(253);
+	
+	var AnswersIndex = React.createClass({
+	  displayName: 'AnswersIndex',
+	
+	  getInitialState: function () {
+	    return { answers: AnswerStore.all() };
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'ul',
+	        { className: 'answers' },
+	        this.state.answers.map(function (answer) {
+	          return React.createElement(IndexItem, { key: answer.id, answer: answer });
+	        })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = AnswersIndex;
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(161).Store;
+	var AppDispatcher = __webpack_require__(179);
+	
+	var AnswerStore = new Store(AppDispatcher);
+	var AnswerConstants = __webpack_require__(252);
+	var _answers = {};
+	
+	var resetAnswers = function (answers) {
+	  _answers = {};
+	  answers.forEach(function (answer) {
+	    _answers[answer.id] = answer;
+	  });
+	};
+	
+	var resetAnswer = function (answer) {
+	  _answers[answer.id] = answer;
+	};
+	
+	AnswerStore.all = function () {
+	  var answers = [];
+	  for (var id in _answers) {
+	    answers.push(_answers[id]);
+	  }
+	  return answers;
+	};
+	
+	AnswerStore.find = function (id) {
+	  return _answers[id];
+	};
+	
+	AnswerStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case AnswerConstants.ANSWERS_RECEIVED:
+	      resetAnswers(payload.answers);
+	      AnswerStore.__emitChange();
+	      break;
+	    case AnswerConstants.ANSWER_RECEIVED:
+	      resetAnswer(payload.answer);
+	      AnswerStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = AnswerStore;
+
+/***/ },
+/* 252 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  ANSWERS_RECEIVED: "ANSWERS_RECEIVED",
+	  ANSWER_RECEIVED: "ANSWER_RECEIVED",
+	  ANSWER_DELETED: "ANSWER_DELETED",
+	  ANSWER_EDITED: "ANSWER_EDITED"
+	};
+
+/***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var IndexItem = React.createClass({
+	  displayName: "IndexItem",
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      "li",
+	      { className: "answer-list-item" },
+	      React.createElement(
+	        "div",
+	        { className: "answer-list-item-answer" },
+	        this.props.answer.body
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = IndexItem;
 
 /***/ }
 /******/ ]);

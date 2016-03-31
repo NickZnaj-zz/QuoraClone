@@ -2,6 +2,7 @@ var React = require('react');
 var QuestionStore = require('../../stores/question_store.js');
 var ApiUtil = require('../../util/api_util.js');
 var QuestionEdit = require('./edit');
+var AnswersIndex = require('../answers/index');
 
 var QuestionDetail =  React.createClass({
   contextTypes: {
@@ -66,12 +67,19 @@ var QuestionDetail =  React.createClass({
     else{
       return(
         <div className="question-show-page group" onSubmit={this.handleDelete}>
+
           <div className="question">
             {this.state.question.title}
           </div>
+
           <div className="question-details">
             {this.state.question.details}
           </div>
+
+          <div className="answers-index">
+            <AnswersIndex />
+          </div>
+
           <input type="submit" value="Delete" onClick={this.handleDelete} />
           <input type="submit" value="Edit Question and Details" onClick={this.startEdit} />
         </div>
