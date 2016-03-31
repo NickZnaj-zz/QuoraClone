@@ -53,7 +53,6 @@
   font-size: 13px;
   color: #999;
   text-decoration: none;
-  margin: 13px 0;
-  float: right
-  margin-right: 10px;
+  margin: 13px 10px 0 0;
+  float: right;
 }
