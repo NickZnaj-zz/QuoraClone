@@ -13,5 +13,28 @@ Question.create!(
 
 Question.create!(
   title: "this is another test, what do you think?",
-  # user_id: 2
+)
+Question.create!(
+  title: "how is babby formed?",
+)
+Question.create!(
+  title: "do you even lift bro?",
+)
+Question.create!(
+  title: "am i doing this right?",
+)
+
+Answer.create!(
+  body: "Sure can bro",
+  question_id: 1
+)
+
+Answer.create!(
+  body: "You're on the wrong site",
+  question_id: 3
+)
+
+Answer.create!(
+  body: "idk check yahoo answers",
+  question_id: 3
 )

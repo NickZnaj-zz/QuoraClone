@@ -9,5 +9,6 @@ class Answer < ActiveRecord::Base
   def ensure_user_id
     if !self.user_id
       self.user_id = 1
+    end
   end
 end
