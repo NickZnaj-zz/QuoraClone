@@ -31973,8 +31973,11 @@
 	      null,
 	      React.createElement(
 	        'form',
-	        { className: 'question-edit', onSubmit: this.handleEdit },
-	        React.createElement('input', { type: 'text', className: 'question-update', onChange: this._onChange, value: this.state.title }),
+	        { className: 'question-edit-form group', onSubmit: this.handleEdit },
+	        React.createElement('input', { type: 'text',
+	          className: 'question-update',
+	          onChange: this._onChange,
+	          value: this.state.title }),
 	        React.createElement('input', { type: 'submit', value: 'Update' })
 	      )
 	    );

@@ -1,0 +1,11 @@
+.question-edit-form {
+  width: 600px
+}
+
+.question-update{
+  width: 598px;
+  border: 1px solid #ccc;
+  font-weight: bold;
+  font-size: 24px;
+  padding: 5px;
+}

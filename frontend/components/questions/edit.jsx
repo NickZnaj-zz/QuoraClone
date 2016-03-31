@@ -46,8 +46,11 @@ var QuestionEdit =  React.createClass({
 
     return(
       <div>
-        <form className="question-edit" onSubmit={this.handleEdit}>
-          <input type="text" className="question-update" onChange={this._onChange} value={this.state.title}>
+        <form className="question-edit-form group" onSubmit={this.handleEdit}>
+          <input type="text"
+                 className="question-update"
+                 onChange={this._onChange}
+                 value={this.state.title}>
 
           </input>
           <input type="submit" value="Update" />
