@@ -19749,12 +19749,15 @@
 	var Store = __webpack_require__(161).Store;
 	var AppDispatcher = __webpack_require__(179);
 	
-	var _questions = [];
+	var _questions = {};
 	var QuestionStore = new Store(AppDispatcher);
 	var QuestionConstants = __webpack_require__(182);
 	
 	var resetQuestions = function (questions) {
-	  _questions = questions;
+	  _questions = {};
+	  questions.forEach(function (question) {
+	    _questions[question.id] = question;
+	  });
 	};
 	
 	var resetQuestion = function (question) {
@@ -19762,8 +19765,7 @@
 	};
 	
 	var deleteQuestion = function (id) {
-	  var deleted = _questions.indexOf(_questions[id]);
-	  _questions.splice(deleted, 1);
+	  delete _questions.id;
 	};
 	
 	var editQuestion = function (question) {
@@ -19771,7 +19773,11 @@
 	};
 	
 	QuestionStore.all = function () {
-	  return _questions.slice(0);
+	  var questions = [];
+	  for (var id in _questions) {
+	    questions.push(_questions[id]);
+	  }
+	  return questions;
 	};
 	
 	QuestionStore.find = function (id) {
