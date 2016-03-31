@@ -7,10 +7,12 @@ var QuestionEdit =  React.createClass({
     router: React.PropTypes.object.isRequired
   },
 
-  _onChange: function (e) {
-
+  _onTitleChange: function (e) {
     this.setState({ title: e.target.value });
-    // this.setState(this.state.question.title = event.target.value );
+  },
+
+  _onDetailChange: function (e) {
+    this.setState({ details: e.target.value });
   },
 
   _onStoreChange: function() {
@@ -19,7 +21,7 @@ var QuestionEdit =  React.createClass({
 
   getInitialState: function () {
     // debugger
-    return { title: this.props.question.title };
+    return { title: this.props.question.title, details: this.props.question.details };
     // return { title: this.state.question.title };
   },
 
@@ -49,9 +51,14 @@ var QuestionEdit =  React.createClass({
         <form className="question-edit-form group" onSubmit={this.handleEdit}>
           <input type="text"
                  className="question-update"
-                 onChange={this._onChange}
+                 onChange={this._onTitleChange}
                  value={this.state.title}>
 
+          </input>
+          <input type="text"
+                 className="question-details-input"
+                 onChange={this._onDetailChange}
+                 value={this.state.details}>
           </input>
           <input type="submit" value="Update" />
         </form>
