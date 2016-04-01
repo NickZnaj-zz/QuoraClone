@@ -1,5 +1,5 @@
 var QuestionActions = require('../actions/question_actions');
-
+var AnswerActions = require('../actions/answer_actions');
 
 var ApiUtil = {
   fetchAllQuestions: function() {
@@ -61,7 +61,17 @@ var ApiUtil = {
         console.log("api_util#editQuestion error");
     }
     });
-  }
+  },
+
+  fetchAllAnswers: function(id) {
+    $.ajax({
+      type: "GET",
+      url: "/api/questions/" + id + "/answers",
+      success: function(answers) {
+        AnswerActions.receiveAllAnswers(answers);
+      }
+    });
+  },
 
 };
 

@@ -5,6 +5,7 @@ var AnswerStore = new Store(AppDispatcher);
 var AnswerConstants = require('../constants/answer_constants');
 var _answers = {};
 
+
 var resetAnswers = function(answers) {
   _answers = {};
   answers.forEach(function (answer){

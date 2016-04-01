@@ -76,8 +76,8 @@ var QuestionDetail =  React.createClass({
             {this.state.question.details}
           </div>
 
-          <div className="answers-index">
-            <AnswersIndex />
+          <div className="answers-index" >
+            <AnswersIndex question={this.state.question} />
           </div>
 
           <input type="submit" value="Delete" onClick={this.handleDelete} />

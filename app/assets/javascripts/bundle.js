@@ -50,10 +50,10 @@
 	var content = document.getElementById('content');
 	var QuestionsIndex = __webpack_require__(159);
 	var QuestionDetail = __webpack_require__(244);
-	var NavBar = __webpack_require__(246);
-	var SideBar = __webpack_require__(247);
-	var Main = __webpack_require__(248);
-	var RightBar = __webpack_require__(249);
+	var NavBar = __webpack_require__(250);
+	var SideBar = __webpack_require__(251);
+	var Main = __webpack_require__(252);
+	var RightBar = __webpack_require__(253);
 	
 	var Router = __webpack_require__(187).Router;
 	var Route = __webpack_require__(187).Route;
@@ -19749,9 +19749,9 @@
 	var Store = __webpack_require__(161).Store;
 	var AppDispatcher = __webpack_require__(179);
 	
-	var _questions = {};
 	var QuestionStore = new Store(AppDispatcher);
 	var QuestionConstants = __webpack_require__(182);
+	var _questions = {};
 	
 	var resetQuestions = function (questions) {
 	  _questions = {};
@@ -26586,6 +26586,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var QuestionActions = __webpack_require__(184);
+	var AnswerActions = __webpack_require__(254);
 	
 	var ApiUtil = {
 	  fetchAllQuestions: function () {
@@ -26645,6 +26646,16 @@
 	      },
 	      error: function (e) {
 	        console.log("api_util#editQuestion error");
+	      }
+	    });
+	  },
+	
+	  fetchAllAnswers: function (id) {
+	    $.ajax({
+	      type: "GET",
+	      url: "/api/questions/" + id + "/answers",
+	      success: function (answers) {
+	        AnswerActions.receiveAllAnswers(answers);
 	      }
 	    });
 	  }
@@ -31845,7 +31856,7 @@
 	var QuestionStore = __webpack_require__(160);
 	var ApiUtil = __webpack_require__(183);
 	var QuestionEdit = __webpack_require__(245);
-	var AnswersIndex = __webpack_require__(250);
+	var AnswersIndex = __webpack_require__(246);
 	
 	var QuestionDetail = React.createClass({
 	  displayName: 'QuestionDetail',
@@ -31925,7 +31936,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'answers-index' },
-	          React.createElement(AnswersIndex, null)
+	          React.createElement(AnswersIndex, { question: this.state.question })
 	        ),
 	        React.createElement('input', { type: 'submit', value: 'Delete', onClick: this.handleDelete }),
 	        React.createElement('input', { type: 'submit', value: 'Edit Question and Details', onClick: this.startEdit })
@@ -32028,105 +32039,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var QuestionForm = __webpack_require__(186);
-	
-	var NavBar = React.createClass({
-	  displayName: 'NavBar',
-	
-	  render: function () {
-	    return React.createElement(
-	      'header',
-	      { className: 'header' },
-	      React.createElement(
-	        'div',
-	        { className: 'header-nav group' },
-	        React.createElement(
-	          'a',
-	          { href: '/#/', className: 'logo' },
-	          'Shmora'
-	        ),
-	        React.createElement(QuestionForm, null)
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = NavBar;
-
-/***/ },
-/* 247 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var SideBar = React.createClass({
-	  displayName: "SideBar",
-	
-	  render: function () {
-	    return React.createElement("div", { className: "sidebar group" });
-	  }
-	});
-	
-	module.exports = SideBar;
-
-/***/ },
-/* 248 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var QuestionsIndex = __webpack_require__(159);
-	var SideBar = __webpack_require__(247);
-	
-	var Main = React.createClass({
-	  displayName: 'Main',
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(SideBar, null),
-	      React.createElement(
-	        'div',
-	        { className: 'center-panel group' },
-	        React.createElement(
-	          'div',
-	          { className: 'questions-list group' },
-	          React.createElement(QuestionsIndex, null)
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Main;
-
-/***/ },
-/* 249 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var RightBar = React.createClass({
-	  displayName: "RightBar",
-	
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "rightbar-wrapper group" },
-	      React.createElement("div", { className: "rightbar group" })
-	    );
-	  }
-	});
-	
-	module.exports = RightBar;
-
-/***/ },
-/* 250 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var AnswerStore = __webpack_require__(251);
-	var IndexItem = __webpack_require__(253);
+	var AnswerStore = __webpack_require__(247);
+	var IndexItem = __webpack_require__(249);
+	var ApiUtil = __webpack_require__(183);
 	
 	var AnswersIndex = React.createClass({
 	  displayName: 'AnswersIndex',
@@ -32135,7 +32050,20 @@
 	    return { answers: AnswerStore.all() };
 	  },
 	
+	  getStateFromStore: function () {
+	    return { answer: AnswerStore.find(parseInt(this.props.params.answerId)) };
+	  },
+	
+	  componentDidMount: function () {
+	    this.answerListener = AnswerStore.addListener(this._onChange);
+	    ApiUtil.fetchAllAnswers(this.props.question.id);
+	  },
+	
 	  render: function () {
+	    debugger;
+	    if (this.state.answers) {
+	      return React.createElement('div', null);
+	    }
 	    return React.createElement(
 	      'div',
 	      null,
@@ -32154,14 +32082,14 @@
 	module.exports = AnswersIndex;
 
 /***/ },
-/* 251 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(161).Store;
 	var AppDispatcher = __webpack_require__(179);
 	
 	var AnswerStore = new Store(AppDispatcher);
-	var AnswerConstants = __webpack_require__(252);
+	var AnswerConstants = __webpack_require__(248);
 	var _answers = {};
 	
 	var resetAnswers = function (answers) {
@@ -32203,7 +32131,7 @@
 	module.exports = AnswerStore;
 
 /***/ },
-/* 252 */
+/* 248 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -32214,14 +32142,13 @@
 	};
 
 /***/ },
-/* 253 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	
 	var IndexItem = React.createClass({
 	  displayName: "IndexItem",
-	
 	
 	  render: function () {
 	    return React.createElement(
@@ -32238,6 +32165,121 @@
 	});
 	
 	module.exports = IndexItem;
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var QuestionForm = __webpack_require__(186);
+	
+	var NavBar = React.createClass({
+	  displayName: 'NavBar',
+	
+	  render: function () {
+	    return React.createElement(
+	      'header',
+	      { className: 'header' },
+	      React.createElement(
+	        'div',
+	        { className: 'header-nav group' },
+	        React.createElement(
+	          'a',
+	          { href: '/#/', className: 'logo' },
+	          'Shmora'
+	        ),
+	        React.createElement(QuestionForm, null)
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = NavBar;
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var SideBar = React.createClass({
+	  displayName: "SideBar",
+	
+	  render: function () {
+	    return React.createElement("div", { className: "sidebar group" });
+	  }
+	});
+	
+	module.exports = SideBar;
+
+/***/ },
+/* 252 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var QuestionsIndex = __webpack_require__(159);
+	var SideBar = __webpack_require__(251);
+	
+	var Main = React.createClass({
+	  displayName: 'Main',
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(SideBar, null),
+	      React.createElement(
+	        'div',
+	        { className: 'center-panel group' },
+	        React.createElement(
+	          'div',
+	          { className: 'questions-list group' },
+	          React.createElement(QuestionsIndex, null)
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Main;
+
+/***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var RightBar = React.createClass({
+	  displayName: "RightBar",
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "rightbar-wrapper group" },
+	      React.createElement("div", { className: "rightbar group" })
+	    );
+	  }
+	});
+	
+	module.exports = RightBar;
+
+/***/ },
+/* 254 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(179),
+	    AnswerConstants = __webpack_require__(248);
+	
+	var AnswerActions = {
+	  receiveAllAnswers: function (answers) {
+	    Dispatcher.dispatch({
+	      actionType: AnswerConstants.ANSWERS_RECEIVED,
+	      answers: answers
+	    });
+	  }
+	};
+	
+	module.exports = AnswerActions;
 
 /***/ }
 /******/ ]);
