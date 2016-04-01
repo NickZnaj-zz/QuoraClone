@@ -3,6 +3,7 @@ var QuestionStore = require('../../stores/question_store.js');
 var ApiUtil = require('../../util/api_util.js');
 var QuestionEdit = require('./edit');
 var AnswersIndex = require('../answers/index');
+var AnswerForm = require('../answers/answer_form');
 
 var QuestionDetail =  React.createClass({
   contextTypes: {
@@ -45,6 +46,16 @@ var QuestionDetail =  React.createClass({
   //   // if you want to factor out the ApiUtil call
   // },
 
+	startAnswer: function(e) {
+		e.preventDefault();
+		this.setState({ isAnswering: true });
+	},
+
+	closeAnswer: function(e) {
+		e.preventDefault();
+		this.setState({ isAnswering: false });
+	},
+
   componentWillReceiveProps: function (newProps) {
     ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
   },
@@ -62,29 +73,38 @@ var QuestionDetail =  React.createClass({
 
   render: function () {
     if (!this.state.question) { return <div></div>; }
-    if (this.state.isEditing) { return ( <QuestionEdit question={this.state.question} onEditEnd={this.closeEdit}/> ); }
+    if (this.state.isEditing) { return ( <QuestionEdit question={this.state.question} onEditEnd={this.closeEdit}/>);}
 
-    else{
-      return(
-        <div className="question-show-page group" onSubmit={this.handleDelete}>
+		var answerForm;
+		if (this.state.isAnswering) {
+			answerForm = <AnswerForm
+				question={this.state.question}
+				onAnswerEnd={this.closeAnswer}
+			/>;
+		}
 
-          <div className="question">
-            {this.state.question.title}
-          </div>
+    return(
+      <div className="question-show-page group" onSubmit={this.handleDelete}>
 
-          <div className="question-details">
-            {this.state.question.details}
-          </div>
-
-          <div className="answers-index" >
-            <AnswersIndex question={this.state.question} />
-          </div>
-
-          <input type="submit" value="Delete" onClick={this.handleDelete} />
-          <input type="submit" value="Edit Question and Details" onClick={this.startEdit} />
+        <div className="question">
+          {this.state.question.title}
         </div>
-      );
-    }
+
+        <div className="question-details">
+          {this.state.question.details}
+        </div>
+
+        <div className="answers-index" >
+          <AnswersIndex question={this.state.question} />
+        </div>
+
+				{answerForm}
+
+        <input type="submit" value="Delete" onClick={this.handleDelete} />
+        <input type="submit" value="Edit Question and Details" onClick={this.startEdit} />
+				<input type="submit" value="Answer" onClick={this.startAnswer} />
+      </div>
+    );
   }
 });
 

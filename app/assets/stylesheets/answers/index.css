@@ -4,6 +4,10 @@ ul.answers {
 	margin-left: 0px;
 }
 
+.answers-count {
+	font-weight: bold;
+}
+
 .answer-list-item {
 	border-top: 1px solid #ccc;
 	padding: 15px 0;

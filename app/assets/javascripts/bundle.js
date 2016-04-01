@@ -26784,16 +26784,16 @@
 	    return { title: '' };
 	  },
 	
-	  _onChange: function (event) {
-	    this.setState({ title: event.target.value });
+	  _onChange: function (e) {
+	    this.setState({ title: e.target.value });
 	  },
 	
 	  blankAttrs: {
 	    title: ''
 	  },
 	
-	  handleSubmit: function (event) {
-	    event.preventDefault();
+	  handleSubmit: function (e) {
+	    e.preventDefault();
 	    var title = { title: this.state.title };
 	
 	    ApiUtil.createQuestion(title, function (id) {
@@ -31890,6 +31890,7 @@
 	var ApiUtil = __webpack_require__(183);
 	var QuestionEdit = __webpack_require__(247);
 	var AnswersIndex = __webpack_require__(248);
+	var AnswerForm = __webpack_require__(255);
 	
 	var QuestionDetail = React.createClass({
 	  displayName: 'QuestionDetail',
@@ -31933,6 +31934,16 @@
 	  //   // if you want to factor out the ApiUtil call
 	  // },
 	
+	  startAnswer: function (e) {
+	    e.preventDefault();
+	    this.setState({ isAnswering: true });
+	  },
+	
+	  closeAnswer: function (e) {
+	    e.preventDefault();
+	    this.setState({ isAnswering: false });
+	  },
+	
 	  componentWillReceiveProps: function (newProps) {
 	    ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
 	  },
@@ -31952,29 +31963,39 @@
 	    }
 	    if (this.state.isEditing) {
 	      return React.createElement(QuestionEdit, { question: this.state.question, onEditEnd: this.closeEdit });
-	    } else {
-	      return React.createElement(
-	        'div',
-	        { className: 'question-show-page group', onSubmit: this.handleDelete },
-	        React.createElement(
-	          'div',
-	          { className: 'question' },
-	          this.state.question.title
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'question-details' },
-	          this.state.question.details
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'answers-index' },
-	          React.createElement(AnswersIndex, { question: this.state.question })
-	        ),
-	        React.createElement('input', { type: 'submit', value: 'Delete', onClick: this.handleDelete }),
-	        React.createElement('input', { type: 'submit', value: 'Edit Question and Details', onClick: this.startEdit })
-	      );
 	    }
+	
+	    var answerForm;
+	    if (this.state.isAnswering) {
+	      answerForm = React.createElement(AnswerForm, {
+	        question: this.state.question,
+	        onAnswerEnd: this.closeAnswer
+	      });
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'question-show-page group', onSubmit: this.handleDelete },
+	      React.createElement(
+	        'div',
+	        { className: 'question' },
+	        this.state.question.title
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'question-details' },
+	        this.state.question.details
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'answers-index' },
+	        React.createElement(AnswersIndex, { question: this.state.question })
+	      ),
+	      answerForm,
+	      React.createElement('input', { type: 'submit', value: 'Delete', onClick: this.handleDelete }),
+	      React.createElement('input', { type: 'submit', value: 'Edit Question and Details', onClick: this.startEdit }),
+	      React.createElement('input', { type: 'submit', value: 'Answer', onClick: this.startAnswer })
+	    );
 	  }
 	});
 	
@@ -32032,7 +32053,6 @@
 	
 	  render: function () {
 	
-	    var butts = "";
 	    return React.createElement(
 	      'div',
 	      null,
@@ -32083,9 +32103,9 @@
 	    return { answers: AnswerStore.all() };
 	  },
 	
-	  getStateFromStore: function () {
-	    return { answers: AnswerStore.find(parseInt(this.props.params.answerId)) };
-	  },
+	  // getStateFromStore: function () {
+	  //   return { answers: AnswerStore.find(parseInt(this.props.params.answerId)) };
+	  // },
 	
 	  _onChange: function () {
 	    this.setState({ answers: AnswerStore.all() });
@@ -32096,22 +32116,23 @@
 	    ApiUtil.fetchAllAnswers(this.props.question.id);
 	  },
 	
-	  render: function () {
+	  answerCount: function () {
+	    if (this.state.answers.length === 0) return "No Answers";
+	    if (this.state.answers.length === 1) return "1 Answer";else return this.state.answers.length + ' answers';
+	  },
 	
+	  render: function () {
 	    if (!this.state.answers) {
 	      return React.createElement('div', null);
 	    }
 	
-	    // var answerCount = function() {
-	    // 	return this.state.answers.length
-	    // };
 	    return React.createElement(
 	      'div',
 	      null,
 	      React.createElement(
 	        'p',
-	        { className: 'answers count' },
-	        ' Answers'
+	        { className: 'answers-count' },
+	        this.answerCount()
 	      ),
 	      React.createElement(
 	        'ul',
@@ -32297,6 +32318,47 @@
 	});
 	
 	module.exports = RightBar;
+
+/***/ },
+/* 255 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PropTypes = React.PropTypes;
+	
+	var AnswerForm = React.createClass({
+		displayName: 'AnswerForm',
+	
+		contextTypes: {
+			router: React.PropTypes.object.isRequired
+		},
+	
+		getInitialState: function () {
+			return {
+				body: ''
+			};
+		},
+	
+		_onChange: function (e) {
+			this.setState({ body: e.target.value });
+		},
+	
+		handleSubmit: function (e) {
+			e.preventDefault();
+			// ######################################
+		},
+	
+		render: function () {
+			return React.createElement(
+				'div',
+				null,
+				'This is the answer form!!!!!'
+			);
+		}
+	
+	});
+	
+	module.exports = AnswerForm;
 
 /***/ }
 /******/ ]);

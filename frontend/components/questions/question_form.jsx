@@ -13,16 +13,16 @@ var QuestionForm = React.createClass({
     return ({title: ''});
   },
 
-  _onChange: function(event) {
-    this.setState({title: event.target.value});
+  _onChange: function(e) {
+    this.setState({title: e.target.value});
   },
 
   blankAttrs: {
     title: ''
   },
 
-  handleSubmit: function(event){
-    event.preventDefault();
+  handleSubmit: function(e){
+    e.preventDefault();
     var title = {title: this.state.title};
 
     ApiUtil.createQuestion(title, function(id) {

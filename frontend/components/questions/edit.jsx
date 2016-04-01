@@ -47,8 +47,7 @@ var QuestionEdit =  React.createClass({
   },
 
   render: function () {
-    
-    var butts = "";
+
     return(
       <div>
         <form className="question-edit-form group" onSubmit={this.handleEdit}>
