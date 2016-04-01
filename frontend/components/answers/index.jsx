@@ -21,6 +21,10 @@ var AnswersIndex = React.createClass({
     ApiUtil.fetchAllAnswers(this.props.question.id);
   },
 
+	componentWillUnmount: function() {
+	  this.answerListener.remove();
+	},
+
 	answerCount : function() {
 		if (this.state.answers.length === 0) return "No Answers";
 		if (this.state.answers.length === 1) return "1 Answer";

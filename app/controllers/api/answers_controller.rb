@@ -1,8 +1,6 @@
 class Api::AnswersController < ApplicationController
 
   def index
-    # @answers = Answer.all
-    # render :index
     if params.has_key?(:question_id)
       @answers = Answer.where(question_id: params[:question_id])
     else
@@ -36,11 +34,10 @@ class Api::AnswersController < ApplicationController
 
   def update
     @answer = Answer.find(params[:id])
-    if @answer.update_attributes(answer_params)
+    if @answer.update(answer_params)
       render :show
     else
       render json: @answer.errors.full_messages, status: 422
-      render :edit
     end
   end
 
@@ -48,7 +45,7 @@ class Api::AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, :user_id, :question_id)
+    params.require(:answer).permit(:body, :question_id)
   end
 
 end

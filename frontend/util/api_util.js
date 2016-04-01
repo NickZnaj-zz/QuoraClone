@@ -74,7 +74,6 @@ var ApiUtil = {
   },
 
 	createAnswer: function(answer, callback) {
-		debugger
 		$.ajax({
 			type: "POST",
 			url: "/api/answers/",

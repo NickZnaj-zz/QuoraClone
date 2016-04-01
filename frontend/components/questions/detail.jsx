@@ -47,16 +47,11 @@ var QuestionDetail =  React.createClass({
   // },
 
 	startAnswer: function(e) {
-
-		e.preventDefault();
 		this.setState({ isAnswering: true });
-		e.target.disabled = true;
 	},
 
-	closeAnswer: function(e) {
-		e.preventDefault();
+	closeAnswer: function() {
 		this.setState({ isAnswering: false });
-		e.target.disabled = false;
 	},
 
   componentWillReceiveProps: function (newProps) {
@@ -113,7 +108,8 @@ var QuestionDetail =  React.createClass({
 
 				<input type="submit"
 							 value="Answer"
-							 onClick={this.startAnswer} />
+							 onClick={this.startAnswer}
+							 disabled={this.state.isAnswering}/>
       </div>
     );
   }

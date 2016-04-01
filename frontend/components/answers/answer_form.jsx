@@ -1,7 +1,7 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var PropTypes = React.PropTypes;
 var ApiUtil = require('../../util/api_util.js');
-
 
 var AnswerForm = React.createClass({
 	contextTypes: {
@@ -24,17 +24,21 @@ var AnswerForm = React.createClass({
 
 	handleSubmit: function(e){
 		e.preventDefault();
-		var id = this.props.question.id;
+		var questionId = this.props.question.id;
 
-		ApiUtil.createAnswer(this.state, function(id) {
-			this.context.router.push('/questions/' + id);
+		ApiUtil.createAnswer(this.state, function(answerId) {
+			this.context.router.push('/questions/' + questionId);
 		}.bind(this));
 		this.setState(this.blankAttrs);
+		this.props.onAnswerEnd();
 	},
 
 	render: function() {
 		return (
-				<form className="answer-form group" onSubmit={this.handleSubmit}>
+				<form className="answer-form group"
+							onSubmit={this.handleSubmit}
+							id="answer-form"
+							>
           <input type="text"
                  className="answer-body"
                  onChange={this._onBodyChange}

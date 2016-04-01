@@ -26665,7 +26665,6 @@
 	  },
 	
 	  createAnswer: function (answer, callback) {
-	    debugger;
 	    $.ajax({
 	      type: "POST",
 	      url: "/api/answers/",
@@ -31967,16 +31966,11 @@
 	  // },
 	
 	  startAnswer: function (e) {
-	
-	    e.preventDefault();
 	    this.setState({ isAnswering: true });
-	    e.target.disabled = true;
 	  },
 	
-	  closeAnswer: function (e) {
-	    e.preventDefault();
+	  closeAnswer: function () {
 	    this.setState({ isAnswering: false });
-	    e.target.disabled = false;
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
@@ -32035,7 +32029,8 @@
 	        onClick: this.startEdit }),
 	      React.createElement('input', { type: 'submit',
 	        value: 'Answer',
-	        onClick: this.startAnswer })
+	        onClick: this.startAnswer,
+	        disabled: this.state.isAnswering })
 	    );
 	  }
 	});
@@ -32158,6 +32153,10 @@
 	    ApiUtil.fetchAllAnswers(this.props.question.id);
 	  },
 	
+	  componentWillUnmount: function () {
+	    this.answerListener.remove();
+	  },
+	
 	  answerCount: function () {
 	    if (this.state.answers.length === 0) return "No Answers";
 	    if (this.state.answers.length === 1) return "1 Answer";else return this.state.answers.length + ' answers';
@@ -32252,6 +32251,11 @@
 	    return React.createElement(
 	      "li",
 	      { className: "answer-list-item" },
+	      React.createElement(
+	        "p",
+	        null,
+	        "USER INFO HERE"
+	      ),
 	      React.createElement(
 	        "div",
 	        { className: "answer-list-item-answer" },
@@ -32366,6 +32370,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(158);
 	var PropTypes = React.PropTypes;
 	var ApiUtil = __webpack_require__(183);
 	
@@ -32392,18 +32397,22 @@
 	
 		handleSubmit: function (e) {
 			e.preventDefault();
-			var id = this.props.question.id;
+			var questionId = this.props.question.id;
 	
-			ApiUtil.createAnswer(this.state, function (id) {
-				this.context.router.push('/questions/' + id);
+			ApiUtil.createAnswer(this.state, function (answerId) {
+				this.context.router.push('/questions/' + questionId);
 			}.bind(this));
 			this.setState(this.blankAttrs);
+			this.props.onAnswerEnd();
 		},
 	
 		render: function () {
 			return React.createElement(
 				'form',
-				{ className: 'answer-form group', onSubmit: this.handleSubmit },
+				{ className: 'answer-form group',
+					onSubmit: this.handleSubmit,
+					id: 'answer-form'
+				},
 				React.createElement('input', { type: 'text',
 					className: 'answer-body',
 					onChange: this._onBodyChange,
