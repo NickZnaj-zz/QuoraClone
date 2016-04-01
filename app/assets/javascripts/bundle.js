@@ -32130,7 +32130,7 @@
 
 	var React = __webpack_require__(1);
 	var AnswerStore = __webpack_require__(249);
-	var IndexItem = __webpack_require__(250);
+	var IndexItem = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./index_item\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var ApiUtil = __webpack_require__(183);
 	
 	var AnswersIndex = React.createClass({
@@ -32239,41 +32239,7 @@
 	module.exports = AnswerStore;
 
 /***/ },
-/* 250 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var IndexItem = React.createClass({
-	  displayName: "IndexItem",
-	
-	  render: function () {
-	    return React.createElement(
-	      "li",
-	      { className: "answer-list-item group" },
-	      React.createElement(
-	        "div",
-	        { className: "answer-header group" },
-	        React.createElement("img", { className: "user-pic", src: "default_profile_pic.png" }),
-	        React.createElement(
-	          "p",
-	          { className: "user-info" },
-	          "USER INFO HERE"
-	        )
-	      ),
-	      React.createElement(
-	        "div",
-	        { className: "answer-list-item-answer" },
-	        this.props.answer.body
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = IndexItem;
-
-/***/ },
+/* 250 */,
 /* 251 */
 /***/ function(module, exports, __webpack_require__) {
 

@@ -39,12 +39,14 @@ var AnswerForm = React.createClass({
 							onSubmit={this.handleSubmit}
 							id="answer-form"
 							>
+
 					<section className="user-section">
 						<div className="user-info">
 							<img className="user-pic" src="default_profile_pic.png" />
 							<p>user info here</p>
 						</div>
 					</section>
+
 					<input type="textarea"
 						className="answer-body"
 						onChange={this._onBodyChange}
