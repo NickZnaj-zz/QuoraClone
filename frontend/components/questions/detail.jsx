@@ -100,9 +100,17 @@ var QuestionDetail =  React.createClass({
 
 				{answerForm}
 
-        <input type="submit" value="Delete" onClick={this.handleDelete} />
-        <input type="submit" value="Edit Question and Details" onClick={this.startEdit} />
-				<input type="submit" value="Answer" onClick={this.startAnswer} />
+        <input type="submit"
+							 value="Delete"
+							 onClick={this.handleDelete} />
+
+        <input type="submit"
+							 value="Edit Question and Details"
+							 onClick={this.startEdit} />
+
+				<input type="submit"
+							 value="Answer"
+							 onClick={this.startAnswer} />
       </div>
     );
   }

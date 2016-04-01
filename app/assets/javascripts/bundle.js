@@ -31992,9 +31992,15 @@
 	        React.createElement(AnswersIndex, { question: this.state.question })
 	      ),
 	      answerForm,
-	      React.createElement('input', { type: 'submit', value: 'Delete', onClick: this.handleDelete }),
-	      React.createElement('input', { type: 'submit', value: 'Edit Question and Details', onClick: this.startEdit }),
-	      React.createElement('input', { type: 'submit', value: 'Answer', onClick: this.startAnswer })
+	      React.createElement('input', { type: 'submit',
+	        value: 'Delete',
+	        onClick: this.handleDelete }),
+	      React.createElement('input', { type: 'submit',
+	        value: 'Edit Question and Details',
+	        onClick: this.startEdit }),
+	      React.createElement('input', { type: 'submit',
+	        value: 'Answer',
+	        onClick: this.startAnswer })
 	    );
 	  }
 	});
