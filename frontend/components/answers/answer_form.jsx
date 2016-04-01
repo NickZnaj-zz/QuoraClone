@@ -14,11 +14,11 @@ var AnswerForm = React.createClass({
 
 	getInitialState: function() {
 		return {
-			body: ''
+			body: '', question_id: this.props.question.id
 		};
 	},
 
-	_onChange: function(e){
+	_onBodyChange: function(e){
 		this.setState({body: e.target.value});
 	},
 
@@ -34,8 +34,7 @@ var AnswerForm = React.createClass({
 
 	render: function() {
 		return (
-			<div>
-				<form className="answer-form group" onSubmit={this.handleEdit}>
+				<form className="answer-form group" onSubmit={this.handleSubmit}>
           <input type="text"
                  className="answer-body"
                  onChange={this._onBodyChange}
@@ -43,11 +42,13 @@ var AnswerForm = React.createClass({
           </input>
 
           <div className="submit-area group">
-            <input type="submit" className="submit-button" value="Submit" />
+            <input type="submit"
+							     className="submit-button"
+									 value="Submit"
+									 />
           </div>
 
         </form>
-			</div>
 		);
 	}
 

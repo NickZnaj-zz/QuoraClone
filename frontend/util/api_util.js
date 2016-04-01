@@ -74,13 +74,14 @@ var ApiUtil = {
   },
 
 	createAnswer: function(answer, callback) {
+		debugger
 		$.ajax({
 			type: "POST",
 			url: "/api/answers/",
 			data: {answer: answer},
 			success: function(answer){
 				AnswerActions.receiveSingleAnswer(answer);
-				callback && callback(answer);
+				callback && callback(answer.id);
 			},
 			error: function(e) {
 				console.log("api_util#createAnswer Error");

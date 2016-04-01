@@ -26665,13 +26665,14 @@
 	  },
 	
 	  createAnswer: function (answer, callback) {
+	    debugger;
 	    $.ajax({
 	      type: "POST",
 	      url: "/api/answers/",
 	      data: { answer: answer },
 	      success: function (answer) {
 	        AnswerActions.receiveSingleAnswer(answer);
-	        callback && callback(answer);
+	        callback && callback(answer.id);
 	      },
 	      error: function (e) {
 	        console.log("api_util#createAnswer Error");
@@ -26738,6 +26739,7 @@
 	  },
 	
 	  receiveSingleAnswer: function (answer) {
+	    console.log("hit receiveSingleAnswer");
 	    Dispatcher.dispatch({
 	      actionType: AnswerConstants.ANSWER_RECEIVED,
 	      answer: answer
@@ -31941,10 +31943,10 @@
 	    return this.getStateFromStore();
 	  },
 	
-	  handleDelete: function (event) {
-	    event.preventDefault();
+	  handleDelete: function (e) {
+	    e.preventDefault();
 	
-	    console.log("hit the handle");
+	    console.log("hit the handle delete in q detail");
 	    ApiUtil.destroyQuestion(this.state.question.id, function () {
 	      this.context.router.push('/');
 	    }.bind(this));
@@ -32008,7 +32010,7 @@
 	
 	    return React.createElement(
 	      'div',
-	      { className: 'question-show-page group', onSubmit: this.handleDelete },
+	      { className: 'question-show-page group' },
 	      React.createElement(
 	        'div',
 	        { className: 'question' },
@@ -32380,11 +32382,11 @@
 	
 		getInitialState: function () {
 			return {
-				body: ''
+				body: '', question_id: this.props.question.id
 			};
 		},
 	
-		_onChange: function (e) {
+		_onBodyChange: function (e) {
 			this.setState({ body: e.target.value });
 		},
 	
@@ -32400,20 +32402,19 @@
 	
 		render: function () {
 			return React.createElement(
-				'div',
-				null,
+				'form',
+				{ className: 'answer-form group', onSubmit: this.handleSubmit },
+				React.createElement('input', { type: 'text',
+					className: 'answer-body',
+					onChange: this._onBodyChange,
+					value: this.state.body }),
 				React.createElement(
-					'form',
-					{ className: 'answer-form group', onSubmit: this.handleEdit },
-					React.createElement('input', { type: 'text',
-						className: 'answer-body',
-						onChange: this._onBodyChange,
-						value: this.state.body }),
-					React.createElement(
-						'div',
-						{ className: 'submit-area group' },
-						React.createElement('input', { type: 'submit', className: 'submit-button', value: 'Submit' })
-					)
+					'div',
+					{ className: 'submit-area group' },
+					React.createElement('input', { type: 'submit',
+						className: 'submit-button',
+						value: 'Submit'
+					})
 				)
 			);
 		}

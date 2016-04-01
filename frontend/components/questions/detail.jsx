@@ -22,10 +22,10 @@ var QuestionDetail =  React.createClass({
     return this.getStateFromStore();
   },
 
-  handleDelete: function(event) {
-    event.preventDefault();
+  handleDelete: function(e) {
+    e.preventDefault();
 
-    console.log("hit the handle");
+    console.log("hit the handle delete in q detail");
     ApiUtil.destroyQuestion(this.state.question.id, function () {
       this.context.router.push('/');
     }.bind(this));
@@ -47,7 +47,7 @@ var QuestionDetail =  React.createClass({
   // },
 
 	startAnswer: function(e) {
-		
+
 		e.preventDefault();
 		this.setState({ isAnswering: true });
 		e.target.disabled = true;
@@ -87,7 +87,7 @@ var QuestionDetail =  React.createClass({
 		}
 
     return(
-      <div className="question-show-page group" onSubmit={this.handleDelete}>
+      <div className="question-show-page group" >
 
         <div className="question">
           {this.state.question.title}

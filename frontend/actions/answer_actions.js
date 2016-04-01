@@ -10,9 +10,10 @@ var AnswerActions = {
   },
 
 	receiveSingleAnswer: function(answer) {
+		console.log("hit receiveSingleAnswer");
 		Dispatcher.dispatch({
 			actionType: AnswerConstants.ANSWER_RECEIVED,
-			answer: answer
+			answer: answer,
 		});
 	}
 };
