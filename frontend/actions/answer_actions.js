@@ -7,7 +7,14 @@ var AnswerActions = {
       actionType: AnswerConstants.ANSWERS_RECEIVED,
       answers: answers
     });
-  }
+  },
+
+	receiveSingleAnswer: function(answer) {
+		Dispatcher.dispatch({
+			actionType: AnswerConstants.ANSWER_RECEIVED,
+			answer: answer
+		});
+	}
 };
 
 module.exports = AnswerActions;
