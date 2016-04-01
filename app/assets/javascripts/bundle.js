@@ -26831,8 +26831,16 @@
 	      React.createElement(
 	        'form',
 	        { onSubmit: this.handleSubmit },
-	        React.createElement('input', { name: 'title', type: 'text', onChange: this._onChange, value: this.state.title, className: 'nav-bar-input' }),
-	        React.createElement('input', { type: 'submit', className: 'question-submit', value: 'Submit Question' })
+	        React.createElement('input', { name: 'title',
+	          type: 'text',
+	          onChange: this._onChange,
+	          value: this.state.title,
+	          className: 'nav-bar-input'
+	        }),
+	        React.createElement('input', { type: 'submit',
+	          className: 'question-submit',
+	          value: 'Submit Question'
+	        })
 	      )
 	    );
 	  }
