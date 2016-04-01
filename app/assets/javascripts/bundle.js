@@ -19704,7 +19704,7 @@
 
 	var React = __webpack_require__(1);
 	var QuestionStore = __webpack_require__(160);
-	var ApiUtil = __webpack_require__(183);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var IndexItem = __webpack_require__(187);
 	var QuestionForm = __webpack_require__(188);
 	
@@ -26586,146 +26586,9 @@
 	};
 
 /***/ },
-/* 183 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var QuestionActions = __webpack_require__(184);
-	var AnswerActions = __webpack_require__(185);
-	
-	var ApiUtil = {
-	  fetchAllQuestions: function () {
-	    $.ajax({
-	      type: "GET",
-	      url: "/api/questions",
-	      success: function (questions) {
-	        QuestionActions.receiveAllQuestions(questions);
-	      }
-	    });
-	  },
-	
-	  fetchSingleQuestion: function (id) {
-	    $.ajax({
-	      type: "GET",
-	      url: "/api/questions/" + id,
-	      success: function (question) {
-	        QuestionActions.receiveSingleQuestion(question);
-	      }
-	    });
-	  },
-	
-	  destroyQuestion: function (id, callback) {
-	    $.ajax({
-	      method: "DELETE",
-	      url: "/api/questions/" + id,
-	      success: function (id) {
-	        QuestionActions.destroyQuestion(id);
-	        callback && callback();
-	      }
-	    });
-	  },
-	
-	  createQuestion: function (question, callback) {
-	    $.ajax({
-	      method: "POST",
-	      url: "/api/questions/",
-	      data: { question: question },
-	      success: function (question) {
-	        QuestionActions.receiveSingleQuestion(question);
-	        callback && callback(question.id);
-	      },
-	      error: function (e) {
-	        console.log("api_util#createQuestion");
-	      }
-	    });
-	  },
-	
-	  editQuestion: function (question, newAttrs, callback) {
-	    $.ajax({
-	      method: "PATCH",
-	      url: "/api/questions/" + question.id,
-	      data: { question: newAttrs },
-	      success: function (question) {
-	        QuestionActions.editQuestion(question);
-	        callback && callback(question);
-	      },
-	      error: function (e) {
-	        console.log("api_util#editQuestion error");
-	      }
-	    });
-	  },
-	
-	  fetchAllAnswers: function (id) {
-	    $.ajax({
-	      type: "GET",
-	      url: "/api/questions/" + id + "/answers",
-	      success: function (answers) {
-	        AnswerActions.receiveAllAnswers(answers);
-	      }
-	    });
-	  }
-	
-	};
-	
-	module.exports = ApiUtil;
-
-/***/ },
-/* 184 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(179),
-	    QuestionConstants = __webpack_require__(182);
-	
-	var QuestionActions = {
-	  receiveAllQuestions: function (questions) {
-	    Dispatcher.dispatch({
-	      actionType: QuestionConstants.QUESTIONS_RECEIVED,
-	      questions: questions
-	    });
-	  },
-	
-	  receiveSingleQuestion: function (question) {
-	    Dispatcher.dispatch({
-	      actionType: QuestionConstants.QUESTION_RECEIVED,
-	      question: question
-	    });
-	  },
-	
-	  destroyQuestion: function (id) {
-	    Dispatcher.dispatch({
-	      actionType: QuestionConstants.QUESTION_DELETED,
-	      id: id
-	    });
-	  },
-	
-	  editQuestion: function (question) {
-	    Dispatcher.dispatch({
-	      actionType: QuestionConstants.QUESTION_EDITED,
-	      question: question
-	    });
-	  }
-	};
-	
-	module.exports = QuestionActions;
-
-/***/ },
-/* 185 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(179),
-	    AnswerConstants = __webpack_require__(186);
-	
-	var AnswerActions = {
-	  receiveAllAnswers: function (answers) {
-	    Dispatcher.dispatch({
-	      actionType: AnswerConstants.ANSWERS_RECEIVED,
-	      answers: answers
-	    });
-	  }
-	};
-	
-	module.exports = AnswerActions;
-
-/***/ },
+/* 183 */,
+/* 184 */,
+/* 185 */,
 /* 186 */
 /***/ function(module, exports) {
 
@@ -26769,7 +26632,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(183);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var History = __webpack_require__(189).History;
 	
 	var QuestionForm = React.createClass({
@@ -31887,7 +31750,7 @@
 
 	var React = __webpack_require__(1);
 	var QuestionStore = __webpack_require__(160);
-	var ApiUtil = __webpack_require__(183);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var QuestionEdit = __webpack_require__(247);
 	var AnswersIndex = __webpack_require__(248);
 	var AnswerForm = __webpack_require__(255);
@@ -32016,7 +31879,7 @@
 
 	var React = __webpack_require__(1);
 	var QuestionStore = __webpack_require__(160);
-	var ApiUtil = __webpack_require__(183);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var QuestionDetail = __webpack_require__(246);
 	
 	var QuestionEdit = React.createClass({
@@ -32055,6 +31918,7 @@
 	    event.preventDefault();
 	
 	    console.log("hit the handle EDIT");
+	    debugger;
 	    ApiUtil.editQuestion(this.props.question, this.state, function (question) {
 	      this.props.onEditEnd();
 	    }.bind(this));
@@ -32103,7 +31967,7 @@
 	var React = __webpack_require__(1);
 	var AnswerStore = __webpack_require__(249);
 	var IndexItem = __webpack_require__(250);
-	var ApiUtil = __webpack_require__(183);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	var AnswersIndex = React.createClass({
 	  displayName: 'AnswersIndex',
@@ -32334,12 +32198,17 @@
 
 	var React = __webpack_require__(1);
 	var PropTypes = React.PropTypes;
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	var AnswerForm = React.createClass({
 		displayName: 'AnswerForm',
 	
 		contextTypes: {
 			router: React.PropTypes.object.isRequired
+		},
+	
+		blankAttrs: {
+			body: ''
 		},
 	
 		getInitialState: function () {
@@ -32354,14 +32223,31 @@
 	
 		handleSubmit: function (e) {
 			e.preventDefault();
-			// ######################################
+			var id = this.props.question.id;
+	
+			ApiUtil.createAnswer(this.state, function (id) {
+				this.context.router.push('/questions/' + id);
+			}.bind(this));
+			this.setState(this.blankAttrs);
 		},
 	
 		render: function () {
 			return React.createElement(
 				'div',
 				null,
-				'This is the answer form!!!!!'
+				React.createElement(
+					'form',
+					{ className: 'answer-form group', onSubmit: this.handleEdit },
+					React.createElement('input', { type: 'text',
+						className: 'answer-body',
+						onChange: this._onBodyChange,
+						value: this.state.body }),
+					React.createElement(
+						'div',
+						{ className: 'submit-area group' },
+						React.createElement('input', { type: 'submit', className: 'submit-button', value: 'Submit' })
+					)
+				)
 			);
 		}
 	

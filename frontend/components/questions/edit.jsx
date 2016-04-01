@@ -40,6 +40,7 @@ var QuestionEdit =  React.createClass({
     event.preventDefault();
 
     console.log("hit the handle EDIT");
+		debugger
     ApiUtil.editQuestion(this.props.question, this.state, function (question) {
       this.props.onEditEnd();
     }.bind(this));
