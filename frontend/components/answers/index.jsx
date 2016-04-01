@@ -9,8 +9,12 @@ var AnswersIndex = React.createClass({
   },
 
   getStateFromStore: function () {
-    return { answer: AnswerStore.find(parseInt(this.props.params.answerId)) };
+    return { answers: AnswerStore.find(parseInt(this.props.params.answerId)) };
   },
+
+	_onChange: function() {
+		this.setState({answers: AnswerStore.all() });
+	},
 
   componentDidMount: function() {
     this.answerListener = AnswerStore.addListener(this._onChange);
@@ -18,10 +22,15 @@ var AnswersIndex = React.createClass({
   },
 
   render: function() {
-    debugger
-    if (this.state.answers) { return <div></div>; }
+
+    if (!this.state.answers) { return <div></div>; }
+
+		// var answerCount = function() {
+		// 	return this.state.answers.length
+		// };
     return (
       <div>
+				<p className="answers count"> Answers</p>
         <ul className="answers">
           {this.state.answers.map(function(answer){
              return <IndexItem key={answer.id} answer={answer} />;
