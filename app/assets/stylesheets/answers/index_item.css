@@ -2,3 +2,9 @@
 	float:left;
 	margin-right: 10px;
 }
+
+.user-info {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 15px;
+	font-weight: bold;
+}
