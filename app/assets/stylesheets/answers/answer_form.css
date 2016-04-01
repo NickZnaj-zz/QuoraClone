@@ -1,14 +1,20 @@
 
-.question-edit-form {
+.answer-form {
   width: 598px;
-  margin-top: 50px;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+}
+
+.user-section {
+	margin: 0;
+	background: #f6f6f6;
+
 }
 
 .answer-form > input {
 	border: none;
-	border: 1px solid #ccc;
-	border-radius: 2px;
-  /*border-bottom:  1px solid #ccc;*/
+	border-top:  1px solid #ccc;
+  border-bottom:  1px solid #ccc;
   padding: 10px;
   width: 578px;
 	height: 130px;
@@ -17,29 +23,18 @@
 
 }
 
-.question-details-input {
-  font-size: 16px;
-}
-
-.question-details-input > input {
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-}
-
 .submit-area {
   height: 40px;
   width: 588px;
   padding: 5px;
   background: #f6f6f6;
-	border-right: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
-	border-left: 1px solid #ccc;
+
 
 
 }
 
-.submit-button {
-  float: right;
+.submit-answer-button {
+  float: left;
   font-size: 13px;
   color: white;
   background: #3e78ad;
@@ -47,5 +42,5 @@
   padding: 3px 7px 4px 7px;
   border: 1px solid #3a66ad;
   border-radius: 2px;
-  margin: 6px 5px 0 0
+  margin: 10px;
 }

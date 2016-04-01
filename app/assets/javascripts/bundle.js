@@ -32418,7 +32418,20 @@
 					onSubmit: this.handleSubmit,
 					id: 'answer-form'
 				},
-				React.createElement('div', { className: 'user-info' }),
+				React.createElement(
+					'section',
+					{ className: 'user-section' },
+					React.createElement(
+						'div',
+						{ className: 'user-info' },
+						React.createElement('img', { className: 'user-pic', src: 'default_profile_pic.png' }),
+						React.createElement(
+							'p',
+							null,
+							'user info here'
+						)
+					)
+				),
 				React.createElement('input', { type: 'textarea',
 					className: 'answer-body',
 					onChange: this._onBodyChange,
@@ -32427,8 +32440,8 @@
 					'div',
 					{ className: 'submit-area group' },
 					React.createElement('input', { type: 'submit',
-						className: 'submit-button',
-						value: 'Submit'
+						className: 'submit-answer-button',
+						value: 'Submit Answer'
 					})
 				)
 			);
