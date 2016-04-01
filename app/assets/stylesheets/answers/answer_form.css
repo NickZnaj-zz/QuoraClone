@@ -1,25 +1,23 @@
-.question-edit-form {
-  border: 1px solid #ccc;
-}
+
 .question-edit-form {
   width: 598px;
   margin-top: 50px;
 }
 
-.question-edit-form > input {
-  border: none;
-  border-bottom:  1px solid #ccc;
+.answer-form > input {
+	border: none;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+  /*border-bottom:  1px solid #ccc;*/
   padding: 10px;
   width: 578px;
-}
+	height: 130px;
+	font-family: 'EB Garamond', serif;
+	font-size: 16px;
 
-.question-update {
-  font-weight: bold;
-  font-size: 24px;
 }
 
 .question-details-input {
-  height: 140px;
   font-size: 16px;
 }
 
@@ -33,6 +31,10 @@
   width: 588px;
   padding: 5px;
   background: #f6f6f6;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+
 
 }
 
@@ -46,12 +48,4 @@
   border: 1px solid #3a66ad;
   border-radius: 2px;
   margin: 6px 5px 0 0
-}
-
-.cancel-link {
-  font-size: 13px;
-  color: #999;
-  text-decoration: none;
-  margin: 13px 10px 0 0;
-  float: right;
 }

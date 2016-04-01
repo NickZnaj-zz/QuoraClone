@@ -32250,11 +32250,16 @@
 	  render: function () {
 	    return React.createElement(
 	      "li",
-	      { className: "answer-list-item" },
+	      { className: "answer-list-item group" },
 	      React.createElement(
-	        "p",
-	        null,
-	        "USER INFO HERE"
+	        "div",
+	        { className: "answer-header group" },
+	        React.createElement("img", { className: "user-pic", src: "default_profile_pic.png" }),
+	        React.createElement(
+	          "p",
+	          { className: "user-info" },
+	          "USER INFO HERE"
+	        )
 	      ),
 	      React.createElement(
 	        "div",
@@ -32413,7 +32418,8 @@
 					onSubmit: this.handleSubmit,
 					id: 'answer-form'
 				},
-				React.createElement('input', { type: 'text',
+				React.createElement('div', { className: 'user-info' }),
+				React.createElement('input', { type: 'textarea',
 					className: 'answer-body',
 					onChange: this._onBodyChange,
 					value: this.state.body }),

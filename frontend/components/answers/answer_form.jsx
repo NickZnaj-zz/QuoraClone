@@ -39,11 +39,13 @@ var AnswerForm = React.createClass({
 							onSubmit={this.handleSubmit}
 							id="answer-form"
 							>
-          <input type="text"
-                 className="answer-body"
-                 onChange={this._onBodyChange}
-                 value={this.state.body}>
-          </input>
+					<div className="user-info">
+					</div>
+					<input type="textarea"
+						className="answer-body"
+						onChange={this._onBodyChange}
+						value={this.state.body}>
+					</input>
 
           <div className="submit-area group">
             <input type="submit"
