@@ -31935,13 +31935,16 @@
 	  // },
 	
 	  startAnswer: function (e) {
+	
 	    e.preventDefault();
 	    this.setState({ isAnswering: true });
+	    e.target.disabled = true;
 	  },
 	
 	  closeAnswer: function (e) {
 	    e.preventDefault();
 	    this.setState({ isAnswering: false });
+	    e.target.disabled = false;
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {

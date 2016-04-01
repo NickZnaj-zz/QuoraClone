@@ -26,7 +26,6 @@ var AnswerForm = React.createClass({
 	render: function() {
 		return (
 			<div>This is the answer form!!!!!</div>
-
 		);
 	}
 
