@@ -59,7 +59,6 @@ var AnswerForm = React.createClass({
 									 value="Submit Answer"
 									 />
           </div>
-
         </form>
 		);
 	}

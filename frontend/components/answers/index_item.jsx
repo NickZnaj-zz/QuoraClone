@@ -1,16 +1,26 @@
 var React = require('react');
+var AnswerEditForm = require('./edit');
 
 var IndexItem = React.createClass({
 
 	getInitialState: function() {
-		return { isEditing: false };
+		return { isEditing: false, answer: this.props.answer };
 	},
 
 	startEdit: function() {
-		setState({ isEditing:true })
-	}
+		this.setState({ isEditing: true });
+	},
 
   render: function() {
+		debugger
+		var answerEditForm;
+		if (this.state.isEditing) {
+			answerEditForm = <AnswerEditForm
+				answer={this.state.answer}
+				onEditEnd={this.closeEdit}
+			/>;
+		}
+
     return (
       <li className="answer-list-item group">
 
@@ -22,6 +32,8 @@ var IndexItem = React.createClass({
         <div className="answer-list-item-answer">
           {this.props.answer.body}
         </div>
+
+				{answerEditForm}
 
 				<input type="submit"
 							 value="Edit Answer"

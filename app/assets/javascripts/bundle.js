@@ -32130,7 +32130,7 @@
 
 	var React = __webpack_require__(1);
 	var AnswerStore = __webpack_require__(249);
-	var IndexItem = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./index_item\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var IndexItem = __webpack_require__(250);
 	var ApiUtil = __webpack_require__(183);
 	
 	var AnswersIndex = React.createClass({
@@ -32239,7 +32239,64 @@
 	module.exports = AnswerStore;
 
 /***/ },
-/* 250 */,
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var AnswerEditForm = __webpack_require__(256);
+	
+	var IndexItem = React.createClass({
+		displayName: 'IndexItem',
+	
+	
+		getInitialState: function () {
+			return { isEditing: false, answer: this.props.answer };
+		},
+	
+		startEdit: function () {
+			this.setState({ isEditing: true });
+		},
+	
+		render: function () {
+			debugger;
+			var answerEditForm;
+			if (this.state.isEditing) {
+				answerEditForm = React.createElement(AnswerEditForm, {
+					answer: this.state.answer,
+					onEditEnd: this.closeEdit
+				});
+			}
+	
+			return React.createElement(
+				'li',
+				{ className: 'answer-list-item group' },
+				React.createElement(
+					'div',
+					{ className: 'answer-header group' },
+					React.createElement('img', { className: 'user-pic', src: 'default_profile_pic.png' }),
+					React.createElement(
+						'p',
+						{ className: 'user-info' },
+						'USER INFO HERE'
+					)
+				),
+				React.createElement(
+					'div',
+					{ className: 'answer-list-item-answer' },
+					this.props.answer.body
+				),
+				answerEditForm,
+				React.createElement('input', { type: 'submit',
+					value: 'Edit Answer',
+					onClick: this.startEdit })
+			);
+		}
+	
+	});
+	
+	module.exports = IndexItem;
+
+/***/ },
 /* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -32416,6 +32473,78 @@
 	});
 	
 	module.exports = AnswerForm;
+
+/***/ },
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PropTypes = React.PropTypes;
+	
+	var AnswerEditForm = React.createClass({
+		displayName: "AnswerEditForm",
+	
+		contextTypes: {
+			router: React.PropTypes.object.isRequired
+		},
+	
+		getInitialState: function () {
+			return {
+				body: this.props.answer.body
+			};
+		},
+	
+		componentDidMount: function () {
+			this.answerListener = AnswerStore.addListener(this._onStoreChange);
+		},
+	
+		componentWillUnmount: function () {
+			this.answerListener.remove();
+		},
+	
+		_onBodyChange: function (e) {
+			this.setState({ body: e.target.value });
+		},
+	
+		render: function () {
+			return React.createElement(
+				"form",
+				{ className: "answer-form group",
+					onSubmit: this.handleSubmit,
+					id: "answer-form"
+				},
+				React.createElement(
+					"section",
+					{ className: "user-section" },
+					React.createElement(
+						"div",
+						{ className: "user-info" },
+						React.createElement("img", { className: "user-pic", src: "default_profile_pic.png" }),
+						React.createElement(
+							"p",
+							null,
+							"user info here"
+						)
+					)
+				),
+				React.createElement("input", { type: "textarea",
+					className: "answer-body",
+					onChange: this._onBodyChange,
+					value: this.state.body }),
+				React.createElement(
+					"div",
+					{ className: "submit-area group" },
+					React.createElement("input", { type: "submit",
+						className: "submit-answer-button",
+						value: "Submit Answer"
+					})
+				)
+			);
+		}
+	
+	});
+	
+	module.exports = AnswerEditForm;
 
 /***/ }
 /******/ ]);
