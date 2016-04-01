@@ -3,6 +3,8 @@ Rails.application.routes.draw do
     resources :questions do
       resources :answers, only: [:index]
     end
+
+		resources :answers, except: [:index]
   end
   root "static_pages#root"
 end
