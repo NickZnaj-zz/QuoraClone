@@ -26813,12 +26813,13 @@
 	var React = __webpack_require__(1);
 	var ApiUtil = __webpack_require__(183);
 	var TopAnswer = __webpack_require__(257);
+	var AnswerStore = __webpack_require__(249);
 	
 	var IndexItem = React.createClass({
 	  displayName: 'IndexItem',
 	
-	  render: function () {
 	
+	  render: function () {
 	    return React.createElement(
 	      'li',
 	      { className: 'question-list-item' },
@@ -26831,12 +26832,7 @@
 	            className: 'question-title-index' },
 	          this.props.question.title
 	        ),
-	        React.createElement(TopAnswer, { question: this.props.question.id })
-	      ),
-	      React.createElement(
-	        'div',
-	        null,
-	        ApiUtil.fetchAllAnswers(this.props.question.id)
+	        React.createElement(TopAnswer, { question: this.props.question })
 	      )
 	    );
 	  }
@@ -32340,7 +32336,6 @@
 			ApiUtil.destroyAnswer(this.props.answer.id, function () {
 				this.context.router.push('/questions/' + this.props.answer.question_id);
 			}.bind(this));
-			debugger;
 			this.props.onDelete();
 		},
 	
@@ -32654,16 +32649,33 @@
 
 	var React = __webpack_require__(1);
 	var PropTypes = React.PropTypes;
+	var AnswerStore = __webpack_require__(249);
+	var ApiUtil = __webpack_require__(183);
 	
 	var TopAnswer = React.createClass({
 		displayName: 'TopAnswer',
 	
+		getInitialState: function () {
+			return {
+				answers: AnswerStore.all()
+			};
+		},
+	
+		componentDidMount: function () {
+			this.answerListener = AnswerStore.addListener(this._onChange);
+			ApiUtil.fetchAllAnswers(this.props.question.id);
+		},
+		componentWillUnmount: function () {
+			this.answerListener.remove();
+		},
 	
 		render: function () {
+	
 			return React.createElement(
 				'div',
 				null,
-				'This is the top answer. '
+				'This is the top answer for ',
+				this.props.question.title
 			);
 		}
 	
