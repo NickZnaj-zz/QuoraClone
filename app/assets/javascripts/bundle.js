@@ -26661,6 +26661,9 @@
 	      url: "/api/questions/" + id + "/answers",
 	      success: function (answers) {
 	        AnswerActions.receiveAllAnswers(answers);
+	      },
+	      error: function (e) {
+	        console.log("api_util#fetchAllAnswers Error");
 	      }
 	    });
 	  },
@@ -26809,12 +26812,13 @@
 
 	var React = __webpack_require__(1);
 	var ApiUtil = __webpack_require__(183);
+	var TopAnswer = __webpack_require__(257);
 	
 	var IndexItem = React.createClass({
 	  displayName: 'IndexItem',
 	
 	  render: function () {
-	    debugger;
+	
 	    return React.createElement(
 	      'li',
 	      { className: 'question-list-item' },
@@ -26828,8 +26832,11 @@
 	          this.props.question.title
 	        )
 	      ),
-	      ApiUtil.fetchAll,
-	      React.createElement('div', null)
+	      React.createElement(
+	        'div',
+	        null,
+	        ApiUtil.fetchAllAnswers(this.props.question.id)
+	      )
 	    );
 	  }
 	});
@@ -32639,6 +32646,29 @@
 	});
 	
 	module.exports = RightBar;
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PropTypes = React.PropTypes;
+	
+	var TopAnswer = React.createClass({
+		displayName: 'TopAnswer',
+	
+	
+		render: function () {
+			return React.createElement(
+				'div',
+				null,
+				'This is the top answer. '
+			);
+		}
+	
+	});
+	
+	module.exports = TopAnswer;
 
 /***/ }
 /******/ ]);
