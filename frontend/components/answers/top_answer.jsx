@@ -11,6 +11,10 @@ var TopAnswer = React.createClass({
 		};
 	},
 
+	_onChange: function() {
+		this.setState({ answers: AnswerStore.all() });
+	},
+
 	componentDidMount: function() {
 		this.answerListener = AnswerStore.addListener(this._onChange);
 		ApiUtil.fetchAllAnswers(this.props.question.id);
@@ -21,8 +25,10 @@ var TopAnswer = React.createClass({
 
 	render: function() {
 
+		if (this.state.answers.length === 0) { return<div></div>; }
+			debugger
 		return (
-			<div>This is the top answer for {this.props.question.title}</div>
+			<div>This is the top answer for {this.state.answers[0].body}</div>
 		);
 	}
 

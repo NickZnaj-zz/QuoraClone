@@ -32661,6 +32661,10 @@
 			};
 		},
 	
+		_onChange: function () {
+			this.setState({ answers: AnswerStore.all() });
+		},
+	
 		componentDidMount: function () {
 			this.answerListener = AnswerStore.addListener(this._onChange);
 			ApiUtil.fetchAllAnswers(this.props.question.id);
@@ -32671,11 +32675,15 @@
 	
 		render: function () {
 	
+			if (this.state.answers.length === 0) {
+				return React.createElement('div', null);
+			}
+			debugger;
 			return React.createElement(
 				'div',
 				null,
 				'This is the top answer for ',
-				this.props.question.title
+				this.state.answers[0].body
 			);
 		}
 	

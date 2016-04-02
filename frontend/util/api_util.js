@@ -69,6 +69,7 @@ var ApiUtil = {
       url: "/api/questions/" + id + "/answers",
       success: function(answers) {
         AnswerActions.receiveAllAnswers(answers);
+				
       },
 			error: function(e) {
 				console.log("api_util#fetchAllAnswers Error");
