@@ -26902,52 +26902,17 @@
 
 	var React = __webpack_require__(1);
 	var PropTypes = React.PropTypes;
-	// var AnswerStore = require('../../stores/answer_store.js');
 	var ApiUtil = __webpack_require__(185);
 	
 	var TopAnswer = React.createClass({
 		displayName: 'TopAnswer',
 	
-		getInitialState: function () {
-			return {
-				// answers: AnswerStore.all()
-			};
-		},
-	
-		_onChange: function () {
-			// this.setState({ answers: AnswerStore.all() });
-		},
-	
-		componentDidMount: function () {
-			// this.answerListener = AnswerStore.addListener(this._onChange);
-			// ApiUtil.fetchAllAnswers(this.props.question.id);
-		},
-	
-		componentWillUnmount: function () {
-			// this.answerListener.remove();
-		},
-	
-		isValidAnswer: function (answer) {
-			if (answer.question_id === this.props.question.id) return true;
-		},
-	
-		findTopAnswer: function () {
-	
-			return this.state.answers.find(function (answer) {
-				if (answer.question_id === this.props.question.id) return answer;
-			}.bind(this));
-		},
-	
-		// componentWillReceiveProps: function(nextProps) {
-		// 	this.setState({ answer: AnswerStore.find(newProps.params.id)});
-		// },
 	
 		render: function () {
 			if (this.props.question.answers.length === 0) {
 				return React.createElement('div', null);
 			}
-			//
-			// var topAnswer = this.findTopAnswer();
+	
 			return React.createElement(
 				'div',
 				null,
