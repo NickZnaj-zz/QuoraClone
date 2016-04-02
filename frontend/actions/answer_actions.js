@@ -15,6 +15,13 @@ var AnswerActions = {
 			actionType: AnswerConstants.ANSWER_RECEIVED,
 			answer: answer,
 		});
+	},
+
+	destroyAnswer: function(id) {
+		Dispatcher.dispatch({
+			actionType: AnswerConstants.ANSWER_DELETED,
+			id: id
+		});
 	}
 };
 

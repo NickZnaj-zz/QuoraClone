@@ -1,7 +1,13 @@
 var React = require('react');
 var AnswerEditForm = require('./edit');
+var ApiUtil = require('../../util/api_util.js');
+
 
 var IndexItem = React.createClass({
+	contextTypes: {
+		router: React.PropTypes.object.isRequired
+	},
+
 
 	getInitialState: function() {
 		return { isEditing: false, answer: this.props.answer };
@@ -11,8 +17,20 @@ var IndexItem = React.createClass({
 		this.setState({ isEditing: true });
 	},
 
+	handleDelete: function(e) {
+		e.preventDefault();
+
+		console.log("hit the handleDelete~~~");
+		ApiUtil.destroyAnswer(this.props.answer.id, function(){
+			this.context.router.push('/questions/' + this.props.answer.question_id);
+		}.bind(this));
+
+		this.setState(this.blankAttrs);
+
+	},
+
   render: function() {
-		debugger
+
 		var answerEditForm;
 		if (this.state.isEditing) {
 			answerEditForm = <AnswerEditForm
@@ -25,7 +43,7 @@ var IndexItem = React.createClass({
       <li className="answer-list-item group">
 
 				<div className="answer-header group">
-					<img className="user-pic" src="default_profile_pic.png" />
+					<div  className="user-pic"  />
 					<p className="user-info">USER INFO HERE</p>
 				</div>
 
@@ -38,6 +56,11 @@ var IndexItem = React.createClass({
 				<input type="submit"
 							 value="Edit Answer"
 							 onClick={this.startEdit} />
+
+				<input type="submit"
+							 value="Delete Answer"
+							 onClick={this.handleDelete} />
+
 
       </li>
     );

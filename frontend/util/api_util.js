@@ -86,6 +86,20 @@ var ApiUtil = {
 				console.log("api_util#createAnswer Error");
 			}
 		});
+	},
+
+	destroyAnswer: function(id, callback) {
+		$.ajax({
+			type: "DELETE",
+			url: "/api/answers/" + id,
+			success: function () {
+				AnswerActions.destroyAnswer(id);
+				callback && callback(id)
+			},
+			error: function(e) {
+				console.log("api_util#destroyAnswer Error");
+			}
+		});
 	}
 
 };

@@ -1,6 +1,11 @@
 .user-pic {
 	float:left;
 	margin-right: 10px;
+	background:  lightblue;
+	width: 58px;
+	height: 58px;
+	border: 1px solid rebeccapurple;
+	border-radius: 50%;
 }
 
 .user-info {

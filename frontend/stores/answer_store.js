@@ -17,6 +17,10 @@ var resetAnswer = function(answer){
   _answers[answer.id] = answer;
 };
 
+var deleteAnswer = function(id) {
+	delete _answers.id;
+};
+
 
 AnswerStore.all = function() {
   var answers = [];
@@ -40,6 +44,10 @@ AnswerStore.__onDispatch = function (payload) {
       resetAnswer(payload.answer);
       AnswerStore.__emitChange();
       break;
+		case AnswerConstants.ANSWER_DELETED:
+			deleteAnswer(payload.id);
+			AnswerStore.__emitChange();
+			break;
   }
 };
 

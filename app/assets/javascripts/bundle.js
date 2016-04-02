@@ -26677,6 +26677,20 @@
 	        console.log("api_util#createAnswer Error");
 	      }
 	    });
+	  },
+	
+	  destroyAnswer: function (id, callback) {
+	    $.ajax({
+	      type: "DELETE",
+	      url: "/api/answers/" + id,
+	      success: function () {
+	        AnswerActions.destroyAnswer(id);
+	        callback && callback(id);
+	      },
+	      error: function (e) {
+	        console.log("api_util#destroyAnswer Error");
+	      }
+	    });
 	  }
 	
 	};
@@ -26730,20 +26744,27 @@
 	    AnswerConstants = __webpack_require__(186);
 	
 	var AnswerActions = {
-	  receiveAllAnswers: function (answers) {
-	    Dispatcher.dispatch({
-	      actionType: AnswerConstants.ANSWERS_RECEIVED,
-	      answers: answers
-	    });
-	  },
+		receiveAllAnswers: function (answers) {
+			Dispatcher.dispatch({
+				actionType: AnswerConstants.ANSWERS_RECEIVED,
+				answers: answers
+			});
+		},
 	
-	  receiveSingleAnswer: function (answer) {
-	    console.log("hit receiveSingleAnswer");
-	    Dispatcher.dispatch({
-	      actionType: AnswerConstants.ANSWER_RECEIVED,
-	      answer: answer
-	    });
-	  }
+		receiveSingleAnswer: function (answer) {
+			console.log("hit receiveSingleAnswer");
+			Dispatcher.dispatch({
+				actionType: AnswerConstants.ANSWER_RECEIVED,
+				answer: answer
+			});
+		},
+	
+		destroyAnswer: function (id) {
+			Dispatcher.dispatch({
+				actionType: AnswerConstants.ANSWER_DELETED,
+				id: id
+			});
+		}
 	};
 	
 	module.exports = AnswerActions;
@@ -32211,6 +32232,10 @@
 	  _answers[answer.id] = answer;
 	};
 	
+	var deleteAnswer = function (id) {
+	  delete _answers.id;
+	};
+	
 	AnswerStore.all = function () {
 	  var answers = [];
 	  for (var id in _answers) {
@@ -32233,6 +32258,10 @@
 	      resetAnswer(payload.answer);
 	      AnswerStore.__emitChange();
 	      break;
+	    case AnswerConstants.ANSWER_DELETED:
+	      deleteAnswer(payload.id);
+	      AnswerStore.__emitChange();
+	      break;
 	  }
 	};
 	
@@ -32244,10 +32273,14 @@
 
 	var React = __webpack_require__(1);
 	var AnswerEditForm = __webpack_require__(256);
+	var ApiUtil = __webpack_require__(183);
 	
 	var IndexItem = React.createClass({
 		displayName: 'IndexItem',
 	
+		contextTypes: {
+			router: React.PropTypes.object.isRequired
+		},
 	
 		getInitialState: function () {
 			return { isEditing: false, answer: this.props.answer };
@@ -32257,8 +32290,19 @@
 			this.setState({ isEditing: true });
 		},
 	
+		handleDelete: function (e) {
+			e.preventDefault();
+	
+			console.log("hit the handleDelete~~~");
+			ApiUtil.destroyAnswer(this.props.answer.id, function () {
+				this.context.router.push('/questions/' + this.props.answer.question_id);
+			}.bind(this));
+	
+			this.setState(this.blankAttrs);
+		},
+	
 		render: function () {
-			debugger;
+	
 			var answerEditForm;
 			if (this.state.isEditing) {
 				answerEditForm = React.createElement(AnswerEditForm, {
@@ -32273,7 +32317,7 @@
 				React.createElement(
 					'div',
 					{ className: 'answer-header group' },
-					React.createElement('img', { className: 'user-pic', src: 'default_profile_pic.png' }),
+					React.createElement('div', { className: 'user-pic' }),
 					React.createElement(
 						'p',
 						{ className: 'user-info' },
@@ -32288,7 +32332,10 @@
 				answerEditForm,
 				React.createElement('input', { type: 'submit',
 					value: 'Edit Answer',
-					onClick: this.startEdit })
+					onClick: this.startEdit }),
+				React.createElement('input', { type: 'submit',
+					value: 'Delete Answer',
+					onClick: this.handleDelete })
 			);
 		}
 	
