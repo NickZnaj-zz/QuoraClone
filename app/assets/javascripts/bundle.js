@@ -19731,7 +19731,6 @@
 	  },
 	
 	  render: function () {
-	
 	    return React.createElement(
 	      'div',
 	      null,
@@ -26944,14 +26943,16 @@
 		// },
 	
 		render: function () {
-			// if (this.state.answers.length === 0) { return<div></div>; }
+			if (this.props.question.answers.length === 0) {
+				return React.createElement('div', null);
+			}
 			//
 			// var topAnswer = this.findTopAnswer();
-	
 			return React.createElement(
 				'div',
 				null,
-				'This is the top answer for '
+				'top answer: ',
+				this.props.question.answers[0].body
 			);
 		}
 	

@@ -40,12 +40,11 @@ var TopAnswer = React.createClass({
 	// },
 
 	render: function() {
-		// if (this.state.answers.length === 0) { return<div></div>; }
+		if (this.props.question.answers.length === 0) { return<div></div>; }
 		//
 		// var topAnswer = this.findTopAnswer();
-
 		return (
-			<div>This is the top answer for </div>
+			<div>top answer: {this.props.question.answers[0].body}</div>
 		);
 	}
 

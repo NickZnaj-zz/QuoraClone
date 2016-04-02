@@ -25,7 +25,6 @@ componentWillUnmount: function() {
 },
 
 render: function() {
-
   return(
     <div>
       <ul className="questions">
