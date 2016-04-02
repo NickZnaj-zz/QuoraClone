@@ -26870,28 +26870,38 @@
 	var React = __webpack_require__(1);
 	var ApiUtil = __webpack_require__(185);
 	var TopAnswer = __webpack_require__(189);
+	var answerForm = __webpack_require__(253);
 	
 	var IndexItem = React.createClass({
-	  displayName: 'IndexItem',
+			displayName: 'IndexItem',
 	
 	
-	  render: function () {
-	    return React.createElement(
-	      'li',
-	      { className: 'question-list-item' },
-	      React.createElement(
-	        'div',
-	        { className: 'question-index-item' },
-	        React.createElement(
-	          'a',
-	          { href: "/#/questions/" + this.props.question.id,
-	            className: 'question-title-index' },
-	          this.props.question.title
-	        ),
-	        React.createElement(TopAnswer, { question: this.props.question })
-	      )
-	    );
-	  }
+			render: function () {
+					var answerForm;
+					if (this.state.isAnswering) {
+							answerForm = React.createElement(AnswerForm, {
+									question: this.props.question,
+									onAnswerEnd: this.closeAnswer,
+									className: 'answer-form-question-index'
+							});
+					}
+	
+					return React.createElement(
+							'li',
+							{ className: 'question-list-item' },
+							React.createElement(
+									'div',
+									{ className: 'question-index-item' },
+									React.createElement(
+											'a',
+											{ href: "/#/questions/" + this.props.question.id,
+													className: 'question-title-index' },
+											this.props.question.title
+									),
+									React.createElement(TopAnswer, { question: this.props.question })
+							)
+					);
+			}
 	});
 	
 	module.exports = IndexItem;
@@ -26903,6 +26913,7 @@
 	var React = __webpack_require__(1);
 	var PropTypes = React.PropTypes;
 	var ApiUtil = __webpack_require__(185);
+	var AnswerForm = __webpack_require__(253);
 	
 	var TopAnswer = React.createClass({
 		displayName: 'TopAnswer',
@@ -26910,7 +26921,16 @@
 	
 		render: function () {
 			if (this.props.question.answers.length === 0) {
-				return React.createElement('div', null);
+				return React.createElement(
+					'div',
+					null,
+					React.createElement(
+						'div',
+						null,
+						'This question hasn\'t been answered!'
+					),
+					React.createElement(AnswerForm, { question: this.props.question })
+				);
 			}
 	
 			return React.createElement(
