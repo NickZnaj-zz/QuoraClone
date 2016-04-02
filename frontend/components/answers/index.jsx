@@ -13,7 +13,7 @@ var AnswersIndex = React.createClass({
   // },
 
 	_onChange: function() {
-		this.setState({answers: AnswerStore.all() });
+		this.setState({ answers: AnswerStore.all() });
 	},
 
   componentDidMount: function() {

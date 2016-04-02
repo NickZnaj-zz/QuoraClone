@@ -19704,6 +19704,7 @@
 
 	var React = __webpack_require__(1);
 	var QuestionStore = __webpack_require__(160);
+	var AnswerStore = __webpack_require__(249);
 	var ApiUtil = __webpack_require__(183);
 	var IndexItem = __webpack_require__(187);
 	var QuestionForm = __webpack_require__(188);
@@ -26807,23 +26808,28 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(183);
 	
 	var IndexItem = React.createClass({
-	  displayName: "IndexItem",
+	  displayName: 'IndexItem',
 	
 	  render: function () {
+	    debugger;
 	    return React.createElement(
-	      "li",
-	      { className: "question-list-item" },
+	      'li',
+	      { className: 'question-list-item' },
 	      React.createElement(
-	        "div",
-	        { className: "question-index-item" },
+	        'div',
+	        { className: 'question-index-item' },
 	        React.createElement(
-	          "a",
-	          { href: "/#/questions/" + this.props.question.id, className: "question-title-index" },
+	          'a',
+	          { href: "/#/questions/" + this.props.question.id,
+	            className: 'question-title-index' },
 	          this.props.question.title
 	        )
-	      )
+	      ),
+	      ApiUtil.fetchAll,
+	      React.createElement('div', null)
 	    );
 	  }
 	});

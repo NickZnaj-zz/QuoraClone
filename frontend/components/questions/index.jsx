@@ -1,5 +1,6 @@
 var React = require('react');
 var QuestionStore = require('../../stores/question_store.js');
+var AnswerStore = require('../../stores/answer_store.js');
 var ApiUtil = require('../../util/api_util');
 var IndexItem = require('./index_item');
 var QuestionForm = require('./question_form');
