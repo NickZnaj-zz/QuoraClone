@@ -26870,38 +26870,58 @@
 	var React = __webpack_require__(1);
 	var ApiUtil = __webpack_require__(185);
 	var TopAnswer = __webpack_require__(189);
-	var answerForm = __webpack_require__(253);
+	var AnswerForm = __webpack_require__(258);
 	
 	var IndexItem = React.createClass({
-			displayName: 'IndexItem',
+		displayName: 'IndexItem',
 	
 	
-			render: function () {
-					var answerForm;
-					if (this.state.isAnswering) {
-							answerForm = React.createElement(AnswerForm, {
-									question: this.props.question,
-									onAnswerEnd: this.closeAnswer,
-									className: 'answer-form-question-index'
-							});
-					}
+		getInitialState: function () {
+			return { isAnswering: false };
+		},
 	
-					return React.createElement(
-							'li',
-							{ className: 'question-list-item' },
-							React.createElement(
-									'div',
-									{ className: 'question-index-item' },
-									React.createElement(
-											'a',
-											{ href: "/#/questions/" + this.props.question.id,
-													className: 'question-title-index' },
-											this.props.question.title
-									),
-									React.createElement(TopAnswer, { question: this.props.question })
-							)
-					);
+		startAnswer: function () {
+			this.setState({ isAnswering: true });
+		},
+	
+		closeAnswer: function () {
+			this.setState({ isAnswering: false });
+		},
+	
+		render: function () {
+			var answerButton;
+			if (this.props.question.answers.length === 0) {
+				answerButton = React.createElement('input', { type: 'button',
+					onClick: this.startAnswer,
+					value: 'Answer!'
+				});
 			}
+			var answerForm;
+			if (this.state.isAnswering) {
+				answerForm = React.createElement(AnswerForm, {
+					question: this.props.question,
+					onAnswerEnd: this.closeAnswer
+				});
+			}
+	
+			return React.createElement(
+				'li',
+				{ className: 'question-list-item' },
+				React.createElement(
+					'div',
+					{ className: 'question-index-item' },
+					React.createElement(
+						'a',
+						{ href: "/#/questions/" + this.props.question.id,
+							className: 'question-title-index' },
+						this.props.question.title
+					),
+					React.createElement(TopAnswer, { question: this.props.question })
+				),
+				answerButton,
+				answerForm
+			);
+		}
 	});
 	
 	module.exports = IndexItem;
@@ -26913,7 +26933,7 @@
 	var React = __webpack_require__(1);
 	var PropTypes = React.PropTypes;
 	var ApiUtil = __webpack_require__(185);
-	var AnswerForm = __webpack_require__(253);
+	var AnswerForm = __webpack_require__(258);
 	
 	var TopAnswer = React.createClass({
 		displayName: 'TopAnswer',
@@ -26928,8 +26948,7 @@
 						'div',
 						null,
 						'This question hasn\'t been answered!'
-					),
-					React.createElement(AnswerForm, { question: this.props.question })
+					)
 				);
 			}
 	
@@ -26944,6 +26963,8 @@
 	});
 	
 	module.exports = TopAnswer;
+	
+	// <AnswerForm  question={this.props.question}/>;
 
 /***/ },
 /* 190 */
@@ -32149,7 +32170,10 @@
 	      return React.createElement('div', null);
 	    }
 	    if (this.state.isEditing) {
-	      return React.createElement(QuestionEdit, { question: this.state.question, onEditEnd: this.closeEdit });
+	      return React.createElement(QuestionEdit, {
+	        question: this.state.question,
+	        onEditEnd: this.closeEdit
+	      });
 	    }
 	
 	    var answerForm;
@@ -32689,6 +32713,95 @@
 	});
 	
 	module.exports = RightBar;
+
+/***/ },
+/* 258 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(158);
+	var PropTypes = React.PropTypes;
+	var ApiUtil = __webpack_require__(185);
+	
+	var AnswerForm = React.createClass({
+		displayName: 'AnswerForm',
+	
+		contextTypes: {
+			router: React.PropTypes.object.isRequired
+		},
+	
+		blankAttrs: {
+			body: ''
+		},
+	
+		getInitialState: function () {
+			return {
+				body: '', question_id: this.props.question.id
+			};
+		},
+	
+		_onBodyChange: function (e) {
+			this.setState({ body: e.target.value });
+		},
+	
+		handleSubmit: function (e) {
+			e.preventDefault();
+			var questionId = this.props.question.id;
+	
+			ApiUtil.createAnswer(this.state, function (answerId) {
+				this.context.router.push('/questions/' + questionId);
+			}.bind(this));
+			this.setState(this.blankAttrs);
+			this.props.onAnswerEnd();
+		},
+	
+		render: function () {
+			return React.createElement(
+				'form',
+				{ className: 'index-answer-form group',
+					onSubmit: this.handleSubmit,
+					id: 'answer-form'
+				},
+				React.createElement(
+					'section',
+					{ className: 'index-user-section' },
+					React.createElement(
+						'div',
+						{ className: 'index-user-info' },
+						React.createElement('img', { className: 'index-user-pic', src: 'default_profile_pic.png' }),
+						React.createElement(
+							'p',
+							null,
+							'user info here'
+						)
+					)
+				),
+				React.createElement('input', { type: 'textarea',
+					className: 'index-answer-body',
+					onChange: this._onBodyChange,
+					value: this.state.body }),
+				React.createElement(
+					'div',
+					{ className: 'index-submit-area group' },
+					React.createElement('input', { type: 'submit',
+						className: 'index-submit-answer-button',
+						value: 'Submit Answer'
+					}),
+					React.createElement(
+						'input',
+						{ type: 'button',
+							onClick: this.props.onAnswerEnd,
+							className: 'index-answer-cancel-link',
+							value: 'Cancel' },
+						'Cancel'
+					)
+				)
+			);
+		}
+	
+	});
+	
+	module.exports = AnswerForm;
 
 /***/ }
 /******/ ]);

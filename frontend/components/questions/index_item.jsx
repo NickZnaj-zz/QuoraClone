@@ -1,17 +1,36 @@
 var React = require('react');
 var ApiUtil = require('../../util/api_util.js');
 var TopAnswer = require('../answers/top_answer');
-var answerForm = require('../answers/answer_form');
+var AnswerForm = require('./question_index_answer_form');
 
 var IndexItem = React.createClass({
 
+	getInitialState: function() {
+		return { isAnswering: false };
+	},
+
+	startAnswer: function() {
+		this.setState({ isAnswering: true });
+	},
+
+	closeAnswer: function() {
+		this.setState({ isAnswering: false });
+	},
+
   render: function() {
+		var answerButton;
+		if (this.props.question.answers.length === 0) {
+			answerButton =
+			<input type="button"
+				onClick={this.startAnswer}
+				value="Answer!"
+				/>;
+		}
 		var answerForm;
 		if (this.state.isAnswering) {
-			answerForm=<AnswerForm
+			answerForm = <AnswerForm
 				question={this.props.question}
 				onAnswerEnd={this.closeAnswer}
-				className="answer-form-question-index"
 			/>;
 		}
 
@@ -25,6 +44,8 @@ var IndexItem = React.createClass({
 					<TopAnswer question={this.props.question} />
 
         </div>
+				{answerButton}
+				{answerForm}
       </li>
     );
   }

@@ -71,7 +71,13 @@ var QuestionDetail =  React.createClass({
 
   render: function () {
     if (!this.state.question) { return <div></div>; }
-    if (this.state.isEditing) { return ( <QuestionEdit question={this.state.question} onEditEnd={this.closeEdit}/>);}
+    if (this.state.isEditing) {
+			return (
+				<QuestionEdit
+					question={this.state.question}
+					onEditEnd={this.closeEdit}
+				/>
+		);}
 
 		var answerForm;
 		if (this.state.isAnswering) {

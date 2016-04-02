@@ -1,7 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 var ApiUtil = require('../../util/api_util.js');
-var AnswerForm = require('./answer_form');
+var AnswerForm = require('../questions/question_index_answer_form');
 
 
 var TopAnswer = React.createClass({
@@ -11,7 +11,6 @@ var TopAnswer = React.createClass({
 			return(
 			<div>
 				<div>This question hasn't been answered!</div>
-				<AnswerForm  question={this.props.question}/>
 			</div>
 			);
 
@@ -25,3 +24,8 @@ var TopAnswer = React.createClass({
 });
 
 module.exports = TopAnswer;
+
+
+
+
+// <AnswerForm  question={this.props.question}/>;
