@@ -10,6 +10,7 @@ var IndexItem = React.createClass({
         <div className="question-index-item">
           <a href={"/#/questions/" + this.props.question.id}
 						 className="question-title-index">{this.props.question.title}</a>
+					 <TopAnswer question={this.props.question.id} />
         </div>
 				<div>
 					{ApiUtil.fetchAllAnswers(this.props.question.id)}

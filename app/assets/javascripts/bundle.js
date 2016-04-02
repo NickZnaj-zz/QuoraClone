@@ -26830,7 +26830,8 @@
 	          { href: "/#/questions/" + this.props.question.id,
 	            className: 'question-title-index' },
 	          this.props.question.title
-	        )
+	        ),
+	        React.createElement(TopAnswer, { question: this.props.question.id })
 	      ),
 	      React.createElement(
 	        'div',
