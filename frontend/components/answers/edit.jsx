@@ -34,7 +34,7 @@ var AnswerEditForm = React.createClass({
     console.log("hit the answer handleEdit");
 
     ApiUtil.editAnswer(this.props.answer, this.state, function (answer) {
-      this.props.onEditEnd();
+			this.props.onEditEnd();
     }.bind(this));
 	},
 

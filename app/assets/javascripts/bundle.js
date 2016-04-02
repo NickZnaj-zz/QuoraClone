@@ -26779,6 +26779,13 @@
 				actionType: AnswerConstants.ANSWER_DELETED,
 				id: id
 			});
+		},
+	
+		editQuestion: function (answer) {
+			Dispatcher.dispatch({
+				actionType: AnswerConstants.ANSWER_EDITED,
+				answer: answer
+			});
 		}
 	};
 	
@@ -32306,6 +32313,10 @@
 	
 		startEdit: function () {
 			this.setState({ isEditing: true });
+		},
+	
+		closeEdit: function () {
+			this.setState({ isEditing: false });
 		},
 	
 		handleDelete: function (e) {

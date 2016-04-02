@@ -25,7 +25,7 @@ class Api::AnswersController < ApplicationController
   def destroy
     @answer = Answer.find(params[:id])
     @answer.destroy
-    render :show
+    render :index
   end
 
   def edit

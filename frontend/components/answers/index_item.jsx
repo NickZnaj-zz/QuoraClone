@@ -17,6 +17,10 @@ var IndexItem = React.createClass({
 		this.setState({ isEditing: true });
 	},
 
+	closeEdit: function() {
+		this.setState({ isEditing: false });
+	},
+
 	handleDelete: function(e) {
 		e.preventDefault();
 
