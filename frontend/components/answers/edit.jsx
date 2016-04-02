@@ -1,5 +1,9 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
+var AnswerStore = require('../../stores/answer_store.js');
+var ApiUtil = require('../../util/api_util.js');
+
+
 
 var AnswerEditForm = React.createClass({
 	contextTypes: {
@@ -24,10 +28,20 @@ var AnswerEditForm = React.createClass({
 		this.setState({ body: e.target.value });
 	},
 
+	handleEdit: function(e) {
+    e.preventDefault();
+
+    console.log("hit the answer handleEdit");
+
+    ApiUtil.editAnswer(this.props.answer, this.state, function (answer) {
+      this.props.onEditEnd();
+    }.bind(this));
+	},
+
 	render: function() {
 		return (
 			<form className="answer-form group"
-						onSubmit={this.handleSubmit}
+						onSubmit={this.handleEdit}
 						id="answer-form"
 						>
 

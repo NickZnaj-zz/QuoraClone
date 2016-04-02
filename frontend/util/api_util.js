@@ -100,6 +100,21 @@ var ApiUtil = {
 				console.log("api_util#destroyAnswer Error");
 			}
 		});
+	},
+
+	editAnswer: function(answer, newAttrs, callback) {
+    $.ajax({
+      method: "PATCH",
+      url: "/api/answers/" + answer.id,
+      data: { answer: newAttrs },
+      success: function(answer) {
+        AnswerActions.editQuestion(answer);
+        callback && callback(answer);
+      },
+      error: function(e) {
+        console.log("api_util#editAnswer error");
+    }
+    });
 	}
 
 };

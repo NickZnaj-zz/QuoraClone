@@ -24,8 +24,8 @@ var IndexItem = React.createClass({
 		ApiUtil.destroyAnswer(this.props.answer.id, function(){
 			this.context.router.push('/questions/' + this.props.answer.question_id);
 		}.bind(this));
-
-		this.setState(this.blankAttrs);
+		debugger
+		this.props.onDelete();
 
 	},
 

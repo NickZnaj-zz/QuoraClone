@@ -36,8 +36,8 @@ var QuestionEdit =  React.createClass({
     this.questionListener.remove();
   },
 
-  handleEdit: function(event) {
-    event.preventDefault();
+  handleEdit: function(e) {
+    e.preventDefault();
 
     console.log("hit the handle EDIT");
 		debugger

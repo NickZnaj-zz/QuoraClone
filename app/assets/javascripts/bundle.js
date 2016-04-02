@@ -50,10 +50,10 @@
 	var content = document.getElementById('content');
 	var QuestionsIndex = __webpack_require__(159);
 	var QuestionDetail = __webpack_require__(246);
-	var NavBar = __webpack_require__(251);
-	var SideBar = __webpack_require__(252);
-	var Main = __webpack_require__(253);
-	var RightBar = __webpack_require__(254);
+	var NavBar = __webpack_require__(253);
+	var SideBar = __webpack_require__(254);
+	var Main = __webpack_require__(255);
+	var RightBar = __webpack_require__(256);
 	
 	var Router = __webpack_require__(189).Router;
 	var Route = __webpack_require__(189).Route;
@@ -26691,6 +26691,21 @@
 	        console.log("api_util#destroyAnswer Error");
 	      }
 	    });
+	  },
+	
+	  editAnswer: function (answer, newAttrs, callback) {
+	    $.ajax({
+	      method: "PATCH",
+	      url: "/api/answers/" + answer.id,
+	      data: { answer: newAttrs },
+	      success: function (answer) {
+	        AnswerActions.editQuestion(answer);
+	        callback && callback(answer);
+	      },
+	      error: function (e) {
+	        console.log("api_util#editAnswer error");
+	      }
+	    });
 	  }
 	
 	};
@@ -31942,7 +31957,7 @@
 	var ApiUtil = __webpack_require__(183);
 	var QuestionEdit = __webpack_require__(247);
 	var AnswersIndex = __webpack_require__(248);
-	var AnswerForm = __webpack_require__(255);
+	var AnswerForm = __webpack_require__(252);
 	
 	var QuestionDetail = React.createClass({
 	  displayName: 'QuestionDetail',
@@ -32099,8 +32114,8 @@
 	    this.questionListener.remove();
 	  },
 	
-	  handleEdit: function (event) {
-	    event.preventDefault();
+	  handleEdit: function (e) {
+	    e.preventDefault();
 	
 	    console.log("hit the handle EDIT");
 	    debugger;
@@ -32184,10 +32199,10 @@
 	  },
 	
 	  render: function () {
+	
 	    if (!this.state.answers) {
 	      return React.createElement('div', null);
 	    }
-	
 	    return React.createElement(
 	      'div',
 	      null,
@@ -32200,7 +32215,10 @@
 	        'ul',
 	        { className: 'answers' },
 	        this.state.answers.map(function (answer) {
-	          return React.createElement(IndexItem, { key: answer.id, answer: answer });
+	          return React.createElement(IndexItem, { key: answer.id,
+	            answer: answer,
+	            onDelete: this._onChange
+	          });
 	        })
 	      )
 	    );
@@ -32272,7 +32290,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var AnswerEditForm = __webpack_require__(256);
+	var AnswerEditForm = __webpack_require__(251);
 	var ApiUtil = __webpack_require__(183);
 	
 	var IndexItem = React.createClass({
@@ -32297,8 +32315,8 @@
 			ApiUtil.destroyAnswer(this.props.answer.id, function () {
 				this.context.router.push('/questions/' + this.props.answer.question_id);
 			}.bind(this));
-	
-			this.setState(this.blankAttrs);
+			debugger;
+			this.props.onDelete();
 		},
 	
 		render: function () {
@@ -32348,100 +32366,87 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var QuestionForm = __webpack_require__(188);
+	var PropTypes = React.PropTypes;
+	var AnswerStore = __webpack_require__(249);
+	var ApiUtil = __webpack_require__(183);
 	
-	var NavBar = React.createClass({
-	  displayName: 'NavBar',
+	var AnswerEditForm = React.createClass({
+		displayName: 'AnswerEditForm',
 	
-	  render: function () {
-	    return React.createElement(
-	      'header',
-	      { className: 'header' },
-	      React.createElement(
-	        'div',
-	        { className: 'header-nav group' },
-	        React.createElement(
-	          'a',
-	          { href: '/#/', className: 'logo' },
-	          'Shmora'
-	        ),
-	        React.createElement(QuestionForm, null)
-	      )
-	    );
-	  }
+		contextTypes: {
+			router: React.PropTypes.object.isRequired
+		},
+	
+		getInitialState: function () {
+			return {
+				body: this.props.answer.body
+			};
+		},
+	
+		componentDidMount: function () {
+			this.answerListener = AnswerStore.addListener(this._onStoreChange);
+		},
+	
+		componentWillUnmount: function () {
+			this.answerListener.remove();
+		},
+	
+		_onBodyChange: function (e) {
+			this.setState({ body: e.target.value });
+		},
+	
+		handleEdit: function (e) {
+			e.preventDefault();
+	
+			console.log("hit the answer handleEdit");
+	
+			ApiUtil.editAnswer(this.props.answer, this.state, function (answer) {
+				this.props.onEditEnd();
+			}.bind(this));
+		},
+	
+		render: function () {
+			return React.createElement(
+				'form',
+				{ className: 'answer-form group',
+					onSubmit: this.handleEdit,
+					id: 'answer-form'
+				},
+				React.createElement(
+					'section',
+					{ className: 'user-section' },
+					React.createElement(
+						'div',
+						{ className: 'user-info' },
+						React.createElement('img', { className: 'user-pic', src: 'default_profile_pic.png' }),
+						React.createElement(
+							'p',
+							null,
+							'user info here'
+						)
+					)
+				),
+				React.createElement('input', { type: 'textarea',
+					className: 'answer-body',
+					onChange: this._onBodyChange,
+					value: this.state.body }),
+				React.createElement(
+					'div',
+					{ className: 'submit-area group' },
+					React.createElement('input', { type: 'submit',
+						className: 'submit-answer-button',
+						value: 'Submit Answer'
+					})
+				)
+			);
+		}
+	
 	});
 	
-	module.exports = NavBar;
+	module.exports = AnswerEditForm;
 
 /***/ },
 /* 252 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var SideBar = React.createClass({
-	  displayName: "SideBar",
-	
-	  render: function () {
-	    return React.createElement("div", { className: "sidebar group" });
-	  }
-	});
-	
-	module.exports = SideBar;
-
-/***/ },
-/* 253 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var QuestionsIndex = __webpack_require__(159);
-	var SideBar = __webpack_require__(252);
-	
-	var Main = React.createClass({
-	  displayName: 'Main',
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(SideBar, null),
-	      React.createElement(
-	        'div',
-	        { className: 'center-panel group' },
-	        React.createElement(
-	          'div',
-	          { className: 'questions-list group' },
-	          React.createElement(QuestionsIndex, null)
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Main;
-
-/***/ },
-/* 254 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var RightBar = React.createClass({
-	  displayName: "RightBar",
-	
-	  render: function () {
-	    return React.createElement(
-	      "div",
-	      { className: "rightbar-wrapper group" },
-	      React.createElement("div", { className: "rightbar group" })
-	    );
-	  }
-	});
-	
-	module.exports = RightBar;
-
-/***/ },
-/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -32522,76 +32527,101 @@
 	module.exports = AnswerForm;
 
 /***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var QuestionForm = __webpack_require__(188);
+	
+	var NavBar = React.createClass({
+	  displayName: 'NavBar',
+	
+	  render: function () {
+	    return React.createElement(
+	      'header',
+	      { className: 'header' },
+	      React.createElement(
+	        'div',
+	        { className: 'header-nav group' },
+	        React.createElement(
+	          'a',
+	          { href: '/#/', className: 'logo' },
+	          'Shmora'
+	        ),
+	        React.createElement(QuestionForm, null)
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = NavBar;
+
+/***/ },
+/* 254 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var SideBar = React.createClass({
+	  displayName: "SideBar",
+	
+	  render: function () {
+	    return React.createElement("div", { className: "sidebar group" });
+	  }
+	});
+	
+	module.exports = SideBar;
+
+/***/ },
+/* 255 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var QuestionsIndex = __webpack_require__(159);
+	var SideBar = __webpack_require__(254);
+	
+	var Main = React.createClass({
+	  displayName: 'Main',
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(SideBar, null),
+	      React.createElement(
+	        'div',
+	        { className: 'center-panel group' },
+	        React.createElement(
+	          'div',
+	          { className: 'questions-list group' },
+	          React.createElement(QuestionsIndex, null)
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Main;
+
+/***/ },
 /* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var PropTypes = React.PropTypes;
 	
-	var AnswerEditForm = React.createClass({
-		displayName: "AnswerEditForm",
+	var RightBar = React.createClass({
+	  displayName: "RightBar",
 	
-		contextTypes: {
-			router: React.PropTypes.object.isRequired
-		},
-	
-		getInitialState: function () {
-			return {
-				body: this.props.answer.body
-			};
-		},
-	
-		componentDidMount: function () {
-			this.answerListener = AnswerStore.addListener(this._onStoreChange);
-		},
-	
-		componentWillUnmount: function () {
-			this.answerListener.remove();
-		},
-	
-		_onBodyChange: function (e) {
-			this.setState({ body: e.target.value });
-		},
-	
-		render: function () {
-			return React.createElement(
-				"form",
-				{ className: "answer-form group",
-					onSubmit: this.handleSubmit,
-					id: "answer-form"
-				},
-				React.createElement(
-					"section",
-					{ className: "user-section" },
-					React.createElement(
-						"div",
-						{ className: "user-info" },
-						React.createElement("img", { className: "user-pic", src: "default_profile_pic.png" }),
-						React.createElement(
-							"p",
-							null,
-							"user info here"
-						)
-					)
-				),
-				React.createElement("input", { type: "textarea",
-					className: "answer-body",
-					onChange: this._onBodyChange,
-					value: this.state.body }),
-				React.createElement(
-					"div",
-					{ className: "submit-area group" },
-					React.createElement("input", { type: "submit",
-						className: "submit-answer-button",
-						value: "Submit Answer"
-					})
-				)
-			);
-		}
-	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      { className: "rightbar-wrapper group" },
+	      React.createElement("div", { className: "rightbar group" })
+	    );
+	  }
 	});
 	
-	module.exports = AnswerEditForm;
+	module.exports = RightBar;
 
 /***/ }
 /******/ ]);

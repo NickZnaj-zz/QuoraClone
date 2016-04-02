@@ -32,15 +32,17 @@ var AnswersIndex = React.createClass({
 	},
 
   render: function() {
+
     if (!this.state.answers) { return <div></div>; }
-
-
     return (
       <div>
 				<p className="answers-count">{this.answerCount()}</p>
         <ul className="answers">
           {this.state.answers.map(function(answer){
-             return <IndexItem key={answer.id} answer={answer} />;
+             return <IndexItem key={answer.id}
+							 								 answer={answer}
+															 onDelete={this._onChange}
+										/>;
           })}
         </ul>
       </div>
