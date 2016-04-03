@@ -26940,8 +26940,7 @@
 	
 	
 		render: function () {
-			debugger;
-			if (this.props.question.answers && this.props.question.answers.length === 0) {
+			if (!this.props.question.answers || this.props.question.answers.length === 0) {
 				return React.createElement(
 					'div',
 					null,
@@ -26955,9 +26954,18 @@
 	
 			return React.createElement(
 				'div',
-				null,
-				'top answer: ',
-				this.props.question.answers[0].body
+				{ className: 'top-answer group' },
+				React.createElement(
+					'div',
+					{ className: 'top-answer-user-info' },
+					' USER INFO APPEARS HERE'
+				),
+				React.createElement(
+					'div',
+					{ className: 'top-answer-body' },
+					'top answer: ',
+					this.props.question.answers[0].body
+				)
 			);
 		}
 	

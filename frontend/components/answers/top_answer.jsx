@@ -7,8 +7,7 @@ var AnswerForm = require('../questions/question_index_answer_form');
 var TopAnswer = React.createClass({
 
 	render: function() {
-		debugger
-		if (this.props.question.answers &&
+		if (!this.props.question.answers ||
 				(this.props.question.answers.length === 0)) {
 			return(
 			<div>
@@ -19,7 +18,10 @@ var TopAnswer = React.createClass({
 		}
 
 		return (
-			<div>top answer: {this.props.question.answers[0].body}</div>
+			<div className="top-answer group">
+				<div className="top-answer-user-info"> USER INFO APPEARS HERE</div>
+				<div className="top-answer-body">top answer: {this.props.question.answers[0].body}</div>
+			</div>
 		);
 	}
 
