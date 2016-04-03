@@ -30,7 +30,7 @@ var App = React.createClass({
 
     if (this.state.currentUser) {
       button = <button onClick={ApiUtil.logout}>Logout</button>;
-      welcomeMessage = <h2>Shmora welcomes you, {this.state.currentUser.name}</h2>;
+      welcomeMessage = <h2>Shmora welcomes you, {this.state.currentUser.username}</h2>;
     }
 
     return (

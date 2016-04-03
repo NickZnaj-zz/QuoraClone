@@ -4,6 +4,19 @@ var SessionActions = require('../actions/session_actions');
 
 var ApiUtil = {
 
+	signUp: function(credentials, callback) {
+		$.ajax({
+			type: "POST",
+			url: "/users",
+			dataType: "json",
+			data: {user: credentials},
+			success: function(newUser) {
+				SessionActions.currentUserReceived(newUser);
+				callback && callback();
+			}
+		});
+	},
+
 	login: function(credentials, callback) {
     $.ajax({
       type: "POST",

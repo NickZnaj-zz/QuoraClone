@@ -1,5 +1,6 @@
 var React = require('react');
 var ApiUtil = require('../util/api_util');
+var SignUpForm = require('./sign_up_form');
 
 var LoginForm = React.createClass({
   contextTypes: {
@@ -9,24 +10,42 @@ var LoginForm = React.createClass({
   getInitialState: function() {
     return {
       email: "",
-      password: ""
+      password: "",
+			signingUp: false
     };
   },
 
+	startSignUp: function(){
+		this.setState({signingUp: true});
+	},
+
   render: function() {
+		if (this.state.signingUp) {
+			return (
+				<SignUpForm/>
+			);
+		}
+
     return (
       <div>
-        <h1>Log in</h1>
+				<div className="login-form">
+	        <h1>Log in</h1>
 
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="email">Email</label>
-          <input onChange={this._onNameChange} type="text" value={this.state.email}/>
+	        <form onSubmit={this.handleSubmit}>
+	          <label htmlFor="email">Email</label>
+	          <input onChange={this._onEmailChange} type="text" value={this.state.email}/>
 
-          <label htmlFor="password">Password</label>
-          <input onChange={this._onPasswordChange} type="password" value={this.state.password}/>
+	          <label htmlFor="password">Password</label>
+	          <input onChange={this._onPasswordChange} type="password" value={this.state.password}/>
 
-          <button>Submit</button>
-        </form>
+	          <button>Submit</button>
+	        </form>
+					<input type="button"
+								 value="No account? Sign up!"
+								 className="sing-up-link"
+								 onClick={this.startSignUp}
+					/>
+				</div>
       </div>
     );
   },
@@ -37,14 +56,14 @@ var LoginForm = React.createClass({
     var router = this.context.router;
 
     ApiUtil.login(this.state, function() {
-      router.push("/posts");
+      router.push("/");
     });
   },
 
-  _onNameChange: function(e) {
+  _onEmailChange: function(e) {
     this.setState({ email: e.currentTarget.value });
   },
-
+	
   _onPasswordChange: function(e) {
     this.setState({ password: e.currentTarget.value });
   }

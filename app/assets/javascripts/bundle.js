@@ -26685,6 +26685,19 @@
 	
 	var ApiUtil = {
 	
+	  signUp: function (credentials, callback) {
+	    $.ajax({
+	      type: "POST",
+	      url: "/users",
+	      dataType: "json",
+	      data: { user: credentials },
+	      success: function (newUser) {
+	        SessionActions.currentUserReceived(newUser);
+	        callback && callback();
+	      }
+	    });
+	  },
+	
 	  login: function (credentials, callback) {
 	    $.ajax({
 	      type: "POST",
@@ -32952,7 +32965,7 @@
 	        'h2',
 	        null,
 	        'Shmora welcomes you, ',
-	        this.state.currentUser.name
+	        this.state.currentUser.username
 	      );
 	    }
 	
@@ -33029,6 +33042,7 @@
 
 	var React = __webpack_require__(1);
 	var ApiUtil = __webpack_require__(185);
+	var SignUpForm = __webpack_require__(264);
 	
 	var LoginForm = React.createClass({
 	  displayName: 'LoginForm',
@@ -33040,6 +33054,101 @@
 	  getInitialState: function () {
 	    return {
 	      email: "",
+	      password: "",
+	      signingUp: false
+	    };
+	  },
+	
+	  startSignUp: function () {
+	    this.setState({ signingUp: true });
+	  },
+	
+	  render: function () {
+	    if (this.state.signingUp) {
+	      return React.createElement(SignUpForm, null);
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'login-form' },
+	        React.createElement(
+	          'h1',
+	          null,
+	          'Log in'
+	        ),
+	        React.createElement(
+	          'form',
+	          { onSubmit: this.handleSubmit },
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'email' },
+	            'Email'
+	          ),
+	          React.createElement('input', { onChange: this._onEmailChange, type: 'text', value: this.state.email }),
+	          React.createElement(
+	            'label',
+	            { htmlFor: 'password' },
+	            'Password'
+	          ),
+	          React.createElement('input', { onChange: this._onPasswordChange, type: 'password', value: this.state.password }),
+	          React.createElement(
+	            'button',
+	            null,
+	            'Submit'
+	          )
+	        ),
+	        React.createElement('input', { type: 'button',
+	          value: 'No account? Sign up!',
+	          className: 'sing-up-link',
+	          onClick: this.startSignUp
+	        })
+	      )
+	    );
+	  },
+	
+	  handleSubmit: function (e) {
+	    e.preventDefault();
+	
+	    var router = this.context.router;
+	
+	    ApiUtil.login(this.state, function () {
+	      router.push("/");
+	    });
+	  },
+	
+	  _onEmailChange: function (e) {
+	    this.setState({ email: e.currentTarget.value });
+	  },
+	
+	  _onPasswordChange: function (e) {
+	    this.setState({ password: e.currentTarget.value });
+	  }
+	
+	});
+	
+	module.exports = LoginForm;
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(185);
+	
+	var SignUpForm = React.createClass({
+	  displayName: 'SignUpForm',
+	
+	  contextTypes: {
+	    router: React.PropTypes.object.isRequired
+	  },
+	
+	  getInitialState: function () {
+	    return {
+	      email: "",
+	      username: "",
 	      password: ""
 	    };
 	  },
@@ -33051,17 +33160,23 @@
 	      React.createElement(
 	        'h1',
 	        null,
-	        'Log in'
+	        'Sign Up'
 	      ),
 	      React.createElement(
 	        'form',
 	        { onSubmit: this.handleSubmit },
 	        React.createElement(
 	          'label',
+	          { htmlFor: 'username' },
+	          'Full Name'
+	        ),
+	        React.createElement('input', { onChange: this._onUsernameChange, type: 'text', value: this.state.username }),
+	        React.createElement(
+	          'label',
 	          { htmlFor: 'email' },
 	          'Email'
 	        ),
-	        React.createElement('input', { onChange: this._onNameChange, type: 'text', value: this.state.email }),
+	        React.createElement('input', { onChange: this._onEmailChange, type: 'text', value: this.state.email }),
 	        React.createElement(
 	          'label',
 	          { htmlFor: 'password' },
@@ -33081,14 +33196,18 @@
 	    e.preventDefault();
 	
 	    var router = this.context.router;
-	
+	    ApiUtil.signUp(this.state);
 	    ApiUtil.login(this.state, function () {
-	      router.push("/posts");
+	      router.push("/");
 	    });
 	  },
 	
-	  _onNameChange: function (e) {
+	  _onEmailChange: function (e) {
 	    this.setState({ email: e.currentTarget.value });
+	  },
+	
+	  _onUsernameChange: function (e) {
+	    this.setState({ username: e.currentTarget.value });
 	  },
 	
 	  _onPasswordChange: function (e) {
@@ -33097,7 +33216,7 @@
 	
 	});
 	
-	module.exports = LoginForm;
+	module.exports = SignUpForm;
 
 /***/ }
 /******/ ]);

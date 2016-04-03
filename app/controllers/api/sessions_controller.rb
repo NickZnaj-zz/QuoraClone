@@ -16,7 +16,7 @@ class Api::SessionsController < ApplicationController
 
 		if user && user.valid_password?(params[:password])
 			log_in!(user)
-			render json: author
+			render json: user
 		else
 			render json: { message: "Invalid Login Credentials" }, status: 401
 		end
