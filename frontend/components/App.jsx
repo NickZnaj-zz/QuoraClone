@@ -12,7 +12,7 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      currentUser: {name: "joe"}
+      currentUser: {name: ""}
     };
   },
 

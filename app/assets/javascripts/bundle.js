@@ -32927,7 +32927,7 @@
 	
 	  getInitialState: function () {
 	    return {
-	      currentUser: { name: "joe" }
+	      currentUser: { name: "" }
 	    };
 	  },
 	
@@ -33060,7 +33060,7 @@
 	        React.createElement(
 	          'label',
 	          { htmlFor: 'email' },
-	          'Name'
+	          'Email'
 	        ),
 	        React.createElement('input', { onChange: this._onNameChange, type: 'text', value: this.state.email }),
 	        React.createElement(
