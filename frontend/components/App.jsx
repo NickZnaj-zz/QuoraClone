@@ -1,6 +1,6 @@
 var React = require('react');
 var SessionStore = require('../stores/session_store');
-var ApiUtil = require('../utils/api_util');
+var ApiUtil = require('../util/api_util');
 
 var App = React.createClass({
   contextTypes: {
