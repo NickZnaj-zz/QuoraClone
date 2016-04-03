@@ -70,7 +70,7 @@
 	var routes = React.createElement(
 		Route,
 		{ path: '/', component: App },
-		React.createElement(IndexRoute, { component: Main }),
+		React.createElement(IndexRoute, { component: Main, onEnter: _requireLoggedIn }),
 		React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail }),
 		React.createElement(Route, { path: 'login', component: LoginForm })
 	);
@@ -82,20 +82,6 @@
 			routes
 		), document.getElementById('content'));
 	};
-	
-	// var App = React.createClass({
-	//   render: function(){
-	//     return (
-	//       <div>
-	//         <NavBar />
-	//         <div className="main group">
-	//           <RightBar />
-	//           {this.props.children}
-	//         </div>
-	//       </div>
-	//     );
-	//   }
-	// });
 	
 	function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
 		if (!SessionStore.currentUserHasBeenFetched()) {
@@ -112,6 +98,19 @@
 		}
 	}
 	
+	// var App = React.createClass({
+	//   render: function(){
+	//     return (
+	//       <div>
+	//         <NavBar />
+	//         <div className="main group">
+	//           <RightBar />
+	//           {this.props.children}
+	//         </div>
+	//       </div>
+	//     );
+	//   }
+	// });
 	// $( document ).ready(function() {
 	// });
 

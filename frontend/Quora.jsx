@@ -23,7 +23,7 @@ var ApiUtil = require('./util/api_util');
 
 var routes = (
 	<Route path='/' component={App} >
-		<IndexRoute component={Main} />
+		<IndexRoute component={Main} onEnter={_requireLoggedIn}/>
 
 		<Route path="questions/:questionId" component={QuestionDetail} />
 
@@ -42,20 +42,6 @@ window.initializeApp = function() {
 
 };
 
-// var App = React.createClass({
-//   render: function(){
-//     return (
-//       <div>
-//         <NavBar />
-//         <div className="main group">
-//           <RightBar />
-//           {this.props.children}
-//         </div>
-//       </div>
-//     );
-//   }
-// });
-
 
 function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
 		if (!SessionStore.currentUserHasBeenFetched()) {
@@ -72,5 +58,19 @@ function _redirectIfNotLoggedIn() {
 	}
 }
 
+
+// var App = React.createClass({
+//   render: function(){
+//     return (
+//       <div>
+//         <NavBar />
+//         <div className="main group">
+//           <RightBar />
+//           {this.props.children}
+//         </div>
+//       </div>
+//     );
+//   }
+// });
 // $( document ).ready(function() {
 // });

@@ -3,6 +3,10 @@ class User < ActiveRecord::Base
 
   after_initialize :ensure_session_token!
 
+	has_many :questions
+	has_many :answers
+
+
 
   def self.find_by_credentials(email, password)
     user = User.find_by(email: email)
