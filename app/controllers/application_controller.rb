@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
 
 	def ensure_logged_in
 		unless logged_in?
-			render text: "Log in before continuing", status 401
+			render text: "Log in before continuing", status: 401
 		end
 	end
 
