@@ -60,6 +60,9 @@
 	var IndexRoute = __webpack_require__(192).IndexRoute;
 	var hashHistory = __webpack_require__(192).hashHistory;
 	
+	var SessionStore = __webpack_require__(259);
+	var ApiUtil = __webpack_require__(185);
+	
 	var App = React.createClass({
 	  displayName: 'App',
 	
@@ -81,9 +84,24 @@
 	var routes = React.createElement(
 	  Route,
 	  { path: '/', component: App },
-	  React.createElement(IndexRoute, { component: Main }),
-	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail })
+	  React.createElement(IndexRoute, { component: Main, onEnter: _requireLoggedIn }),
+	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail }),
+	  React.createElement(Route, { path: 'login', component: LoginForm })
 	);
+	
+	function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
+	  if (!SessionStore.currentUserHasBeenFetched()) {
+	    ApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
+	  } else {
+	    _redirectIfNotLoggedIn();
+	  }
+	}
+	
+	function _redirectIfNotLoggedIn() {
+	  if (!SessionStore.isLoggedIn()) {
+	    replace("/login");
+	  }
+	}
 	
 	$(document).ready(function () {
 	  ReactDOM.render(React.createElement(
@@ -32811,6 +32829,56 @@
 	});
 	
 	module.exports = RightBar;
+
+/***/ },
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(161).Store;
+	var SessionConstants = __webpack_require__(260);
+	var AppDispatcher = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../dispatcher/app_dispatcher\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	
+	var SessionStore = new Store(AppDispatcher);
+	
+	var _currentUser;
+	var _currentUserHasBeenFetched = false;
+	
+	SessionStore.currentUser = function () {
+	  return _currentUser;
+	};
+	
+	SessionStore.isLoggedIn = function () {
+	  return !!_currentUser;
+	};
+	
+	SessionStore.currentUserHasBeenFetched = function () {
+	  return _currentUserHasBeenFetched;
+	};
+	
+	SessionStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case SessionConstants.CURRENT_USER_RECEIVED:
+	      _currentUser = payload.currentUser;
+	      _currentUserHasBeenFetched = true;
+	      SessionStore.__emitChange();
+	      break;
+	    case SessionConstants.LOGOUT:
+	      _currentUser = null;
+	      SessionStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = SessionStore;
+
+/***/ },
+/* 260 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  CURRENT_USER_RECEIVED: "CURRENT_USER_RECEIVED",
+	  LOGOUT: "LOGOUT"
+	};
 
 /***/ }
 /******/ ]);

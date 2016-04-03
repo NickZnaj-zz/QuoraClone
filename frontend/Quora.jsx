@@ -15,6 +15,9 @@ var Route = require('react-router').Route;
 var IndexRoute = require('react-router').IndexRoute;
 var hashHistory = require('react-router').hashHistory;
 
+var SessionStore = require('./stores/session_store');
+var ApiUtil = require('./util/api_util');
+
 
 var App = React.createClass({
   render: function(){
@@ -32,10 +35,28 @@ var App = React.createClass({
 
 var routes = (
     <Route path='/' component={App}>
-      <IndexRoute component={Main}/>
+      <IndexRoute component={Main} onEnter={_requireLoggedIn}/>
+
       <Route path="questions/:questionId" component={QuestionDetail} />
+
+			<Route path="login" component={LoginForm}/>
     </Route>
+
 );
+
+function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
+		if (!SessionStore.currentUserHasBeenFetched()) {
+			ApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
+		} else {
+			_redirectIfNotLoggedIn();
+		}
+}
+
+function _redirectIfNotLoggedIn() {
+	if (!SessionStore.isLoggedIn()) {
+		replace("/login");
+	}
+}
 
 $( document ).ready(function() {
   ReactDOM.render(
