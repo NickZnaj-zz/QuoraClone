@@ -27184,6 +27184,7 @@
 	var React = __webpack_require__(1);
 	var ApiUtil = __webpack_require__(185);
 	var History = __webpack_require__(194).History;
+	var SessionStore = __webpack_require__(262);
 	
 	var QuestionForm = React.createClass({
 	  displayName: 'QuestionForm',
@@ -27194,7 +27195,9 @@
 	  },
 	
 	  getInitialState: function () {
-	    return { title: '' };
+	    return { title: '',
+	      user_id: SessionStore.currentUser().id
+	    };
 	  },
 	
 	  _onChange: function (e) {
@@ -27207,9 +27210,9 @@
 	
 	  handleSubmit: function (e) {
 	    e.preventDefault();
-	    var title = { title: this.state.title };
+	    // var title = {title: this.state.title};
 	
-	    ApiUtil.createQuestion(title, function (id) {
+	    ApiUtil.createQuestion(this.state, function (id) {
 	      this.context.router.push('/questions/' + id);
 	    }.bind(this));
 	    this.setState(this.blankAttrs);

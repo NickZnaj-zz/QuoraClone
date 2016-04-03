@@ -1,7 +1,7 @@
 var React = require('react');
 var ApiUtil = require('../../util/api_util');
 var History = require('react-router').History;
-
+var SessionStore = require('../../stores/session_store');
 
 var QuestionForm = React.createClass({
 
@@ -10,7 +10,11 @@ var QuestionForm = React.createClass({
   },
 
   getInitialState: function() {
-    return ({title: ''});
+    return (
+			{ title: '',
+			  user_id: SessionStore.currentUser().id
+			}
+		);
   },
 
   _onChange: function(e) {
@@ -23,9 +27,9 @@ var QuestionForm = React.createClass({
 
   handleSubmit: function(e){
     e.preventDefault();
-    var title = {title: this.state.title};
+    // var title = {title: this.state.title};
 
-    ApiUtil.createQuestion(title, function(id) {
+    ApiUtil.createQuestion(this.state, function(id) {
       this.context.router.push('/questions/' + id);
     }.bind(this));
     this.setState(this.blankAttrs);
