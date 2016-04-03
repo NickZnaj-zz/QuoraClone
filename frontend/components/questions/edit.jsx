@@ -22,7 +22,6 @@ var QuestionEdit =  React.createClass({
   },
 
   getInitialState: function () {
-    // debugger
     return { title: this.props.question.title, details: this.props.question.details };
     // return { title: this.state.question.title };
   },

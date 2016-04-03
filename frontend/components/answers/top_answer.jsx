@@ -2,6 +2,7 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 var ApiUtil = require('../../util/api_util.js');
 var AnswerForm = require('../questions/question_index_answer_form');
+var UserStore = require('../../stores/user_store');
 
 
 var TopAnswer = React.createClass({
@@ -17,8 +18,8 @@ var TopAnswer = React.createClass({
 		}
 
 		var displayed = this.props.question.answers[0].body;
-		var userInfo = this.props.question.answers[0].user_id;
-		
+		var userInfo = ApiUtil.fetchSingleUser(this.props.question.answers[0].user_id).username;
+
 
 		return (
 			<div className="top-answer group">

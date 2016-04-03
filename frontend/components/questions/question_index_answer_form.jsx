@@ -28,7 +28,6 @@ var AnswerForm = React.createClass({
 	},
 
 	handleSubmit: function(e){
-		debugger
 		e.preventDefault();
 		var questionId = this.props.question.id;
 

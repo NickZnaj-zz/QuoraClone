@@ -45,7 +45,6 @@ window.initializeApp = function() {
 
 
 function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
-	debugger
 		if (!SessionStore.currentUserHasBeenFetched()) {
 			ApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
 		} else {
