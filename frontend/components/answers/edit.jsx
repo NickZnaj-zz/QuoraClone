@@ -47,7 +47,7 @@ var AnswerEditForm = React.createClass({
 
 				<section className="user-section">
 					<div className="user-info">
-						<img className="user-pic" src="default_profile_pic.png" />
+						<img className="user-pic" />
 						<p>user info here</p>
 					</div>
 				</section>

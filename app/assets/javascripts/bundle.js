@@ -27090,6 +27090,7 @@
 	var ReactDOM = __webpack_require__(158);
 	var PropTypes = React.PropTypes;
 	var ApiUtil = __webpack_require__(185);
+	var SessionStore = __webpack_require__(262);
 	
 	var AnswerForm = React.createClass({
 		displayName: 'AnswerForm',
@@ -27100,11 +27101,14 @@
 	
 		blankAttrs: {
 			body: ''
+	
 		},
 	
 		getInitialState: function () {
 			return {
-				body: '', question_id: this.props.question.id
+				body: '',
+				question_id: this.props.question.id,
+				user_id: SessionStore.currentUser().id
 			};
 		},
 	
@@ -27113,6 +27117,7 @@
 		},
 	
 		handleSubmit: function (e) {
+			debugger;
 			e.preventDefault();
 			var questionId = this.props.question.id;
 	
@@ -27124,6 +27129,7 @@
 		},
 	
 		render: function () {
+			var userName = SessionStore.currentUser().username;
 			return React.createElement(
 				'form',
 				{ className: 'index-answer-form group',
@@ -27136,11 +27142,11 @@
 					React.createElement(
 						'div',
 						{ className: 'index-user-info' },
-						React.createElement('img', { className: 'index-user-pic', src: 'default_profile_pic.png' }),
+						React.createElement('img', { className: 'index-user-pic' }),
 						React.createElement(
 							'p',
-							null,
-							'user info here'
+							{ className: 'index-user-name' },
+							userName
 						)
 					)
 				),
@@ -32714,7 +32720,7 @@
 					React.createElement(
 						'div',
 						{ className: 'user-info' },
-						React.createElement('img', { className: 'user-pic', src: 'default_profile_pic.png' }),
+						React.createElement('img', { className: 'user-pic' }),
 						React.createElement(
 							'p',
 							null,
@@ -32749,6 +32755,7 @@
 	var ReactDOM = __webpack_require__(158);
 	var PropTypes = React.PropTypes;
 	var ApiUtil = __webpack_require__(185);
+	var SessionStore = __webpack_require__(262);
 	
 	var AnswerForm = React.createClass({
 		displayName: 'AnswerForm',
@@ -32763,7 +32770,9 @@
 	
 		getInitialState: function () {
 			return {
-				body: '', question_id: this.props.question.id
+				body: '',
+				question_id: this.props.question.id,
+				user_id: SessionStore.currentUser().id
 			};
 		},
 	
@@ -32772,6 +32781,7 @@
 		},
 	
 		handleSubmit: function (e) {
+			debugger;
 			e.preventDefault();
 			var questionId = this.props.question.id;
 	
@@ -32795,7 +32805,7 @@
 					React.createElement(
 						'div',
 						{ className: 'user-info' },
-						React.createElement('img', { className: 'user-pic', src: 'default_profile_pic.png' }),
+						React.createElement('img', { className: 'user-pic' }),
 						React.createElement(
 							'p',
 							null,

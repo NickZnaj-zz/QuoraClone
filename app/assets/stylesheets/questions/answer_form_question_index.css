@@ -6,7 +6,7 @@
 }
 
 .index-user-section {
-	margin: 0;
+	
 	background: #f6f6f6;
 
 }
@@ -48,16 +48,6 @@
 	text-decoration: none;
 	margin: 13px 10px 0 0;
 	float: right;
-}
-
-.index-user-pic {
-	float:left;
-	margin-right: 10px;
-	background:  lightblue;
-	width: 58px;
-	height: 58px;
-	border: 1px solid rebeccapurple;
-	border-radius: 50%;
 }
 
 .index-user-info {

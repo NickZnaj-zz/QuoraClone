@@ -2,6 +2,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var PropTypes = React.PropTypes;
 var ApiUtil = require('../../util/api_util.js');
+var SessionStore = require('../../stores/session_store');
+
 
 var AnswerForm = React.createClass({
 	contextTypes: {
@@ -9,12 +11,15 @@ var AnswerForm = React.createClass({
 	},
 
 	blankAttrs: {
-		body: ''
+		body: '',
+
 	},
 
 	getInitialState: function() {
 		return {
-			body: '', question_id: this.props.question.id
+			body: '',
+			question_id: this.props.question.id,
+			user_id: SessionStore.currentUser().id
 		};
 	},
 
@@ -23,6 +28,7 @@ var AnswerForm = React.createClass({
 	},
 
 	handleSubmit: function(e){
+		debugger
 		e.preventDefault();
 		var questionId = this.props.question.id;
 
@@ -34,6 +40,7 @@ var AnswerForm = React.createClass({
 	},
 
 	render: function() {
+		var userName = SessionStore.currentUser().username;
 		return (
 				<form className="index-answer-form group"
 							onSubmit={this.handleSubmit}
@@ -42,8 +49,8 @@ var AnswerForm = React.createClass({
 
 					<section className="index-user-section">
 						<div className="index-user-info">
-							<img className="index-user-pic" src="default_profile_pic.png" />
-							<p>user info here</p>
+							<img className="index-user-pic"  />
+							<p className="index-user-name">{userName}</p>
 						</div>
 					</section>
 

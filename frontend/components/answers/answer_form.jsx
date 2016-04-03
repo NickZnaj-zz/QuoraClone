@@ -2,6 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var PropTypes = React.PropTypes;
 var ApiUtil = require('../../util/api_util.js');
+var SessionStore = require('../../stores/session_store');
 
 var AnswerForm = React.createClass({
 	contextTypes: {
@@ -14,7 +15,9 @@ var AnswerForm = React.createClass({
 
 	getInitialState: function() {
 		return {
-			body: '', question_id: this.props.question.id
+			body: '',
+			question_id: this.props.question.id,
+			user_id: SessionStore.currentUser().id
 		};
 	},
 
@@ -23,6 +26,7 @@ var AnswerForm = React.createClass({
 	},
 
 	handleSubmit: function(e){
+		debugger
 		e.preventDefault();
 		var questionId = this.props.question.id;
 
@@ -42,7 +46,7 @@ var AnswerForm = React.createClass({
 
 					<section className="user-section">
 						<div className="user-info">
-							<img className="user-pic" src="default_profile_pic.png" />
+							<img className="user-pic" />
 							<p>user info here</p>
 						</div>
 					</section>

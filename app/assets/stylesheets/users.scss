@@ -1,3 +1,23 @@
 // Place all the styles related to the users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.index-user-pic {
+	float:left;
+	margin-right: 10px;
+	background:  lightblue;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	content: asset-url(default_profile_pic);
+}
+
+.user-pic {
+	float:left;
+	margin-right: 10px;
+	background:  lightblue;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	content: asset-url(default_profile_pic);
+}
