@@ -2,6 +2,9 @@ var React = require('react');
 var SessionStore = require('../stores/session_store');
 var ApiUtil = require('../util/api_util');
 
+var RightBar = require('./main/rightbar');
+var Navbar = require('./main/navbar');
+
 var App = React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired
@@ -34,7 +37,11 @@ var App = React.createClass({
       <div>
         {button}
         {welcomeMessage}
-        <h1>Shmora</h1>
+				<NavBar />
+				<div className="main group">
+					<RightBar />
+					{this.props.children}
+				</div>
         {this.props.children}
       </div>
     );

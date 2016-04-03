@@ -9,7 +9,7 @@ var NavBar = require('./components/main/navbar');
 var SideBar = require('./components/main/sidebar');
 var Main = require('./components/main/main');
 var RightBar = require('./components/main/rightbar');
-
+var App = require('./components/App');
 
 var Router = require('react-router').Router;
 var Route = require('react-router').Route;
@@ -20,19 +20,29 @@ var SessionStore = require('./stores/session_store');
 var ApiUtil = require('./util/api_util');
 
 
-var App = React.createClass({
-  render: function(){
-    return (
-      <div>
-        <NavBar />
-        <div className="main group">
-          <RightBar />
-          {this.props.children}
-        </div>
-      </div>
-    );
-  }
-});
+window.initializeApp = function() {
+	ReactDOM.render(
+		<Router history={hashHistory}>
+			{routes}
+		</Router>,
+		document.getElementById('content')
+	);
+
+};
+
+// var App = React.createClass({
+//   render: function(){
+//     return (
+//       <div>
+//         <NavBar />
+//         <div className="main group">
+//           <RightBar />
+//           {this.props.children}
+//         </div>
+//       </div>
+//     );
+//   }
+// });
 
 var routes = (
     <Route path='/' component={App}>
@@ -59,9 +69,5 @@ function _redirectIfNotLoggedIn() {
 	}
 }
 
-$( document ).ready(function() {
-  ReactDOM.render(
-    <Router history={hashHistory}>{routes}</Router>,
-    document.getElementById('content')
-  );
-});
+// $( document ).ready(function() {
+// });

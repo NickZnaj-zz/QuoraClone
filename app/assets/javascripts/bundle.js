@@ -55,6 +55,7 @@
 	var SideBar = __webpack_require__(258);
 	var Main = __webpack_require__(259);
 	var RightBar = __webpack_require__(260);
+	var App = __webpack_require__(263);
 	
 	var Router = __webpack_require__(194).Router;
 	var Route = __webpack_require__(194).Route;
@@ -64,53 +65,52 @@
 	var SessionStore = __webpack_require__(261);
 	var ApiUtil = __webpack_require__(185);
 	
-	var App = React.createClass({
-	  displayName: 'App',
+	window.initializeApp = function () {
+		ReactDOM.render(React.createElement(
+			Router,
+			{ history: hashHistory },
+			routes
+		), document.getElementById('content'));
+	};
 	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(NavBar, null),
-	      React.createElement(
-	        'div',
-	        { className: 'main group' },
-	        React.createElement(RightBar, null),
-	        this.props.children
-	      )
-	    );
-	  }
-	});
+	// var App = React.createClass({
+	//   render: function(){
+	//     return (
+	//       <div>
+	//         <NavBar />
+	//         <div className="main group">
+	//           <RightBar />
+	//           {this.props.children}
+	//         </div>
+	//       </div>
+	//     );
+	//   }
+	// });
 	
 	var routes = React.createElement(
-	  Route,
-	  { path: '/', component: App },
-	  React.createElement(IndexRoute, { component: Main, onEnter: _requireLoggedIn }),
-	  React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail }),
-	  React.createElement(Route, { path: 'login', component: LoginForm })
+		Route,
+		{ path: '/', component: App },
+		React.createElement(IndexRoute, { component: Main, onEnter: _requireLoggedIn }),
+		React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail }),
+		React.createElement(Route, { path: 'login', component: LoginForm })
 	);
 	
 	function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
-	  if (!SessionStore.currentUserHasBeenFetched()) {
-	    ApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
-	  } else {
-	    _redirectIfNotLoggedIn();
-	  }
+		if (!SessionStore.currentUserHasBeenFetched()) {
+			ApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
+		} else {
+			_redirectIfNotLoggedIn();
+		}
 	}
 	
 	function _redirectIfNotLoggedIn() {
-	  if (!SessionStore.isLoggedIn()) {
-	    replace("/login");
-	  }
+		if (!SessionStore.isLoggedIn()) {
+			replace("/login");
+		}
 	}
 	
-	$(document).ready(function () {
-	  ReactDOM.render(React.createElement(
-	    Router,
-	    { history: hashHistory },
-	    routes
-	  ), document.getElementById('content'));
-	});
+	// $( document ).ready(function() {
+	// });
 
 /***/ },
 /* 1 */
@@ -32945,6 +32945,83 @@
 
 	var Dispatcher = __webpack_require__(180).Dispatcher;
 	module.exports = new Dispatcher();
+
+/***/ },
+/* 263 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var SessionStore = __webpack_require__(261);
+	var ApiUtil = __webpack_require__(185);
+	
+	var RightBar = __webpack_require__(260);
+	var Navbar = __webpack_require__(257);
+	
+	var App = React.createClass({
+	  displayName: 'App',
+	
+	  contextTypes: {
+	    router: React.PropTypes.object.isRequired
+	  },
+	
+	  getInitialState: function () {
+	    return {
+	      currentUser: null
+	    };
+	  },
+	
+	  componentDidMount: function () {
+	    this.sessionStoreToken = SessionStore.addListener(this.handleChange);
+	    this.handleChange();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.sessionStoreToken.remove();
+	  },
+	
+	  render: function () {
+	    var button, welcomeMessage;
+	
+	    if (this.state.currentUser) {
+	      button = React.createElement(
+	        'button',
+	        { onClick: ApiUtil.logout },
+	        'Logout'
+	      );
+	      welcomeMessage = React.createElement(
+	        'h2',
+	        null,
+	        'Shmora welcomes you, ',
+	        this.state.currentUser.name
+	      );
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      null,
+	      button,
+	      welcomeMessage,
+	      React.createElement(NavBar, null),
+	      React.createElement(
+	        'div',
+	        { className: 'main group' },
+	        React.createElement(RightBar, null),
+	        this.props.children
+	      ),
+	      this.props.children
+	    );
+	  },
+	
+	  handleChange: function () {
+	    if (SessionStore.isLoggedIn()) {
+	      this.setState({ currentUser: SessionStore.currentUser() });
+	    } else {
+	      this.context.router.push("/login");
+	    }
+	  }
+	});
+	
+	module.exports = App;
 
 /***/ }
 /******/ ]);
