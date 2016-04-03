@@ -1,15 +1,23 @@
 var QuestionActions = require('../actions/question_actions');
 var AnswerActions = require('../actions/answer_actions');
 var SessionActions = require('../actions/session_actions');
+var UserActions = require('../actions/user_actions');
 
 var ApiUtil = {
 
-	fetchSingleQuestion: function(id) {
+	fetchSingleUser: function(id) {
 		$.ajax({
 			type: "GET",
-			url: ""
-		})
-	}
+			url: "/users/" + id,
+			dataType: "json",
+			success: function(user) {
+				UserActions.receiveSingleUser(user);
+			},
+			error: function(e) {
+				console.log("api_util#fetchSingleUser error");
+			}
+		});
+	},
 
 	signUp: function(credentials, callback) {
 		$.ajax({
