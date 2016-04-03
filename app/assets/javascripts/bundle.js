@@ -67,6 +67,14 @@
 	var SessionStore = __webpack_require__(262);
 	var ApiUtil = __webpack_require__(185);
 	
+	var routes = React.createElement(
+		Route,
+		{ path: '/', component: App },
+		React.createElement(IndexRoute, { component: Main }),
+		React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail }),
+		React.createElement(Route, { path: 'login', component: LoginForm })
+	);
+	
 	window.initializeApp = function () {
 		ReactDOM.render(React.createElement(
 			Router,
@@ -89,20 +97,13 @@
 	//   }
 	// });
 	
-	var routes = React.createElement(
-		Route,
-		{ path: '/', component: App },
-		React.createElement(IndexRoute, { component: Main, onEnter: _requireLoggedIn }),
-		React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail }),
-		React.createElement(Route, { path: 'login', component: LoginForm })
-	);
-	
 	function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
 		if (!SessionStore.currentUserHasBeenFetched()) {
 			ApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
 		} else {
 			_redirectIfNotLoggedIn();
 		}
+		asyncCompletionCallback();
 	}
 	
 	function _redirectIfNotLoggedIn() {
@@ -26614,7 +26615,7 @@
 	var Store = __webpack_require__(161).Store;
 	var Dispatcher = __webpack_require__(179);
 	
-	var AnswerStore = new Store('Dispatcher');
+	var AnswerStore = new Store(Dispatcher);
 	var AnswerConstants = __webpack_require__(184);
 	var _answers = {};
 	
@@ -32915,7 +32916,7 @@
 	var ApiUtil = __webpack_require__(185);
 	
 	var RightBar = __webpack_require__(260);
-	var Navbar = __webpack_require__(257);
+	var NavBar = __webpack_require__(257);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -32926,7 +32927,7 @@
 	
 	  getInitialState: function () {
 	    return {
-	      currentUser: null
+	      currentUser: { name: "joe" }
 	    };
 	  },
 	
@@ -32967,11 +32968,10 @@
 	        { className: 'main group' },
 	        React.createElement(RightBar, null),
 	        this.props.children
-	      ),
-	      this.props.children
+	      )
 	    );
 	  },
-	
+	  //
 	  handleChange: function () {
 	    if (SessionStore.isLoggedIn()) {
 	      this.setState({ currentUser: SessionStore.currentUser() });

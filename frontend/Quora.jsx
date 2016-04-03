@@ -21,6 +21,16 @@ var LoginForm = require('./components/login_form');
 var SessionStore = require('./stores/session_store');
 var ApiUtil = require('./util/api_util');
 
+var routes = (
+	<Route path='/' component={App} >
+		<IndexRoute component={Main} />
+
+		<Route path="questions/:questionId" component={QuestionDetail} />
+
+		<Route path="login" component={LoginForm}/>
+	</Route>
+
+);
 
 window.initializeApp = function() {
 	ReactDOM.render(
@@ -46,16 +56,6 @@ window.initializeApp = function() {
 //   }
 // });
 
-var routes = (
-    <Route path='/' component={App}>
-      <IndexRoute component={Main} onEnter={_requireLoggedIn}/>
-
-      <Route path="questions/:questionId" component={QuestionDetail} />
-
-			<Route path="login" component={LoginForm}/>
-    </Route>
-
-);
 
 function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
 		if (!SessionStore.currentUserHasBeenFetched()) {
@@ -63,6 +63,7 @@ function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
 		} else {
 			_redirectIfNotLoggedIn();
 		}
+		asyncCompletionCallback();
 }
 
 function _redirectIfNotLoggedIn() {

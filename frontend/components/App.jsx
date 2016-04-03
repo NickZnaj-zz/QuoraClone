@@ -3,7 +3,7 @@ var SessionStore = require('../stores/session_store');
 var ApiUtil = require('../util/api_util');
 
 var RightBar = require('./main/rightbar');
-var Navbar = require('./main/navbar');
+var NavBar = require('./main/navbar');
 
 var App = React.createClass({
   contextTypes: {
@@ -12,7 +12,7 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      currentUser: null
+      currentUser: {name: "joe"}
     };
   },
 
@@ -42,11 +42,10 @@ var App = React.createClass({
 					<RightBar />
 					{this.props.children}
 				</div>
-        {this.props.children}
       </div>
     );
   },
-
+	//
   handleChange: function() {
     if (SessionStore.isLoggedIn()) {
       this.setState({ currentUser: SessionStore.currentUser() });

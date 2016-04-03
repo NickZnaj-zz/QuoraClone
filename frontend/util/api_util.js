@@ -39,7 +39,7 @@ var ApiUtil = {
       complete: function() {
         completion && completion();
       }
-    })
+    });
   },
 
   fetchAllQuestions: function() {
