@@ -84,6 +84,7 @@
 	};
 	
 	function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
+		debugger;
 		if (!SessionStore.currentUserHasBeenFetched()) {
 			ApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
 		} else {
@@ -27059,19 +27060,23 @@
 				);
 			}
 	
+			var displayed = this.props.question.answers[0].body;
+			var userInfo = this.props.question.answers[0].user_id;
+	
 			return React.createElement(
 				'div',
 				{ className: 'top-answer group' },
 				React.createElement(
 					'div',
 					{ className: 'top-answer-user-info' },
-					' USER INFO APPEARS HERE'
+					' ',
+					userInfo
 				),
 				React.createElement(
 					'div',
 					{ className: 'top-answer-body' },
 					'top answer: ',
-					this.props.question.answers[0].body
+					displayed
 				)
 			);
 		}

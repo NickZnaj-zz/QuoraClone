@@ -14,13 +14,16 @@ var TopAnswer = React.createClass({
 				<div>This question hasn't been answered!</div>
 			</div>
 			);
-
 		}
+
+		var displayed = this.props.question.answers[0].body;
+		var userInfo = this.props.question.answers[0].user_id;
+		
 
 		return (
 			<div className="top-answer group">
-				<div className="top-answer-user-info"> USER INFO APPEARS HERE</div>
-				<div className="top-answer-body">top answer: {this.props.question.answers[0].body}</div>
+				<div className="top-answer-user-info"> {userInfo}</div>
+				<div className="top-answer-body">top answer: {displayed}</div>
 			</div>
 		);
 	}
