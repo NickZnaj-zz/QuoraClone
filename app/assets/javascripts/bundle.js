@@ -55,14 +55,16 @@
 	var SideBar = __webpack_require__(258);
 	var Main = __webpack_require__(259);
 	var RightBar = __webpack_require__(260);
-	var App = __webpack_require__(263);
+	var App = __webpack_require__(261);
 	
 	var Router = __webpack_require__(194).Router;
 	var Route = __webpack_require__(194).Route;
 	var IndexRoute = __webpack_require__(194).IndexRoute;
 	var hashHistory = __webpack_require__(194).hashHistory;
 	
-	var SessionStore = __webpack_require__(261);
+	var LoginForm = __webpack_require__(263);
+	
+	var SessionStore = __webpack_require__(262);
 	var ApiUtil = __webpack_require__(185);
 	
 	window.initializeApp = function () {
@@ -19771,9 +19773,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(161).Store;
-	var Dispatcher = __webpack_require__(262);
+	var Dispatcher = __webpack_require__(179);
 	
-	var QuestionStore = new Store(AppDispatcher);
+	var QuestionStore = new Store(Dispatcher);
 	var QuestionConstants = __webpack_require__(182);
 	var _questions = {};
 	
@@ -26335,7 +26337,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 179 */,
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(180).Dispatcher;
+	module.exports = new Dispatcher();
+
+/***/ },
 /* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -26604,9 +26612,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(161).Store;
-	var Dispatcher = __webpack_require__(262);
+	var Dispatcher = __webpack_require__(179);
 	
-	var AnswerStore = new Store(AppDispatcher);
+	var AnswerStore = new Store('Dispatcher');
 	var AnswerConstants = __webpack_require__(184);
 	var _answers = {};
 	
@@ -26841,7 +26849,7 @@
 /* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Dispatcher = __webpack_require__(262),
+	var Dispatcher = __webpack_require__(179),
 	    QuestionConstants = __webpack_require__(182);
 	
 	var QuestionActions = {
@@ -26880,7 +26888,7 @@
 /* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Dispatcher = __webpack_require__(262),
+	var Dispatcher = __webpack_require__(179),
 	    AnswerConstants = __webpack_require__(184);
 	
 	var AnswerActions = {
@@ -26920,7 +26928,7 @@
 /* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Dispatcher = __webpack_require__(262),
+	var Dispatcher = __webpack_require__(179),
 	    SessionConstants = __webpack_require__(189);
 	
 	var SessionActions = {
@@ -32902,56 +32910,8 @@
 /* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Store = __webpack_require__(161).Store;
-	var SessionConstants = __webpack_require__(189);
-	var Dispatcher = __webpack_require__(262);
-	
-	var SessionStore = new Store(Dispatcher);
-	
-	var _currentUser;
-	var _currentUserHasBeenFetched = false;
-	
-	SessionStore.currentUser = function () {
-	  return _currentUser;
-	};
-	
-	SessionStore.isLoggedIn = function () {
-	  return !!_currentUser;
-	};
-	
-	SessionStore.currentUserHasBeenFetched = function () {
-	  return _currentUserHasBeenFetched;
-	};
-	
-	SessionStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case SessionConstants.CURRENT_USER_RECEIVED:
-	      _currentUser = payload.currentUser;
-	      _currentUserHasBeenFetched = true;
-	      SessionStore.__emitChange();
-	      break;
-	    case SessionConstants.LOGOUT:
-	      _currentUser = null;
-	      SessionStore.__emitChange();
-	      break;
-	  }
-	};
-	
-	module.exports = SessionStore;
-
-/***/ },
-/* 262 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(180).Dispatcher;
-	module.exports = new Dispatcher();
-
-/***/ },
-/* 263 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var React = __webpack_require__(1);
-	var SessionStore = __webpack_require__(261);
+	var SessionStore = __webpack_require__(262);
 	var ApiUtil = __webpack_require__(185);
 	
 	var RightBar = __webpack_require__(260);
@@ -33022,6 +32982,123 @@
 	});
 	
 	module.exports = App;
+
+/***/ },
+/* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(161).Store;
+	var SessionConstants = __webpack_require__(189);
+	var Dispatcher = __webpack_require__(179);
+	
+	var SessionStore = new Store(Dispatcher);
+	
+	var _currentUser;
+	var _currentUserHasBeenFetched = false;
+	
+	SessionStore.currentUser = function () {
+	  return _currentUser;
+	};
+	
+	SessionStore.isLoggedIn = function () {
+	  return !!_currentUser;
+	};
+	
+	SessionStore.currentUserHasBeenFetched = function () {
+	  return _currentUserHasBeenFetched;
+	};
+	
+	SessionStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case SessionConstants.CURRENT_USER_RECEIVED:
+	      _currentUser = payload.currentUser;
+	      _currentUserHasBeenFetched = true;
+	      SessionStore.__emitChange();
+	      break;
+	    case SessionConstants.LOGOUT:
+	      _currentUser = null;
+	      SessionStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = SessionStore;
+
+/***/ },
+/* 263 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ApiUtil = __webpack_require__(185);
+	
+	var LoginForm = React.createClass({
+	  displayName: 'LoginForm',
+	
+	  contextTypes: {
+	    router: React.PropTypes.object.isRequired
+	  },
+	
+	  getInitialState: function () {
+	    return {
+	      email: "",
+	      password: ""
+	    };
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h1',
+	        null,
+	        'Log in'
+	      ),
+	      React.createElement(
+	        'form',
+	        { onSubmit: this.handleSubmit },
+	        React.createElement(
+	          'label',
+	          { htmlFor: 'email' },
+	          'Name'
+	        ),
+	        React.createElement('input', { onChange: this._onNameChange, type: 'text', value: this.state.email }),
+	        React.createElement(
+	          'label',
+	          { htmlFor: 'password' },
+	          'Password'
+	        ),
+	        React.createElement('input', { onChange: this._onPasswordChange, type: 'password', value: this.state.password }),
+	        React.createElement(
+	          'button',
+	          null,
+	          'Submit'
+	        )
+	      )
+	    );
+	  },
+	
+	  handleSubmit: function (e) {
+	    e.preventDefault();
+	
+	    var router = this.context.router;
+	
+	    ApiUtil.login(this.state, function () {
+	      router.push("/posts");
+	    });
+	  },
+	
+	  _onNameChange: function (e) {
+	    this.setState({ email: e.currentTarget.value });
+	  },
+	
+	  _onPasswordChange: function (e) {
+	    this.setState({ password: e.currentTarget.value });
+	  }
+	
+	});
+	
+	module.exports = LoginForm;
 
 /***/ }
 /******/ ]);

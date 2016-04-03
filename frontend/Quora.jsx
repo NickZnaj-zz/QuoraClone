@@ -16,6 +16,8 @@ var Route = require('react-router').Route;
 var IndexRoute = require('react-router').IndexRoute;
 var hashHistory = require('react-router').hashHistory;
 
+var LoginForm = require('./components/login_form');
+
 var SessionStore = require('./stores/session_store');
 var ApiUtil = require('./util/api_util');
 
