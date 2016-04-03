@@ -4,6 +4,13 @@ var SessionActions = require('../actions/session_actions');
 
 var ApiUtil = {
 
+	fetchSingleQuestion: function(id) {
+		$.ajax({
+			type: "GET",
+			url: ""
+		})
+	}
+
 	signUp: function(credentials, callback) {
 		$.ajax({
 			type: "POST",

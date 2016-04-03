@@ -65,7 +65,7 @@
 	var LoginForm = __webpack_require__(263);
 	
 	var SessionStore = __webpack_require__(262);
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./util/api_util\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	var routes = React.createElement(
 		Router,
@@ -19728,7 +19728,7 @@
 	var QuestionStore = __webpack_require__(160);
 	var AnswerStore = __webpack_require__(183);
 	
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var IndexItem = __webpack_require__(190);
 	var QuestionForm = __webpack_require__(193);
 	
@@ -26677,292 +26677,10 @@
 	};
 
 /***/ },
-/* 185 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var QuestionActions = __webpack_require__(186);
-	var AnswerActions = __webpack_require__(187);
-	var SessionActions = __webpack_require__(188);
-	
-	var ApiUtil = {
-	
-	  signUp: function (credentials, callback) {
-	    $.ajax({
-	      type: "POST",
-	      url: "/users",
-	      dataType: "json",
-	      data: { user: credentials },
-	      success: function (newUser) {
-	        SessionActions.currentUserReceived(newUser);
-	        callback && callback();
-	      }
-	    });
-	  },
-	
-	  login: function (credentials, callback) {
-	    $.ajax({
-	      type: "POST",
-	      url: "/api/session",
-	      dataType: "json",
-	      data: credentials,
-	      success: function (currentUser) {
-	        SessionActions.currentUserReceived(currentUser);
-	        callback && callback();
-	      }
-	    });
-	  },
-	
-	  logout: function () {
-	    $.ajax({
-	      type: "DELETE",
-	      url: "/api/session",
-	      dataType: "json",
-	      success: function () {
-	        SessionActions.logout();
-	      }
-	    });
-	  },
-	
-	  fetchCurrentUser: function (completion) {
-	    $.ajax({
-	      type: "GET",
-	      url: "/api/session",
-	      dataType: "json",
-	      success: function (currentUser) {
-	        SessionActions.currentUserReceived(currentUser);
-	      },
-	      complete: function () {
-	        completion && completion();
-	      }
-	    });
-	  },
-	
-	  fetchAllQuestions: function () {
-	    $.ajax({
-	      type: "GET",
-	      url: "/api/questions",
-	      success: function (questions) {
-	        QuestionActions.receiveAllQuestions(questions);
-	      }
-	    });
-	  },
-	
-	  fetchSingleQuestion: function (id) {
-	    $.ajax({
-	      type: "GET",
-	      url: "/api/questions/" + id,
-	      success: function (question) {
-	        QuestionActions.receiveSingleQuestion(question);
-	      }
-	    });
-	  },
-	
-	  destroyQuestion: function (id, callback) {
-	    $.ajax({
-	      method: "DELETE",
-	      url: "/api/questions/" + id,
-	      success: function (id) {
-	        QuestionActions.destroyQuestion(id);
-	        callback && callback();
-	      }
-	    });
-	  },
-	
-	  createQuestion: function (question, callback) {
-	    $.ajax({
-	      method: "POST",
-	      url: "/api/questions/",
-	      data: { question: question },
-	      success: function (question) {
-	        QuestionActions.receiveSingleQuestion(question);
-	        callback && callback(question.id);
-	      },
-	      error: function (e) {
-	        console.log("api_util#createQuestion");
-	      }
-	    });
-	  },
-	
-	  editQuestion: function (question, newAttrs, callback) {
-	    $.ajax({
-	      method: "PATCH",
-	      url: "/api/questions/" + question.id,
-	      data: { question: newAttrs },
-	      success: function (question) {
-	        QuestionActions.editQuestion(question);
-	        callback && callback(question);
-	      },
-	      error: function (e) {
-	        console.log("api_util#editQuestion error");
-	      }
-	    });
-	  },
-	
-	  fetchAllAnswers: function (id) {
-	    $.ajax({
-	      type: "GET",
-	      url: "/api/questions/" + id + "/answers",
-	      success: function (answers) {
-	        AnswerActions.receiveAllAnswers(answers);
-	      },
-	      error: function (e) {
-	        console.log("api_util#fetchAllAnswers Error");
-	      }
-	    });
-	  },
-	
-	  createAnswer: function (answer, callback) {
-	    $.ajax({
-	      type: "POST",
-	      url: "/api/answers/",
-	      data: { answer: answer },
-	      success: function (answer) {
-	        AnswerActions.receiveSingleAnswer(answer);
-	        callback && callback(answer.id);
-	      },
-	      error: function (e) {
-	        console.log("api_util#createAnswer Error");
-	      }
-	    });
-	  },
-	
-	  destroyAnswer: function (id, callback) {
-	    $.ajax({
-	      type: "DELETE",
-	      url: "/api/answers/" + id,
-	      success: function () {
-	        AnswerActions.destroyAnswer(id);
-	        callback && callback(id);
-	      },
-	      error: function (e) {
-	        console.log("api_util#destroyAnswer Error");
-	      }
-	    });
-	  },
-	
-	  editAnswer: function (answer, newAttrs, callback) {
-	    $.ajax({
-	      method: "PATCH",
-	      url: "/api/answers/" + answer.id,
-	      data: { answer: newAttrs },
-	      success: function (answer) {
-	        AnswerActions.editQuestion(answer);
-	        callback && callback(answer);
-	      },
-	      error: function (e) {
-	        console.log("api_util#editAnswer error");
-	      }
-	    });
-	  }
-	
-	};
-	
-	module.exports = ApiUtil;
-
-/***/ },
-/* 186 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(179),
-	    QuestionConstants = __webpack_require__(182);
-	
-	var QuestionActions = {
-	  receiveAllQuestions: function (questions) {
-	    Dispatcher.dispatch({
-	      actionType: QuestionConstants.QUESTIONS_RECEIVED,
-	      questions: questions
-	    });
-	  },
-	
-	  receiveSingleQuestion: function (question) {
-	    Dispatcher.dispatch({
-	      actionType: QuestionConstants.QUESTION_RECEIVED,
-	      question: question
-	    });
-	  },
-	
-	  destroyQuestion: function (id) {
-	    Dispatcher.dispatch({
-	      actionType: QuestionConstants.QUESTION_DELETED,
-	      id: id
-	    });
-	  },
-	
-	  editQuestion: function (question) {
-	    Dispatcher.dispatch({
-	      actionType: QuestionConstants.QUESTION_EDITED,
-	      question: question
-	    });
-	  }
-	};
-	
-	module.exports = QuestionActions;
-
-/***/ },
-/* 187 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(179),
-	    AnswerConstants = __webpack_require__(184);
-	
-	var AnswerActions = {
-		receiveAllAnswers: function (answers) {
-			Dispatcher.dispatch({
-				actionType: AnswerConstants.ANSWERS_RECEIVED,
-				answers: answers
-			});
-		},
-	
-		receiveSingleAnswer: function (answer) {
-			console.log("hit receiveSingleAnswer");
-			Dispatcher.dispatch({
-				actionType: AnswerConstants.ANSWER_RECEIVED,
-				answer: answer
-			});
-		},
-	
-		destroyAnswer: function (id) {
-			Dispatcher.dispatch({
-				actionType: AnswerConstants.ANSWER_DELETED,
-				id: id
-			});
-		},
-	
-		editQuestion: function (answer) {
-			Dispatcher.dispatch({
-				actionType: AnswerConstants.ANSWER_EDITED,
-				answer: answer
-			});
-		}
-	};
-	
-	module.exports = AnswerActions;
-
-/***/ },
-/* 188 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(179),
-	    SessionConstants = __webpack_require__(189);
-	
-	var SessionActions = {
-		currentUserReceived: function (currentUser) {
-			Dispatcher.dispatch({
-				actionType: SessionConstants.CURRENT_USER_RECEIVED,
-				currentUser: currentUser
-			});
-		},
-	
-		logout: function () {
-			Dispatcher.dispatch({
-				actionType: SessionConstants.LOGOUT
-			});
-		}
-	};
-	
-	module.exports = SessionActions;
-
-/***/ },
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
 /* 189 */
 /***/ function(module, exports) {
 
@@ -26976,7 +26694,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var TopAnswer = __webpack_require__(191);
 	var AnswerForm = __webpack_require__(192);
 	
@@ -27040,7 +26758,7 @@
 
 	var React = __webpack_require__(1);
 	var PropTypes = React.PropTypes;
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var AnswerForm = __webpack_require__(192);
 	
 	var TopAnswer = React.createClass({
@@ -27094,7 +26812,7 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
 	var PropTypes = React.PropTypes;
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var SessionStore = __webpack_require__(262);
 	
 	var AnswerForm = React.createClass({
@@ -27187,7 +26905,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var History = __webpack_require__(194).History;
 	var SessionStore = __webpack_require__(262);
 	
@@ -32316,7 +32034,7 @@
 
 	var React = __webpack_require__(1);
 	var QuestionStore = __webpack_require__(160);
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var QuestionEdit = __webpack_require__(252);
 	var AnswersIndex = __webpack_require__(253);
 	var AnswerForm = __webpack_require__(256);
@@ -32444,7 +32162,7 @@
 
 	var React = __webpack_require__(1);
 	var QuestionStore = __webpack_require__(160);
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var QuestionDetail = __webpack_require__(251);
 	
 	var QuestionEdit = React.createClass({
@@ -32531,7 +32249,7 @@
 	var React = __webpack_require__(1);
 	var AnswerStore = __webpack_require__(183);
 	var IndexItem = __webpack_require__(254);
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	var AnswersIndex = React.createClass({
 	  displayName: 'AnswersIndex',
@@ -32598,7 +32316,7 @@
 
 	var React = __webpack_require__(1);
 	var AnswerEditForm = __webpack_require__(255);
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	var IndexItem = React.createClass({
 		displayName: 'IndexItem',
@@ -32678,7 +32396,7 @@
 	var React = __webpack_require__(1);
 	var PropTypes = React.PropTypes;
 	var AnswerStore = __webpack_require__(183);
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	var AnswerEditForm = React.createClass({
 		displayName: 'AnswerEditForm',
@@ -32762,7 +32480,7 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
 	var PropTypes = React.PropTypes;
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../util/api_util.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var SessionStore = __webpack_require__(262);
 	
 	var AnswerForm = React.createClass({
@@ -32943,7 +32661,7 @@
 
 	var React = __webpack_require__(1);
 	var SessionStore = __webpack_require__(262);
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../util/api_util\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	var RightBar = __webpack_require__(260);
 	var NavBar = __webpack_require__(257);
@@ -33069,7 +32787,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../util/api_util\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var SignUpForm = __webpack_require__(264);
 	
 	var LoginForm = React.createClass({
@@ -33164,7 +32882,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ApiUtil = __webpack_require__(185);
+	var ApiUtil = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../util/api_util\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	var SignUpForm = React.createClass({
 	  displayName: 'SignUpForm',
