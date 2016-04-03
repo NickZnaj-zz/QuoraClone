@@ -4,6 +4,7 @@ var ApiUtil = require('../util/api_util');
 
 var RightBar = require('./main/rightbar');
 var NavBar = require('./main/navbar');
+var LoginForm = require('./login_form');
 
 var App = React.createClass({
   contextTypes: {
@@ -12,7 +13,7 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      currentUser: {name: ""}
+      // currentUser: {name: ""}
     };
   },
 
@@ -30,14 +31,17 @@ var App = React.createClass({
 
     if (this.state.currentUser) {
       button = <button onClick={ApiUtil.logout}>Logout</button>;
-      welcomeMessage = <h2>Shmora welcomes you, {this.state.currentUser.username}</h2>;
-    }
+      welcomeMessage = <h2 className="welcome-message">Shmora welcomes you, {this.state.currentUser.username}</h2>;
+    } else {
+			var loginForm = <LoginForm />;
+			return <div>{loginForm}</div>;
+		}
 
     return (
       <div>
-        {button}
-        {welcomeMessage}
 				<NavBar />
+				{button}
+				{welcomeMessage}
 				<div className="main group">
 					<RightBar />
 					{this.props.children}

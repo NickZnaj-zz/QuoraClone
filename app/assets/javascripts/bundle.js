@@ -68,19 +68,19 @@
 	var ApiUtil = __webpack_require__(185);
 	
 	var routes = React.createElement(
-		Route,
-		{ path: '/', component: App },
-		React.createElement(IndexRoute, { component: Main, onEnter: _requireLoggedIn }),
-		React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail }),
+		Router,
+		{ history: hashHistory },
+		React.createElement(
+			Route,
+			{ path: '/', component: App, onEnter: _requireLoggedIn },
+			React.createElement(IndexRoute, { component: Main }),
+			React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail })
+		),
 		React.createElement(Route, { path: 'login', component: LoginForm })
 	);
 	
 	window.initializeApp = function () {
-		ReactDOM.render(React.createElement(
-			Router,
-			{ history: hashHistory },
-			routes
-		), document.getElementById('content'));
+		ReactDOM.render(routes, document.getElementById('content'));
 	};
 	
 	function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
@@ -32929,6 +32929,7 @@
 	
 	var RightBar = __webpack_require__(260);
 	var NavBar = __webpack_require__(257);
+	var LoginForm = __webpack_require__(263);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -32939,7 +32940,7 @@
 	
 	  getInitialState: function () {
 	    return {
-	      currentUser: { name: "" }
+	      // currentUser: {name: ""}
 	    };
 	  },
 	
@@ -32963,18 +32964,25 @@
 	      );
 	      welcomeMessage = React.createElement(
 	        'h2',
-	        null,
+	        { className: 'welcome-message' },
 	        'Shmora welcomes you, ',
 	        this.state.currentUser.username
+	      );
+	    } else {
+	      var loginForm = React.createElement(LoginForm, null);
+	      return React.createElement(
+	        'div',
+	        null,
+	        loginForm
 	      );
 	    }
 	
 	    return React.createElement(
 	      'div',
 	      null,
+	      React.createElement(NavBar, null),
 	      button,
 	      welcomeMessage,
-	      React.createElement(NavBar, null),
 	      React.createElement(
 	        'div',
 	        { className: 'main group' },
@@ -33033,6 +33041,8 @@
 	      break;
 	  }
 	};
+	
+	window.SessionStore = SessionStore;
 	
 	module.exports = SessionStore;
 

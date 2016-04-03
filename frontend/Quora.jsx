@@ -22,21 +22,22 @@ var SessionStore = require('./stores/session_store');
 var ApiUtil = require('./util/api_util');
 
 var routes = (
-	<Route path='/' component={App} >
-		<IndexRoute component={Main} onEnter={_requireLoggedIn}/>
+	<Router history={hashHistory}>
+		<Route path='/' component={App} onEnter={_requireLoggedIn} >
+			<IndexRoute component={Main} />
 
-		<Route path="questions/:questionId" component={QuestionDetail} />
+			<Route path="questions/:questionId" component={QuestionDetail} />
 
+		</Route>
 		<Route path="login" component={LoginForm}/>
-	</Route>
-
+	</Router>
 );
+
+
 
 window.initializeApp = function() {
 	ReactDOM.render(
-		<Router history={hashHistory}>
-			{routes}
-		</Router>,
+		routes,
 		document.getElementById('content')
 	);
 
