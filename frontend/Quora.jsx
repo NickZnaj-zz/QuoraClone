@@ -2,6 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 
 var content = document.getElementById('content');
+
 var QuestionsIndex = require('./components/questions/index');
 var QuestionDetail = require('./components/questions/detail');
 var NavBar = require('./components/main/navbar');

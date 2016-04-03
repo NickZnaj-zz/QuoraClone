@@ -1,4 +1,4 @@
-var Dispatcher = require('../dispatcher/dispatcher'),
+var Dispatcher = require('../dispatcher/Dispatcher'),
     AnswerConstants = require('../constants/answer_constants');
 
 var AnswerActions = {

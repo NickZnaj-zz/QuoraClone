@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
 		resources :answers, except: [:index]
 
-		resource :session, :only: [:show, :create, :destroy]
+		resource :session, only: [:show, :create, :destroy]
   end
   root "static_pages#root"
 end

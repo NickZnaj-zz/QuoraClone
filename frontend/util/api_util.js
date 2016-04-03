@@ -1,7 +1,47 @@
 var QuestionActions = require('../actions/question_actions');
 var AnswerActions = require('../actions/answer_actions');
+var SessionActions = require('../actions/session_actions');
 
 var ApiUtil = {
+
+	login: function(credentials, callback) {
+    $.ajax({
+      type: "POST",
+      url: "/api/session",
+      dataType: "json",
+      data: credentials,
+      success: function(currentUser) {
+        SessionActions.currentUserReceived(currentUser);
+        callback && callback();
+      }
+    });
+  },
+
+  logout: function() {
+    $.ajax({
+      type: "DELETE",
+      url: "/api/session",
+      dataType: "json",
+      success: function() {
+        SessionActions.logout();
+      }
+    });
+  },
+
+  fetchCurrentUser: function(completion) {
+    $.ajax({
+      type: "GET",
+      url: "/api/session",
+      dataType: "json",
+      success: function(currentUser) {
+        SessionActions.currentUserReceived(currentUser);
+      },
+      complete: function() {
+        completion && completion();
+      }
+    })
+  },
+
   fetchAllQuestions: function() {
     $.ajax({
       type: "GET",
@@ -69,7 +109,7 @@ var ApiUtil = {
       url: "/api/questions/" + id + "/answers",
       success: function(answers) {
         AnswerActions.receiveAllAnswers(answers);
-				
+
       },
 			error: function(e) {
 				console.log("api_util#fetchAllAnswers Error");
