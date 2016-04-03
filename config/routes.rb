@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-	resources :users, only: [:new, :create, :edit, :update]
+	resources :users, only: [:new, :create, :edit, :update, :show]
 
   namespace :api, defaults: {format: :json} do
     resources :questions do
