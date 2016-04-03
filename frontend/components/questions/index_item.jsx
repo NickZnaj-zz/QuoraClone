@@ -19,7 +19,8 @@ var IndexItem = React.createClass({
 
   render: function() {
 		var answerButton;
-		if (this.props.question.answers.length === 0) {
+		if (this.props.question.answers &&
+			  this.props.question.answers.length === 0) {
 			answerButton =
 			<input type="button"
 				onClick={this.startAnswer}

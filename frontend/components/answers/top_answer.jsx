@@ -7,7 +7,9 @@ var AnswerForm = require('../questions/question_index_answer_form');
 var TopAnswer = React.createClass({
 
 	render: function() {
-		if (this.props.question.answers.length === 0) {
+		debugger
+		if (this.props.question.answers &&
+				(this.props.question.answers.length === 0)) {
 			return(
 			<div>
 				<div>This question hasn't been answered!</div>
