@@ -5,40 +5,38 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-
-Question.create!(
-  title: "can you see me?",
-  user_id: 1
-)
-
-Question.create!(
-  title: "this is another test, what do you think?",
-	user_id: 1
-)
-
-Question.create!(
-  title: "do you even lift bro?",
-	user_id: 2
-)
-Question.create!(
-  title: "am i doing this right?",
-	user_id: 2
-)
-
-Answer.create!(
-  body: "Sure can bro",
-  question_id: 1
-)
+#
 
 
-Topic.create!(
-	name: "Ruby"
-)
+topics = (1..5).to_a.map do |n|
+	name = Faker::Commerce.department
 
-Topic.create!(
-	name: "Javascript"
-)
+	Topic.create!(
+		name: name
+	)
+end
 
-Topic.create!(
-	name: "React"
-)
+50.times do |n|
+	title = Faker::Lorem.sentence + "?"
+	user_id = rand(1..3)
+
+	question = Question.create!(title: title, user_id: user_id)
+
+	question.topic_ids = (topics[0].id)
+
+
+	question.topic_ids = ([rand(1..topics.size)])
+
+end
+
+40.times do |n|
+	body = Faker::Hacker.say_something_smart
+	user_id = rand(1..3)
+	question_id = rand(1..50)
+
+	answer = Answer.create!(
+	body: body,
+	user_id: user_id,
+	question_id: question_id
+	)
+end
