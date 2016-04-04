@@ -7,7 +7,6 @@ var UserStore = require('../../stores/user_store');
 
 var TopAnswer = React.createClass({
 	getInitialState: function() {
-
 		return {
 			submitter: {}
 		};
@@ -26,7 +25,6 @@ var TopAnswer = React.createClass({
 	componentWillUnmount: function() {
 		this.userListener.remove();
 	},
-
 
 	render: function() {
 		if (!this.props.question.answers ||

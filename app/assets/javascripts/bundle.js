@@ -27095,7 +27095,6 @@
 		displayName: 'TopAnswer',
 	
 		getInitialState: function () {
-	
 			return {
 				submitter: {}
 			};
@@ -32776,6 +32775,7 @@
 	var AnswerEditForm = __webpack_require__(259);
 	var ApiUtil = __webpack_require__(185);
 	var UserStore = __webpack_require__(196);
+	var SessionStore = __webpack_require__(195);
 	
 	var IndexItem = React.createClass({
 		displayName: 'IndexItem',
@@ -32795,7 +32795,11 @@
 	
 		componentDidMount: function () {
 			this.userListener = UserStore.addListener(this._onChange);
-			this.state.submitter.username && ApiUtil.fetchSingleUser(this.props.answer.user_id);
+			ApiUtil.fetchSingleUser(this.props.answer.user_id);
+		},
+	
+		componentWillUnmount: function () {
+			this.userListener.remove();
 		},
 	
 		startEdit: function () {
@@ -32821,6 +32825,18 @@
 				});
 			}
 	
+			var editButton;
+			if (this.state.submitter.id === SessionStore.currentUser().id) {
+				editButton = React.createElement('input', { type: 'submit',
+					value: 'Edit Answer',
+					onClick: this.startEdit });
+			}
+	
+			var deleteButton;
+			if (this.state.submitter.id === SessionStore.currentUser().id) deleteButton = React.createElement('input', { type: 'submit',
+				value: 'Delete Answer',
+				onClick: this.handleDelete });
+	
 			return React.createElement(
 				'li',
 				{ className: 'answer-list-item group' },
@@ -32840,12 +32856,8 @@
 					this.props.answer.body
 				),
 				answerEditForm,
-				React.createElement('input', { type: 'submit',
-					value: 'Edit Answer',
-					onClick: this.startEdit }),
-				React.createElement('input', { type: 'submit',
-					value: 'Delete Answer',
-					onClick: this.handleDelete })
+				editButton,
+				deleteButton
 			);
 		}
 	});

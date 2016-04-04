@@ -2,13 +2,13 @@ var React = require('react');
 var AnswerEditForm = require('./edit');
 var ApiUtil = require('../../util/api_util.js');
 var UserStore = require('../../stores/user_store');
+var SessionStore = require('../../stores/session_store');
 
 
 var IndexItem = React.createClass({
 	contextTypes: {
 		router: React.PropTypes.object.isRequired
 	},
-
 
 	getInitialState: function() {
 		return { isEditing: false, answer: this.props.answer, submitter: {} };
@@ -21,7 +21,11 @@ var IndexItem = React.createClass({
 
 	componentDidMount: function() {
 		this.userListener = UserStore.addListener(this._onChange);
-		this.state.submitter.username && ApiUtil.fetchSingleUser(this.props.answer.user_id);
+		ApiUtil.fetchSingleUser(this.props.answer.user_id);
+	},
+
+	componentWillUnmount: function() {
+		this.userListener.remove();
 	},
 
 	startEdit: function() {
@@ -48,6 +52,19 @@ var IndexItem = React.createClass({
 			/>;
 		}
 
+		var editButton;
+		if (this.state.submitter.id === SessionStore.currentUser().id){
+			editButton = <input type="submit"
+						 							value="Edit Answer"
+						 							onClick={this.startEdit} />;
+		}
+
+		var deleteButton;
+		if (this.state.submitter.id === SessionStore.currentUser().id)
+			deleteButton = <input type="submit"
+						 								value="Delete Answer"
+						 								onClick={this.handleDelete} />;
+
     return (
       <li className="answer-list-item group">
 
@@ -60,15 +77,11 @@ var IndexItem = React.createClass({
           {this.props.answer.body}
         </div>
 
-				{answerEditForm}
+			{answerEditForm}
 
-				<input type="submit"
-							 value="Edit Answer"
-							 onClick={this.startEdit} />
+			{editButton}
 
-				<input type="submit"
-							 value="Delete Answer"
-							 onClick={this.handleDelete} />
+			{deleteButton}
 
       </li>
     );
