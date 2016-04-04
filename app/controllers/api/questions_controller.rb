@@ -1,6 +1,6 @@
 class Api::QuestionsController < ApplicationController
   def index
-    @questions = Question.all.includes(:answers)
+    @questions = Question.all.includes(:answers, :topics)
     render :index
   end
 

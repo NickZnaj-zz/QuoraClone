@@ -32571,6 +32571,7 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'question-show-page group' },
+	      React.createElement(TopicsList, { question: this.state.question }),
 	      React.createElement(
 	        'div',
 	        { className: 'question' },

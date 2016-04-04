@@ -90,6 +90,8 @@ var QuestionDetail =  React.createClass({
     return(
       <div className="question-show-page group" >
 
+				<TopicsList question={this.state.question} />
+
         <div className="question">
           {this.state.question.title}
         </div>

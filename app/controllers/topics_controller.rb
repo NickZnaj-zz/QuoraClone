@@ -1,6 +1,6 @@
 class TopicsController < ApplicationController
 	def index
-		@topics = Topic.all
+		@topics = Topic.all.includes(:questions, :users)
 		render :index
 	end
 

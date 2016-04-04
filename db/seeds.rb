@@ -15,11 +15,7 @@ Question.create!(
   title: "this is another test, what do you think?",
 	user_id: 1
 )
-Question.create!(
-  title: "how is babby formed?",
-	user_id: 1
 
-)
 Question.create!(
   title: "do you even lift bro?",
 	user_id: 2
@@ -34,20 +30,15 @@ Answer.create!(
   question_id: 1
 )
 
-Answer.create!(
-  body: "You're on the wrong site",
-  question_id: 3,
-	user_id: 1
+
+Topic.create!(
+	name: "Ruby"
 )
 
-Answer.create!(
-  body: "idk check yahoo answers",
-  question_id: 3,
-	user_id: 1
-
+Topic.create!(
+	name: "Javascript"
 )
-Answer.create!(
-  body: "They need to do way instain mother> who kill thier babbys. becuse these babby cant frigth back? it was on the news this mroing a mother in ar who had kill her three kids. they are taking the three babby back to new york too lady to rest my pary are with the father who lost his children ; i am truley sorry for your lots",
-  question_id: 3,
-	user_id: 1
+
+Topic.create!(
+	name: "React"
 )
