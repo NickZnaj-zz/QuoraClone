@@ -24,7 +24,7 @@ var ApiUtil = require('./util/api_util');
 var routes = (
 	<Router history={hashHistory}>
 		<Route path='/' component={App} onEnter={_requireLoggedIn} >
-			<IndexRoute component={Main} />
+			<IndexRoute component={Main} onEnter={_requireLoggedIn} />
 
 			<Route path="questions/:questionId" component={QuestionDetail} />
 
@@ -33,8 +33,6 @@ var routes = (
 	</Router>
 );
 
-
-
 window.initializeApp = function() {
 	ReactDOM.render(
 		routes,
@@ -42,7 +40,6 @@ window.initializeApp = function() {
 	);
 
 };
-
 
 function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
 	function _redirectIfNotLoggedIn() {
@@ -57,21 +54,3 @@ function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
 		}
 		asyncCompletionCallback();
 }
-
-
-
-// var App = React.createClass({
-//   render: function(){
-//     return (
-//       <div>
-//         <NavBar />
-//         <div className="main group">
-//           <RightBar />
-//           {this.props.children}
-//         </div>
-//       </div>
-//     );
-//   }
-// });
-// $( document ).ready(function() {
-// });

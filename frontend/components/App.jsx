@@ -13,7 +13,7 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      // currentUser: {name: ""}
+      // currentUser: {}
     };
   },
 
@@ -25,7 +25,7 @@ var App = React.createClass({
   componentWillUnmount: function() {
     this.sessionStoreToken.remove();
   },
-	
+
 	handleChange: function() {
 		if (SessionStore.isLoggedIn()) {
 			this.setState({ currentUser: SessionStore.currentUser() });
@@ -39,7 +39,7 @@ var App = React.createClass({
 
     if (this.state.currentUser) {
       button = <button onClick={ApiUtil.logout}>Logout</button>;
-      welcomeMessage = <h2 className="welcome-message">Shmora welcomes you, {this.state.currentUser.username}</h2>;
+      welcomeMessage = <h2 className="welcome-message">Current User: {this.state.currentUser.username}</h2>;
     } else {
 			var loginForm = <LoginForm />;
 			return <div>{loginForm}</div>;

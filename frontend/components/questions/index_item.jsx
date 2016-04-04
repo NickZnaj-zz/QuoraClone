@@ -22,8 +22,9 @@ var IndexItem = React.createClass({
 		if (this.props.question.answers &&
 			  this.props.question.answers.length === 0) {
 			answerButton =
-			<input type="button"
+			<input type="submit"
 				onClick={this.startAnswer}
+				className="question-index-answer-button"
 				value="Answer!"
 				/>;
 		}

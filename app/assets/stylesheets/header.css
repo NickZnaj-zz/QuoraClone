@@ -50,6 +50,12 @@
    margin-left: 20px;
  }
 
+ .logout-link {
+	 float:right;
+	 background: transparent;
+	 border: none;
+ }
+
  .welcome-message {
 	 margin-top: 60px;
  }

@@ -73,7 +73,7 @@
 		React.createElement(
 			Route,
 			{ path: '/', component: App, onEnter: _requireLoggedIn },
-			React.createElement(IndexRoute, { component: Main }),
+			React.createElement(IndexRoute, { component: Main, onEnter: _requireLoggedIn }),
 			React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail })
 		),
 		React.createElement(Route, { path: 'login', component: LoginForm })
@@ -96,22 +96,6 @@
 		}
 		asyncCompletionCallback();
 	}
-	
-	// var App = React.createClass({
-	//   render: function(){
-	//     return (
-	//       <div>
-	//         <NavBar />
-	//         <div className="main group">
-	//           <RightBar />
-	//           {this.props.children}
-	//         </div>
-	//       </div>
-	//     );
-	//   }
-	// });
-	// $( document ).ready(function() {
-	// });
 
 /***/ },
 /* 1 */
@@ -27061,8 +27045,9 @@
 		render: function () {
 			var answerButton;
 			if (this.props.question.answers && this.props.question.answers.length === 0) {
-				answerButton = React.createElement('input', { type: 'button',
+				answerButton = React.createElement('input', { type: 'submit',
 					onClick: this.startAnswer,
+					className: 'question-index-answer-button',
 					value: 'Answer!'
 				});
 			}
@@ -33024,6 +33009,7 @@
 
 	var React = __webpack_require__(1);
 	var QuestionForm = __webpack_require__(197);
+	var ApiUtil = __webpack_require__(185);
 	
 	var NavBar = React.createClass({
 	  displayName: 'NavBar',
@@ -33040,7 +33026,11 @@
 	          { href: '/#/', className: 'logo' },
 	          'Shmora'
 	        ),
-	        React.createElement(QuestionForm, null)
+	        React.createElement(QuestionForm, null),
+	        React.createElement('input', { type: 'submit',
+	          className: 'logout-link',
+	          value: 'Logout',
+	          onClick: ApiUtil.logout })
 	      )
 	    );
 	  }
@@ -33136,7 +33126,7 @@
 	
 	  getInitialState: function () {
 	    return {
-	      // currentUser: {name: ""}
+	      // currentUser: {}
 	    };
 	  },
 	
@@ -33169,7 +33159,7 @@
 	      welcomeMessage = React.createElement(
 	        'h2',
 	        { className: 'welcome-message' },
-	        'Shmora welcomes you, ',
+	        'Current User: ',
 	        this.state.currentUser.username
 	      );
 	    } else {
