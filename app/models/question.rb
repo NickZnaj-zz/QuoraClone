@@ -1,7 +1,7 @@
 class Question < ActiveRecord::Base
   validates :title, presence: true
-	
-	has_many_and_belongs_to :topics
+
+	has_and_belongs_to_many :topics
   has_many :answers
   belongs_to :user
 
