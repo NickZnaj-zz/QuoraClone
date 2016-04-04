@@ -46,7 +46,7 @@ var AnswerForm = React.createClass({
 					<section className="user-section">
 						<div className="user-info">
 							<img className="user-pic" />
-							<p>user info here</p>
+							<p className="current-user-name">{SessionStore.currentUser().username}</p>
 						</div>
 					</section>
 

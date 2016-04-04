@@ -13,13 +13,13 @@ var App = React.createClass({
 
   getInitialState: function() {
     return {
-      // currentUser: {}
+      // currentUser: ""
     };
   },
 
   componentDidMount: function() {
     this.sessionStoreToken = SessionStore.addListener(this.handleChange);
-    this.handleChange();
+    // this.handleChange();
   },
 
   componentWillUnmount: function() {
@@ -29,8 +29,6 @@ var App = React.createClass({
 	handleChange: function() {
 		if (SessionStore.isLoggedIn()) {
 			this.setState({ currentUser: SessionStore.currentUser() });
-		} else {
-			this.context.router.push("/login");
 		}
 	},
 

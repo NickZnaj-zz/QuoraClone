@@ -76,7 +76,7 @@
 			React.createElement(IndexRoute, { component: Main, onEnter: _requireLoggedIn }),
 			React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail })
 		),
-		React.createElement(Route, { path: 'login', component: LoginForm })
+		React.createElement(Route, { path: '/login', component: LoginForm })
 	);
 	
 	window.initializeApp = function () {
@@ -26730,6 +26730,7 @@
 	        SessionActions.currentUserReceived(currentUser);
 	      },
 	      complete: function () {
+	        debugger;
 	        completion && completion();
 	      }
 	    });
@@ -32979,8 +32980,8 @@
 						React.createElement('img', { className: 'user-pic' }),
 						React.createElement(
 							'p',
-							null,
-							'user info here'
+							{ className: 'current-user-name' },
+							SessionStore.currentUser().username
 						)
 					)
 				),
@@ -33126,13 +33127,13 @@
 	
 	  getInitialState: function () {
 	    return {
-	      // currentUser: {}
+	      // currentUser: ""
 	    };
 	  },
 	
 	  componentDidMount: function () {
 	    this.sessionStoreToken = SessionStore.addListener(this.handleChange);
-	    this.handleChange();
+	    // this.handleChange();
 	  },
 	
 	  componentWillUnmount: function () {
@@ -33142,8 +33143,6 @@
 	  handleChange: function () {
 	    if (SessionStore.isLoggedIn()) {
 	      this.setState({ currentUser: SessionStore.currentUser() });
-	    } else {
-	      this.context.router.push("/login");
 	    }
 	  },
 	

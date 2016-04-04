@@ -29,7 +29,7 @@ var routes = (
 			<Route path="questions/:questionId" component={QuestionDetail} />
 
 		</Route>
-		<Route path="login" component={LoginForm}/>
+		<Route path="/login" component={LoginForm}/>
 	</Router>
 );
 
