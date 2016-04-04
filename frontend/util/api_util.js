@@ -188,7 +188,64 @@ var ApiUtil = {
         console.log("api_util#editAnswer error");
     }
     });
-	}
+	},
+
+	fetchAllTopics: function() {
+		$.ajax({
+      type: "GET",
+      url: "/api/topics",
+      success: function(topics) {
+        TopicActions.receiveAllTopics(topics);
+      },
+			error: function(e){
+				console.log("api#utilfetchAllTopics Error");
+			}
+    });
+	},
+
+	fetchSingleTopic: function() {
+		$.ajax({
+      type: "GET",
+      url: "/api/topics/" + id,
+      success: function(topic) {
+        TopicActions.receiveSingleTopic(topic);
+      },
+			error: function(e){
+				console.log("api#utilfetchSingleTopic Error");
+			}
+    });
+	},
+
+	createTopic: function() {
+		$.ajax({
+			type: "POST",
+			url: "/api/topics/",
+			data: {topic: topic},
+			success: function(topic){
+				TopicActions.receiveSingleTopic(topic);
+				callback && callback(topic.id);
+			},
+			error: function(e) {
+				console.log("api_util#createTopic Error");
+			}
+		});
+	},
+
+	destroyTopic: function() {
+		$.ajax({
+			type: "DELETE",
+			url: "/api/topics/" + id,
+			success: function () {
+				TopicActions.destroyTopic(id);
+				callback && callback(id)
+			},
+			error: function(e) {
+				console.log("api_util#destroyTopic Error");
+			}
+		});
+	},
+
+
 
 };
 

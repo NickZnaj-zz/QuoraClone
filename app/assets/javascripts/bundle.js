@@ -26851,6 +26851,61 @@
 	        console.log("api_util#editAnswer error");
 	      }
 	    });
+	  },
+	
+	  fetchAllTopics: function () {
+	    $.ajax({
+	      type: "GET",
+	      url: "/api/topics",
+	      success: function (topics) {
+	        TopicActions.receiveAllTopics(topics);
+	      },
+	      error: function (e) {
+	        console.log("api#utilfetchAllTopics Error");
+	      }
+	    });
+	  },
+	
+	  fetchSingleTopic: function () {
+	    $.ajax({
+	      type: "GET",
+	      url: "/api/topics/" + id,
+	      success: function (topic) {
+	        TopicActions.receiveSingleTopic(topic);
+	      },
+	      error: function (e) {
+	        console.log("api#utilfetchSingleTopic Error");
+	      }
+	    });
+	  },
+	
+	  createTopic: function () {
+	    $.ajax({
+	      type: "POST",
+	      url: "/api/topics/",
+	      data: { topic: topic },
+	      success: function (topic) {
+	        TopicActions.receiveSingleTopic(topic);
+	        callback && callback(topic.id);
+	      },
+	      error: function (e) {
+	        console.log("api_util#createTopic Error");
+	      }
+	    });
+	  },
+	
+	  destroyTopic: function () {
+	    $.ajax({
+	      type: "DELETE",
+	      url: "/api/topics/" + id,
+	      success: function () {
+	        TopicActions.destroyTopic(id);
+	        callback && callback(id);
+	      },
+	      error: function (e) {
+	        console.log("api_util#destroyTopic Error");
+	      }
+	    });
 	  }
 	
 	};
@@ -27127,7 +27182,7 @@
 				);
 			}
 			var displayed = this.props.question.answers[0].body;
-			var userInfo = this.state.submitter.username || "empty";
+			var userInfo = this.state.submitter.username || "";
 	
 			return React.createElement(
 				'div',
@@ -33108,12 +33163,22 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var SessionStore = __webpack_require__(195);
 	
 	var SideBar = React.createClass({
-	  displayName: "SideBar",
+	  displayName: 'SideBar',
 	
 	  render: function () {
-	    return React.createElement("div", { className: "sidebar group" });
+	    debugger;
+	    return React.createElement(
+	      'div',
+	      { className: 'sidebar group' },
+	      React.createElement(
+	        'div',
+	        null,
+	        SessionStore.currentUser().topics
+	      )
+	    );
 	  }
 	});
 	
