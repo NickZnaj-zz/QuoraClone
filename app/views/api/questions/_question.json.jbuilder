@@ -3,3 +3,4 @@ json.extract!(
   :id, :title, :details, :user_id
 )
 json.answers question.answers
+json.topics question.topics
