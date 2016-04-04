@@ -45,6 +45,11 @@ window.initializeApp = function() {
 
 
 function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
+	function _redirectIfNotLoggedIn() {
+		if (!SessionStore.isLoggedIn()) {
+			replace("/login");
+		}
+	}
 		if (!SessionStore.currentUserHasBeenFetched()) {
 			ApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
 		} else {
@@ -53,11 +58,6 @@ function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
 		asyncCompletionCallback();
 }
 
-function _redirectIfNotLoggedIn() {
-	if (!SessionStore.isLoggedIn()) {
-		replace("/login");
-	}
-}
 
 
 // var App = React.createClass({

@@ -25,6 +25,14 @@ var App = React.createClass({
   componentWillUnmount: function() {
     this.sessionStoreToken.remove();
   },
+	
+	handleChange: function() {
+		if (SessionStore.isLoggedIn()) {
+			this.setState({ currentUser: SessionStore.currentUser() });
+		} else {
+			this.context.router.push("/login");
+		}
+	},
 
   render: function () {
     var button, welcomeMessage;
@@ -50,13 +58,6 @@ var App = React.createClass({
     );
   },
 	//
-  handleChange: function() {
-    if (SessionStore.isLoggedIn()) {
-      this.setState({ currentUser: SessionStore.currentUser() });
-    } else {
-      this.context.router.push("/login");
-    }
-  }
 });
 
 module.exports = App;

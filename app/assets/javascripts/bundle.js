@@ -84,18 +84,17 @@
 	};
 	
 	function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
+		function _redirectIfNotLoggedIn() {
+			if (!SessionStore.isLoggedIn()) {
+				replace("/login");
+			}
+		}
 		if (!SessionStore.currentUserHasBeenFetched()) {
 			ApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
 		} else {
 			_redirectIfNotLoggedIn();
 		}
 		asyncCompletionCallback();
-	}
-	
-	function _redirectIfNotLoggedIn() {
-		if (!SessionStore.isLoggedIn()) {
-			replace("/login");
-		}
 	}
 	
 	// var App = React.createClass({
@@ -33150,6 +33149,14 @@
 	    this.sessionStoreToken.remove();
 	  },
 	
+	  handleChange: function () {
+	    if (SessionStore.isLoggedIn()) {
+	      this.setState({ currentUser: SessionStore.currentUser() });
+	    } else {
+	      this.context.router.push("/login");
+	    }
+	  },
+	
 	  render: function () {
 	    var button, welcomeMessage;
 	
@@ -33187,17 +33194,10 @@
 	        this.props.children
 	      )
 	    );
-	  },
-	  //
-	  handleChange: function () {
-	    if (SessionStore.isLoggedIn()) {
-	      this.setState({ currentUser: SessionStore.currentUser() });
-	    } else {
-	      this.context.router.push("/login");
-	    }
 	  }
 	});
 	
+	//
 	module.exports = App;
 
 /***/ },
