@@ -2,9 +2,10 @@ class Api::SessionsController < ApplicationController
 
 	def show
 		if logged_in?
-			render json: current_user
+			@current_user = User.includes(:questions, :answers, :topics).find(current_user.id)
+			# render json: @current_user
 		else
-			render json:  0 
+			render json:  0
 		end
 	end
 

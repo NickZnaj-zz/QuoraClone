@@ -7,6 +7,8 @@ class Api::UsersController < ApplicationController
 		@user = User.includes(:topics, :questions, :answers).find(params[:id])
 	end
 
+
+	###################### update flash messages ######################
   def create
     @user = User.new(user_params)
 
