@@ -8,7 +8,7 @@ var ApiUtil = {
 	fetchSingleUser: function(id) {
 		$.ajax({
 			type: "GET",
-			url: "/users/" + id,
+			url: "/api/users/" + id,
 			dataType: "json",
 			success: function(user) {
 				UserActions.receiveSingleUser(user);
@@ -23,7 +23,7 @@ var ApiUtil = {
 	signUp: function(credentials, callback) {
 		$.ajax({
 			type: "POST",
-			url: "/users",
+			url: "/api/users",
 			dataType: "json",
 			data: {user: credentials},
 			success: function(newUser) {

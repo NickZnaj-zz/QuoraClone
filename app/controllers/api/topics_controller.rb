@@ -1,4 +1,4 @@
-class TopicsController < ApplicationController
+class Api::TopicsController < ApplicationController
 	def index
 		@topics = Topic.all.includes(:questions, :users)
 		render :index
