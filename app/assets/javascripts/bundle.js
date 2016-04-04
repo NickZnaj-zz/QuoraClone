@@ -26730,7 +26730,6 @@
 	        SessionActions.currentUserReceived(currentUser);
 	      },
 	      complete: function () {
-	        debugger;
 	        completion && completion();
 	      }
 	    });
@@ -33011,11 +33010,13 @@
 	var React = __webpack_require__(1);
 	var QuestionForm = __webpack_require__(197);
 	var ApiUtil = __webpack_require__(185);
+	var SessionStore = __webpack_require__(195);
 	
 	var NavBar = React.createClass({
 	  displayName: 'NavBar',
 	
 	  render: function () {
+	    var currentUser = SessionStore.currentUser();
 	    return React.createElement(
 	      'header',
 	      { className: 'header' },
@@ -33028,10 +33029,20 @@
 	          'Shmora'
 	        ),
 	        React.createElement(QuestionForm, null),
-	        React.createElement('input', { type: 'submit',
-	          className: 'logout-link',
-	          value: 'Logout',
-	          onClick: ApiUtil.logout })
+	        React.createElement(
+	          'div',
+	          { className: 'current-user group' },
+	          React.createElement('input', { type: 'submit',
+	            className: 'logout-link',
+	            value: 'Logout',
+	            onClick: ApiUtil.logout }),
+	          React.createElement('div', { className: 'current-user-pic' }),
+	          React.createElement(
+	            'p',
+	            { className: 'current-user-name' },
+	            currentUser.username
+	          )
+	        )
 	      )
 	    );
 	  }
@@ -33155,12 +33166,6 @@
 	        { onClick: ApiUtil.logout },
 	        'Logout'
 	      );
-	      welcomeMessage = React.createElement(
-	        'h2',
-	        { className: 'welcome-message' },
-	        'Current User: ',
-	        this.state.currentUser.username
-	      );
 	    } else {
 	      var loginForm = React.createElement(LoginForm, null);
 	      return React.createElement(
@@ -33175,7 +33180,6 @@
 	      null,
 	      React.createElement(NavBar, null),
 	      button,
-	      welcomeMessage,
 	      React.createElement(
 	        'div',
 	        { className: 'main group' },

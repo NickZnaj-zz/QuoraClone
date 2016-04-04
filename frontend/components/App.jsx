@@ -37,7 +37,6 @@ var App = React.createClass({
 
     if (this.state.currentUser) {
       button = <button onClick={ApiUtil.logout}>Logout</button>;
-      welcomeMessage = <h2 className="welcome-message">Current User: {this.state.currentUser.username}</h2>;
     } else {
 			var loginForm = <LoginForm />;
 			return <div>{loginForm}</div>;
@@ -47,7 +46,6 @@ var App = React.createClass({
       <div>
 				<NavBar />
 				{button}
-				{welcomeMessage}
 				<div className="main group">
 					<RightBar />
 					{this.props.children}

@@ -51,11 +51,30 @@
  }
 
  .logout-link {
-	 float:right;
 	 background: transparent;
 	 border: none;
+	 float:left;
  }
 
- .welcome-message {
-	 margin-top: 60px;
+ .current-user {
+	 width: 100px;
+	 float:right;
+	margin-top: 12px;
+ }
+
+ .current-user-name {
+	 margin: 0;
+	 font-size: 13px;
+	 font-weight: 500px;
+	 color: #999;
+	 float: left;
+ }
+
+ .current-user-pic {
+	 width: 22px;
+	 height: 22px;
+	 float:left;
+	 margin-right: 10px;
+	 border-radius: 50%;
+	 content: asset-url(default_profile_pic);
  }

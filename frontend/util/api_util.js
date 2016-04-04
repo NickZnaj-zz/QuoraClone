@@ -66,7 +66,6 @@ var ApiUtil = {
         SessionActions.currentUserReceived(currentUser);
       },
       complete: function() {
-				debugger
         completion && completion();
       }
     });
