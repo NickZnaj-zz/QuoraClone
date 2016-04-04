@@ -4,7 +4,6 @@ var PropTypes = React.PropTypes;
 var TopicsList = React.createClass({
 
 	render: function() {
-		debugger
 		var topics = this.props.question.topics.map(function(topic) {
 			return <li key={topic.id}
 								 className="topic-list-item">

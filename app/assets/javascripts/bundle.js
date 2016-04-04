@@ -27130,18 +27130,19 @@
 			var displayed = this.props.question.answers[0].body;
 			var userInfo = this.state.submitter.username || "empty";
 	
-			// if (this.state.submitter === "undefined"){
-			// 	userInfo = "";
-			// }
-	
 			return React.createElement(
 				'div',
 				{ className: 'top-answer group' },
 				React.createElement(
 					'div',
-					{ className: 'top-answer-user-info' },
-					' ',
-					userInfo
+					{ className: 'top-answer-submitter group' },
+					React.createElement('img', { className: 'index-user-pic' }),
+					React.createElement(
+						'div',
+						{ className: 'top-answer-user-info' },
+						' ',
+						userInfo
+					)
 				),
 				React.createElement(
 					'div',
@@ -27154,8 +27155,6 @@
 	});
 	
 	module.exports = TopAnswer;
-	
-	// <AnswerForm  question={this.props.question}/>;
 
 /***/ },
 /* 194 */
@@ -32776,6 +32775,7 @@
 	var React = __webpack_require__(1);
 	var AnswerEditForm = __webpack_require__(259);
 	var ApiUtil = __webpack_require__(185);
+	var UserStore = __webpack_require__(196);
 	
 	var IndexItem = React.createClass({
 		displayName: 'IndexItem',
@@ -32785,7 +32785,17 @@
 		},
 	
 		getInitialState: function () {
-			return { isEditing: false, answer: this.props.answer };
+			return { isEditing: false, answer: this.props.answer, submitter: {} };
+		},
+	
+		_onChange: function () {
+			var submitter = UserStore.find(this.props.answer.user_id);
+			this.setState({ submitter: submitter });
+		},
+	
+		componentDidMount: function () {
+			this.userListener = UserStore.addListener(this._onChange);
+			this.state.submitter.username && ApiUtil.fetchSingleUser(this.props.answer.user_id);
 		},
 	
 		startEdit: function () {
@@ -32799,15 +32809,10 @@
 		handleDelete: function (e) {
 			e.preventDefault();
 	
-			console.log("hit the handleDelete~~~");
-			ApiUtil.destroyAnswer(this.props.answer.id, function () {
-				// this.context.router.push('/questions/' + this.props.answer.question_id);
-			}.bind(this));
-			// this.props.onDelete();
+			ApiUtil.destroyAnswer(this.props.answer.id, function () {}.bind(this));
 		},
 	
 		render: function () {
-	
 			var answerEditForm;
 			if (this.state.isEditing) {
 				answerEditForm = React.createElement(AnswerEditForm, {
@@ -32826,7 +32831,7 @@
 					React.createElement(
 						'p',
 						{ className: 'user-info' },
-						'USER INFO HERE'
+						this.state.submitter.username
 					)
 				),
 				React.createElement(
@@ -32843,7 +32848,6 @@
 					onClick: this.handleDelete })
 			);
 		}
-	
 	});
 	
 	module.exports = IndexItem;
@@ -33400,7 +33404,6 @@
 	
 	
 		render: function () {
-			debugger;
 			var topics = this.props.question.topics.map(function (topic) {
 				return React.createElement(
 					"li",

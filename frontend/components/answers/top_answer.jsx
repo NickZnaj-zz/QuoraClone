@@ -40,15 +40,12 @@ var TopAnswer = React.createClass({
 		var displayed = this.props.question.answers[0].body;
 		var userInfo = this.state.submitter.username || "empty";
 
-		// if (this.state.submitter === "undefined"){
-		// 	userInfo = "";
-		// }
-
-
-
 		return (
 			<div className="top-answer group">
-				<div className="top-answer-user-info"> {userInfo}</div>
+				<div className="top-answer-submitter group">
+					<img className="index-user-pic"  />
+					<div className="top-answer-user-info"> {userInfo}</div>
+				</div>
 				<div className="top-answer-body">{displayed}</div>
 			</div>
 		);
@@ -57,8 +54,3 @@ var TopAnswer = React.createClass({
 });
 
 module.exports = TopAnswer;
-
-
-
-
-// <AnswerForm  question={this.props.question}/>;

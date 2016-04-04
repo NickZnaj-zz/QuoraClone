@@ -1,6 +1,7 @@
 var React = require('react');
 var AnswerEditForm = require('./edit');
 var ApiUtil = require('../../util/api_util.js');
+var UserStore = require('../../stores/user_store');
 
 
 var IndexItem = React.createClass({
@@ -10,7 +11,17 @@ var IndexItem = React.createClass({
 
 
 	getInitialState: function() {
-		return { isEditing: false, answer: this.props.answer };
+		return { isEditing: false, answer: this.props.answer, submitter: {} };
+	},
+
+	_onChange: function() {
+		var submitter = UserStore.find(this.props.answer.user_id);
+		this.setState({submitter: submitter});
+	},
+
+	componentDidMount: function() {
+		this.userListener = UserStore.addListener(this._onChange);
+		this.state.submitter.username && ApiUtil.fetchSingleUser(this.props.answer.user_id);
 	},
 
 	startEdit: function() {
@@ -24,16 +35,11 @@ var IndexItem = React.createClass({
 	handleDelete: function(e) {
 		e.preventDefault();
 
-		console.log("hit the handleDelete~~~");
 		ApiUtil.destroyAnswer(this.props.answer.id, function(){
-			// this.context.router.push('/questions/' + this.props.answer.question_id);
 		}.bind(this));
-		// this.props.onDelete();
-
 	},
 
   render: function() {
-
 		var answerEditForm;
 		if (this.state.isEditing) {
 			answerEditForm = <AnswerEditForm
@@ -47,7 +53,7 @@ var IndexItem = React.createClass({
 
 				<div className="answer-header group">
 					<div  className="user-pic"  />
-					<p className="user-info">USER INFO HERE</p>
+					<p className="user-info">{this.state.submitter.username}</p>
 				</div>
 
         <div className="answer-list-item-answer">
@@ -64,11 +70,9 @@ var IndexItem = React.createClass({
 							 value="Delete Answer"
 							 onClick={this.handleDelete} />
 
-
       </li>
     );
   }
-
 });
 
 module.exports = IndexItem;

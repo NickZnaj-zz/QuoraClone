@@ -9,7 +9,7 @@
 
 
 topics = (1..5).to_a.map do |n|
-	name = Faker::Commerce.department
+	name = Faker::Book.genre
 
 	Topic.create!(
 		name: name
