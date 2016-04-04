@@ -18,7 +18,7 @@ var resetUser = function(user){
 };
 
 var deleteUser = function(id) {
-	delete _users.id;
+	delete _users[id];
 };
 
 

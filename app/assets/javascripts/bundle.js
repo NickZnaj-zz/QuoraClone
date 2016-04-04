@@ -19791,7 +19791,7 @@
 	};
 	
 	var deleteQuestion = function (id) {
-	  delete _questions.id;
+	  delete _questions[id];
 	};
 	
 	var editQuestion = function (question) {
@@ -26630,7 +26630,7 @@
 	};
 	
 	var deleteAnswer = function (id) {
-	  delete _answers.id;
+	  delete _answers[id];
 	};
 	
 	AnswerStore.all = function () {
@@ -26693,6 +26693,7 @@
 	      dataType: "json",
 	      success: function (user) {
 	        UserActions.receiveSingleUser(user);
+	        console.log("hit api call");
 	      },
 	      error: function (e) {
 	        console.log("api_util#fetchSingleUser error");
@@ -27109,6 +27110,26 @@
 	var TopAnswer = React.createClass({
 		displayName: 'TopAnswer',
 	
+		getInitialState: function () {
+	
+			return {
+				submitter: {}
+			};
+		},
+	
+		_onChange: function () {
+			var user = this.props.question.answers[0] && UserStore.find(this.props.question.answers[0].user_id);
+			this.setState({ submitter: user });
+		},
+	
+		componentDidMount: function () {
+			this.userListener = UserStore.addListener(this._onChange);
+			this.props.question.answers[0] && ApiUtil.fetchSingleUser(this.props.question.answers[0].user_id);
+		},
+	
+		componentWillUnmount: function () {
+			this.userListener.remove();
+		},
 	
 		render: function () {
 			if (!this.props.question.answers || this.props.question.answers.length === 0) {
@@ -27122,9 +27143,12 @@
 					)
 				);
 			}
-	
 			var displayed = this.props.question.answers[0].body;
-			var userInfo = ApiUtil.fetchSingleUser(this.props.question.answers[0].user_id).username;
+			var userInfo = this.state.submitter.username || "empty";
+	
+			// if (this.state.submitter === "undefined"){
+			// 	userInfo = "";
+			// }
 	
 			return React.createElement(
 				'div',
@@ -27138,7 +27162,6 @@
 				React.createElement(
 					'div',
 					{ className: 'top-answer-body' },
-					'top answer: ',
 					displayed
 				)
 			);
@@ -27228,14 +27251,10 @@
 						className: 'index-submit-answer-button',
 						value: 'Submit Answer'
 					}),
-					React.createElement(
-						'input',
-						{ type: 'button',
-							onClick: this.props.onAnswerEnd,
-							className: 'index-answer-cancel-link',
-							value: 'Cancel' },
-						'Cancel'
-					)
+					React.createElement('input', { type: 'button',
+						onClick: this.props.onAnswerEnd,
+						className: 'index-answer-cancel-link',
+						value: 'Cancel' })
 				)
 			);
 		}
@@ -27310,7 +27329,7 @@
 	};
 	
 	var deleteUser = function (id) {
-	  delete _users.id;
+	  delete _users[id];
 	};
 	
 	UserStore.all = function () {
@@ -32741,8 +32760,8 @@
 	        { className: 'answers' },
 	        this.state.answers.map(function (answer) {
 	          return React.createElement(IndexItem, { key: answer.id,
-	            answer: answer,
-	            onDelete: this._onChange
+	            answer: answer
+	
 	          });
 	        })
 	      )
@@ -32785,9 +32804,9 @@
 	
 			console.log("hit the handleDelete~~~");
 			ApiUtil.destroyAnswer(this.props.answer.id, function () {
-				this.context.router.push('/questions/' + this.props.answer.question_id);
+				// this.context.router.push('/questions/' + this.props.answer.question_id);
 			}.bind(this));
-			this.props.onDelete();
+			// this.props.onDelete();
 		},
 	
 		render: function () {

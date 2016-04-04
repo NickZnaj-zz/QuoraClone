@@ -6,6 +6,27 @@ var UserStore = require('../../stores/user_store');
 
 
 var TopAnswer = React.createClass({
+	getInitialState: function() {
+
+		return {
+			submitter: {}
+		};
+	},
+
+	_onChange: function() {
+		var user = this.props.question.answers[0] && UserStore.find(this.props.question.answers[0].user_id);
+		this.setState({ submitter: user});
+	},
+
+	componentDidMount: function() {
+		this.userListener = UserStore.addListener(this._onChange);
+		this.props.question.answers[0] && ApiUtil.fetchSingleUser(this.props.question.answers[0].user_id);
+	},
+
+	componentWillUnmount: function() {
+		this.userListener.remove();
+	},
+
 
 	render: function() {
 		if (!this.props.question.answers ||
@@ -16,15 +37,19 @@ var TopAnswer = React.createClass({
 			</div>
 			);
 		}
-
 		var displayed = this.props.question.answers[0].body;
-		var userInfo = ApiUtil.fetchSingleUser(this.props.question.answers[0].user_id).username;
+		var userInfo = this.state.submitter.username || "empty";
+
+		// if (this.state.submitter === "undefined"){
+		// 	userInfo = "";
+		// }
+
 
 
 		return (
 			<div className="top-answer group">
 				<div className="top-answer-user-info"> {userInfo}</div>
-				<div className="top-answer-body">top answer: {displayed}</div>
+				<div className="top-answer-body">{displayed}</div>
 			</div>
 		);
 	}

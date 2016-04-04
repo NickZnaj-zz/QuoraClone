@@ -12,6 +12,7 @@ var ApiUtil = {
 			dataType: "json",
 			success: function(user) {
 				UserActions.receiveSingleUser(user);
+				console.log("hit api call");
 			},
 			error: function(e) {
 				console.log("api_util#fetchSingleUser error");

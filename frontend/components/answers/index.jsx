@@ -41,7 +41,7 @@ var AnswersIndex = React.createClass({
           {this.state.answers.map(function(answer){
              return <IndexItem key={answer.id}
 							 								 answer={answer}
-															 onDelete={this._onChange}
+															 
 										/>;
           })}
         </ul>

@@ -17,7 +17,7 @@ var resetQuestion = function(question){
 };
 
 var deleteQuestion = function(id){
-  delete _questions.id;
+  delete _questions[id];
 };
 
 var editQuestion = function(question){

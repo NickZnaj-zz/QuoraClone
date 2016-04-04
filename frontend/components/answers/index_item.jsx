@@ -26,9 +26,9 @@ var IndexItem = React.createClass({
 
 		console.log("hit the handleDelete~~~");
 		ApiUtil.destroyAnswer(this.props.answer.id, function(){
-			this.context.router.push('/questions/' + this.props.answer.question_id);
+			// this.context.router.push('/questions/' + this.props.answer.question_id);
 		}.bind(this));
-		this.props.onDelete();
+		// this.props.onDelete();
 
 	},
 

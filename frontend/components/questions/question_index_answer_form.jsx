@@ -68,7 +68,7 @@ var AnswerForm = React.createClass({
 					<input type="button"
               onClick={this.props.onAnswerEnd}
               className="index-answer-cancel-link"
-              value="Cancel">Cancel
+              value="Cancel">
 						</input>
 
 

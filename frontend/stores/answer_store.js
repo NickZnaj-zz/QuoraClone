@@ -18,7 +18,7 @@ var resetAnswer = function(answer){
 };
 
 var deleteAnswer = function(id) {
-	delete _answers.id;
+	delete _answers[id];
 };
 
 

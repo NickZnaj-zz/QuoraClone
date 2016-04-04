@@ -1,4 +1,5 @@
 json.extract!(
   question,
-  :id, :title, :details
+  :id, :title, :details, :user_id
 )
+json.answers question.answers
