@@ -4,6 +4,8 @@ var ApiUtil = require('../../util/api_util.js');
 var QuestionEdit = require('./edit');
 var AnswersIndex = require('../answers/index');
 var AnswerForm = require('../answers/answer_form');
+var TopicsList = require('./topics_list');
+
 
 var QuestionDetail =  React.createClass({
   contextTypes: {
@@ -87,10 +89,17 @@ var QuestionDetail =  React.createClass({
 			/>;
 		}
 
+		var topicsList;
+		if (this.state.question.topics.length > 0) {
+			topicsList = <TopicsList question={this.state.question} />;
+		} else {
+			topicsList = <p>no topics here</p>;
+		}
+
     return(
       <div className="question-show-page group" >
 
-				<TopicsList question={this.state.question} />
+				{topicsList}
 
         <div className="question">
           {this.state.question.title}

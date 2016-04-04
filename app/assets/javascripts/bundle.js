@@ -32485,6 +32485,7 @@
 	var QuestionEdit = __webpack_require__(256);
 	var AnswersIndex = __webpack_require__(257);
 	var AnswerForm = __webpack_require__(260);
+	var TopicsList = __webpack_require__(268);
 	
 	var QuestionDetail = React.createClass({
 	  displayName: 'QuestionDetail',
@@ -32568,10 +32569,21 @@
 	      });
 	    }
 	
+	    var topicsList;
+	    if (this.state.question.topics.length > 0) {
+	      topicsList = React.createElement(TopicsList, { question: this.state.question });
+	    } else {
+	      topicsList = React.createElement(
+	        'p',
+	        null,
+	        'no topics here'
+	      );
+	    }
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'question-show-page group' },
-	      React.createElement(TopicsList, { question: this.state.question }),
+	      topicsList,
 	      React.createElement(
 	        'div',
 	        { className: 'question' },
@@ -33375,6 +33387,39 @@
 	});
 	
 	module.exports = SignUpForm;
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PropTypes = React.PropTypes;
+	
+	var TopicsList = React.createClass({
+		displayName: "TopicsList",
+	
+	
+		render: function () {
+			debugger;
+			var topics = this.props.question.topics.map(function (topic) {
+				return React.createElement(
+					"li",
+					{ key: topic.id,
+						className: "topic-list-item" },
+					topic.name
+				);
+			});
+	
+			return React.createElement(
+				"ul",
+				{ className: "topic-list" },
+				topics
+			);
+		}
+	
+	});
+	
+	module.exports = TopicsList;
 
 /***/ }
 /******/ ]);
