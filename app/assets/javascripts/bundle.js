@@ -32478,12 +32478,14 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var QuestionStore = __webpack_require__(160);
 	var ApiUtil = __webpack_require__(185);
 	var QuestionEdit = __webpack_require__(256);
 	var AnswersIndex = __webpack_require__(257);
 	var AnswerForm = __webpack_require__(260);
 	var TopicsList = __webpack_require__(268);
+	
+	var QuestionStore = __webpack_require__(160);
+	var UserStore = __webpack_require__(196);
 	
 	var QuestionDetail = React.createClass({
 	  displayName: 'QuestionDetail',
@@ -32498,6 +32500,17 @@
 	
 	  _onChange: function () {
 	    this.setState(this.getStateFromStore());
+	    var submitter = UserStore.find(this.state.question.user_id);
+	    this.setState({ submitter: submitter });
+	  },
+	
+	  componentDidMount: function () {
+	    this.userListener = UserStore.addListener(this._onChange);
+	    ApiUtil.fetchSingleUser(this.state.question.user_id);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.userListener.remove();
 	  },
 	
 	  getInitialState: function () {
@@ -32549,6 +32562,21 @@
 	  },
 	
 	  render: function () {
+	
+	    var questionEditButton;
+	    if (this.state.submitter && this.state.submitter.id === SessionStore.currentUser().id) {
+	      questionEditButton = React.createElement('input', { type: 'submit',
+	        value: 'Edit Question and Details',
+	        onClick: this.startEdit });
+	    }
+	
+	    var questionDeleteButton;
+	    if (this.state.submitter && this.state.submitter.id === SessionStore.currentUser().id) {
+	      questionDeleteButton = React.createElement('input', { type: 'submit',
+	        value: 'Delete',
+	        onClick: this.handleDelete });
+	    }
+	
 	    if (!this.state.question) {
 	      return React.createElement('div', null);
 	    }
@@ -32598,12 +32626,8 @@
 	        React.createElement(AnswersIndex, { question: this.state.question })
 	      ),
 	      answerForm,
-	      React.createElement('input', { type: 'submit',
-	        value: 'Delete',
-	        onClick: this.handleDelete }),
-	      React.createElement('input', { type: 'submit',
-	        value: 'Edit Question and Details',
-	        onClick: this.startEdit }),
+	      questionDeleteButton,
+	      questionEditButton,
 	      React.createElement('input', { type: 'submit',
 	        value: 'Answer',
 	        onClick: this.startAnswer,

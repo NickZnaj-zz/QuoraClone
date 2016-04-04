@@ -1,10 +1,12 @@
 var React = require('react');
-var QuestionStore = require('../../stores/question_store.js');
 var ApiUtil = require('../../util/api_util.js');
 var QuestionEdit = require('./edit');
 var AnswersIndex = require('../answers/index');
 var AnswerForm = require('../answers/answer_form');
 var TopicsList = require('./topics_list');
+
+var QuestionStore = require('../../stores/question_store.js');
+var UserStore = require('../../stores/user_store');
 
 
 var QuestionDetail =  React.createClass({
@@ -13,12 +15,23 @@ var QuestionDetail =  React.createClass({
   },
 
   getStateFromStore: function () {
-    return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
+    return { question: QuestionStore.find(parseInt(this.props.params.questionId))};
   },
 
   _onChange: function () {
     this.setState(this.getStateFromStore());
+		var submitter = UserStore.find(this.state.question.user_id);
+		this.setState({submitter: submitter});
   },
+
+	componentDidMount: function() {
+		this.userListener = UserStore.addListener(this._onChange);
+		ApiUtil.fetchSingleUser(this.state.question.user_id);
+	},
+
+	componentWillUnmount: function() {
+		this.userListener.remove();
+	},
 
   getInitialState: function () {
     return this.getStateFromStore();
@@ -31,7 +44,6 @@ var QuestionDetail =  React.createClass({
     ApiUtil.destroyQuestion(this.state.question.id, function () {
       this.context.router.push('/');
     }.bind(this));
-
   },
 
   startEdit: function(event) {
@@ -70,8 +82,24 @@ var QuestionDetail =  React.createClass({
   },
 
 
-
   render: function () {
+
+		var questionEditButton;
+		if (this.state.submitter && this.state.submitter.id === SessionStore.currentUser().id){
+			questionEditButton =
+			<input type="submit"
+						 value="Edit Question and Details"
+						 onClick={this.startEdit} />;
+		}
+
+		var questionDeleteButton;
+		if (this.state.submitter && this.state.submitter.id === SessionStore.currentUser().id){
+			questionDeleteButton =
+			<input type="submit"
+						 value="Delete"
+						 onClick={this.handleDelete} />;
+		}
+
     if (!this.state.question) { return <div></div>; }
     if (this.state.isEditing) {
 			return (
@@ -115,13 +143,9 @@ var QuestionDetail =  React.createClass({
 
 				{answerForm}
 
-        <input type="submit"
-							 value="Delete"
-							 onClick={this.handleDelete} />
+        {questionDeleteButton}
 
-        <input type="submit"
-							 value="Edit Question and Details"
-							 onClick={this.startEdit} />
+				{questionEditButton}
 
 				<input type="submit"
 							 value="Answer"
