@@ -26,12 +26,10 @@ class Api::UsersController < ApplicationController
   end
 
   def update
-		byebug
     @user = User.find(params[:id])
-
     if @user.update(user_params)
       flash[:success] = "Updated successfully"
-      # render :show
+      render :show
     else
       flash.now[:errors] = @user.errors.full_messsages
       render :edit

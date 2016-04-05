@@ -19708,7 +19708,7 @@
 
 	var React = __webpack_require__(1);
 	var QuestionStore = __webpack_require__(160);
-	var AnswerStore = __webpack_require__(183);
+	var UserStore = __webpack_require__(198);
 	
 	var ApiUtil = __webpack_require__(185);
 	var IndexItem = __webpack_require__(194);
@@ -19728,10 +19728,12 @@
 			componentDidMount: function () {
 					this.questionListener = QuestionStore.addListener(this._onChange);
 					ApiUtil.fetchAllQuestions();
+					this.userListener = UserStore.addListener(this._onChange);
 			},
 	
 			componentWillUnmount: function () {
 					this.questionListener.remove();
+					this.userListener.remove();
 			},
 	
 			_compareKeys: function (arr1, arr2) {
@@ -19743,17 +19745,8 @@
 					}
 			},
 	
-			_extractIds: function (arr) {
-					var result = [];
-					arr.forEach(function (obj) {
-							for (var key in obj) {
-									if (key === "id") result.concat(obj[key]);
-							}
-					});
-					return result;
-			},
-	
 			_hasOverlap: function (obj1, obj2) {
+	
 					if (obj1.id === obj2.id) {
 							return true;
 					}
@@ -19768,7 +19761,12 @@
 									{ className: 'questions' },
 									this.state.questions.map(function (question) {
 											var qTopics = question.topics;
-											var uTopics = SessionStore.currentUser().topics;
+	
+											var uTopics = [];
+											if (SessionStore.currentUser().topics && SessionStore.currentUser().topics.length > 0) {
+													uTopics = SessionStore.currentUser().topics;
+											}
+	
 											if (this._compareKeys(qTopics, uTopics)) {
 													return React.createElement(IndexItem, { key: question.id, question: question });
 											}
@@ -27100,6 +27098,7 @@
 		},
 	
 		editUser: function (user) {
+	
 			Dispatcher.dispatch({
 				actionType: UserConstants.USER_EDITED,
 				user: user
@@ -27277,7 +27276,10 @@
 				);
 			}
 			var displayed = this.props.question.answers[0].body;
-			var userInfo = this.state.submitter.username || "";
+			var userInfo;
+			if (typeof this.state.submitter !== "undefined") {
+				userInfo = this.state.submitter.username;
+			}
 	
 			return React.createElement(
 				'div',
@@ -27449,12 +27451,12 @@
 	var UserConstants = __webpack_require__(191);
 	var _users = {};
 	
-	var resetUsers = function (users) {
-	  _users = {};
-	  users.forEach(function (user) {
-	    _users[user.id] = user;
-	  });
-	};
+	// var resetUsers = function(users) {
+	//   _users = {};
+	//   users.forEach(function (user){
+	//     _users[user.id] = user;
+	//   });
+	// };
 	
 	var resetUser = function (user) {
 	  _users[user.id] = user;
@@ -27465,6 +27467,7 @@
 	};
 	
 	var editUser = function (user) {
+	  debugger;
 	  _users[user.id] = user;
 	};
 	
@@ -27482,10 +27485,10 @@
 	
 	UserStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
-	    case UserConstants.USERS_RECEIVED:
-	      resetUsers(payload.users);
-	      UserStore.__emitChange();
-	      break;
+	    // case UserConstants.USERS_RECEIVED:
+	    //   resetUsers(payload.users);
+	    //   UserStore.__emitChange();
+	    //   break;
 	    case UserConstants.USER_RECEIVED:
 	      resetUser(payload.user);
 	      UserStore.__emitChange();
@@ -27495,7 +27498,7 @@
 	      UserStore.__emitChange();
 	      break;
 	    case UserConstants.USER_EDITED:
-	      editUser(payload.id);
+	      editUser(payload.user);
 	      UserStore.__emitChange();
 	      break;
 	  }
@@ -33328,6 +33331,7 @@
 	var ApiUtil = __webpack_require__(185);
 	var TopicStore = __webpack_require__(267);
 	var SessionStore = __webpack_require__(197);
+	var UserStore = __webpack_require__(198);
 	
 	var AddTopicsForm = React.createClass({
 		displayName: 'AddTopicsForm',
@@ -33362,19 +33366,20 @@
 		componentDidMount: function () {
 			this.topicListener = TopicStore.addListener(this._onStoreChange);
 			ApiUtil.fetchAllTopics();
+			this.userListener = UserStore.addListener(this._onStoreChange);
 		},
 	
 		componentWillUnmount: function () {
 			this.topicListener.remove();
+			this.userListener.remove();
 		},
 	
 		handleSubmit: function (e) {
 			e.preventDefault();
-	
 			ApiUtil.editUser(SessionStore.currentUser(), { topic_ids: this.state.userTopics }, function () {
-	
-				this.context.router.push('/');
-			});
+				this.context.router.push('');
+			}.bind(this));
+			this.setState({ topics: TopicStore.all() });
 		},
 	
 		_onCheckboxClick: function (e) {
@@ -33404,7 +33409,9 @@
 				null,
 				React.createElement(
 					'form',
-					{ className: 'topic-selection-form group', onSubmit: this.handleSubmit },
+					{ className: 'topic-selection-form group',
+						onSubmit: this.handleSubmit
+					},
 					React.createElement(
 						'p',
 						{ className: 'form-words' },

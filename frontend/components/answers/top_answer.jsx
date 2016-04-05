@@ -36,7 +36,10 @@ var TopAnswer = React.createClass({
 			);
 		}
 		var displayed = this.props.question.answers[0].body;
-		var userInfo = this.state.submitter.username || "";
+		var userInfo;
+		if (typeof this.state.submitter !== "undefined"){
+			userInfo = this.state.submitter.username;
+		}
 
 		return (
 			<div className="top-answer group">

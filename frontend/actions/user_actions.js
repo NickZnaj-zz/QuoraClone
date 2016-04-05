@@ -25,6 +25,7 @@ var UserActions = {
 	},
 
 	editUser: function(user) {
+		
 		Dispatcher.dispatch({
 			actionType: UserConstants.USER_EDITED,
 			user: user

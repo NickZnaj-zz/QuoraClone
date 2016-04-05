@@ -6,12 +6,12 @@ var UserConstants = require('../constants/user_constants');
 var _users = {};
 
 
-var resetUsers = function(users) {
-  _users = {};
-  users.forEach(function (user){
-    _users[user.id] = user;
-  });
-};
+// var resetUsers = function(users) {
+//   _users = {};
+//   users.forEach(function (user){
+//     _users[user.id] = user;
+//   });
+// };
 
 var resetUser = function(user){
   _users[user.id] = user;
@@ -22,6 +22,7 @@ var deleteUser = function(id) {
 };
 
 var editUser = function(user) {
+	debugger
 	_users[user.id] = user;
 };
 
@@ -39,10 +40,10 @@ UserStore.find = function(id) {
 
 UserStore.__onDispatch = function (payload) {
   switch(payload.actionType) {
-    case UserConstants.USERS_RECEIVED:
-      resetUsers(payload.users);
-      UserStore.__emitChange();
-      break;
+    // case UserConstants.USERS_RECEIVED:
+    //   resetUsers(payload.users);
+    //   UserStore.__emitChange();
+    //   break;
     case UserConstants.USER_RECEIVED:
       resetUser(payload.user);
       UserStore.__emitChange();
@@ -52,7 +53,7 @@ UserStore.__onDispatch = function (payload) {
 			UserStore.__emitChange();
 			break;
 		case UserConstants.USER_EDITED:
-			editUser(payload.id);
+			editUser(payload.user);
 			UserStore.__emitChange();
 			break;
   }

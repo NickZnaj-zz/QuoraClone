@@ -1,6 +1,6 @@
 var React = require('react');
 var QuestionStore = require('../../stores/question_store.js');
-var AnswerStore = require('../../stores/answer_store.js');
+var UserStore = require('../../stores/user_store');
 
 var ApiUtil = require('../../util/api_util');
 var IndexItem = require('./index_item');
@@ -18,10 +18,12 @@ _onChange: function() {
 componentDidMount: function() {
   this.questionListener = QuestionStore.addListener(this._onChange);
   ApiUtil.fetchAllQuestions();
+	this.userListener = UserStore.addListener(this._onChange);
 },
 
 componentWillUnmount: function() {
   this.questionListener.remove();
+	this.userListener.remove();
 },
 
 _compareKeys: function(arr1, arr2) {
@@ -33,17 +35,8 @@ _compareKeys: function(arr1, arr2) {
 	}
 },
 
-_extractIds: function(arr){
-	var result = [];
-	arr.forEach(function (obj){
-		for (var key in obj){
-			if (key === "id") result.concat(obj[key]);
-		}
-	});
-	return result;
-},
-
 _hasOverlap: function(obj1, obj2){
+
 	if (obj1.id === obj2.id){
 		return true;
 	}
@@ -55,8 +48,13 @@ render: function() {
       <ul className="questions">
         {this.state.questions.map(function(question) {
 					var qTopics = question.topics;
-					var uTopics = SessionStore.currentUser().topics;
-					if (this._compareKeys(qTopics, uTopics )) {
+
+					var uTopics = [];
+					if (SessionStore.currentUser().topics && SessionStore.currentUser().topics.length > 0) {
+						uTopics = SessionStore.currentUser().topics;
+					}
+
+					if (this._compareKeys(qTopics, uTopics)) {
           return <IndexItem key={question.id} question={question} />;
 					}
         }.bind(this))}

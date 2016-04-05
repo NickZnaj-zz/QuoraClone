@@ -3,6 +3,7 @@ var PropTypes = React.PropTypes;
 var ApiUtil = require('../../util/api_util.js');
 var TopicStore = require('../../stores/topic_store');
 var SessionStore = require('../../stores/session_store');
+var UserStore = require('../../stores/user_store');
 
 
 var AddTopicsForm = React.createClass({
@@ -36,19 +37,20 @@ var AddTopicsForm = React.createClass({
 	componentDidMount: function () {
 		this.topicListener = TopicStore.addListener(this._onStoreChange);
 		ApiUtil.fetchAllTopics();
+		this.userListener = UserStore.addListener(this._onStoreChange);
 	},
 
 	componentWillUnmount: function () {
 		this.topicListener.remove();
+		this.userListener.remove();
 	},
 
 	handleSubmit: function(e) {
 		e.preventDefault();
-
 		ApiUtil.editUser(SessionStore.currentUser(), {topic_ids: this.state.userTopics}, function(){
-
-			this.context.router.push('/');
-		});
+			this.context.router.push('');
+		}.bind(this));
+		this.setState ({topics: TopicStore.all()});
 	},
 
 	_onCheckboxClick: function(e){
@@ -71,12 +73,13 @@ var AddTopicsForm = React.createClass({
 						/>
 					{topic.name}
 				</label>
-
 						 );
 								}.bind(this));
 		return (
 			<div>
-				<form className="topic-selection-form group" onSubmit={this.handleSubmit}>
+				<form className="topic-selection-form group"
+							onSubmit={this.handleSubmit}
+				>
 					<p className="form-words">Pick some topics:</p>
 					<ul className="topic-list">
 						{topicList}
