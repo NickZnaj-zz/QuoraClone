@@ -24,7 +24,7 @@ var ApiUtil = require('./util/api_util');
 var routes = (
 	<Router history={hashHistory}>
 		<Route path='/' component={App} onEnter={_requireLoggedIn} >
-			<IndexRoute component={Main} onEnter={_requireLoggedIn} />
+			<IndexRoute component={Main} />
 
 			<Route path="questions/:questionId" component={QuestionDetail} />
 
