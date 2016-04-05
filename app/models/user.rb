@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 	include PgSearch
+	multisearchable :against => :username
+
 	attr_reader :password
 
   after_initialize :ensure_session_token!

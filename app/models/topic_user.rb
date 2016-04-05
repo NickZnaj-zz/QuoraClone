@@ -1,5 +1,5 @@
 class TopicUser < ActiveRecord::Base
-	include PgSearch
+	# include PgSearch
 
 	validates :user_id, :topic_id , presence: true
 
