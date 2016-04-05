@@ -24,13 +24,17 @@ var QuestionDetail =  React.createClass({
 		this.setState({submitter: submitter});
   },
 
-	componentDidMount: function() {
+	componentDidMount: function () {
+		this.questionListener = QuestionStore.addListener(this._onChange);
+		ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
+
 		this.userListener = UserStore.addListener(this._onChange);
 		ApiUtil.fetchSingleUser(this.state.question.user_id);
 	},
 
-	componentWillUnmount: function() {
+	componentWillUnmount: function () {
 		this.userListener.remove();
+		this.questionListener.remove();
 	},
 
   getInitialState: function () {
@@ -72,14 +76,6 @@ var QuestionDetail =  React.createClass({
     ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
   },
 
-  componentDidMount: function () {
-    this.questionListener = QuestionStore.addListener(this._onChange);
-    ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
-  },
-
-  componentWillUnmount: function () {
-    this.questionListener.remove();
-  },
 
 
   render: function () {
@@ -119,15 +115,22 @@ var QuestionDetail =  React.createClass({
 
 		var topicsList;
 		if (this.state.question.topics.length > 0) {
-			topicsList = <TopicsList question={this.state.question} />;
+			topicsList =
+			<TopicsList
+				className="question-show-topics-list"
+				question={this.state.question}
+			/>;
+		
 		} else {
-			topicsList = <p>no topics here</p>;
+			topicsList = <div>no topics here</div>;
 		}
 
     return(
       <div className="question-show-page group" >
 
-				<div className="question-detail-topic-list">{topicsList}</div>
+				<div className="question-detail-topic-list">
+					{topicsList}
+				</div>
 
         <div className="question-title">
           {this.state.question.title}

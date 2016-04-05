@@ -32649,156 +32649,154 @@
 	var UserStore = __webpack_require__(198);
 	
 	var QuestionDetail = React.createClass({
-	  displayName: 'QuestionDetail',
+			displayName: 'QuestionDetail',
 	
-	  contextTypes: {
-	    router: React.PropTypes.object.isRequired
-	  },
+			contextTypes: {
+					router: React.PropTypes.object.isRequired
+			},
 	
-	  getStateFromStore: function () {
-	    return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
-	  },
+			getStateFromStore: function () {
+					return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
+			},
 	
-	  _onChange: function () {
-	    this.setState(this.getStateFromStore());
-	    var submitter = UserStore.find(this.state.question.user_id);
-	    this.setState({ submitter: submitter });
-	  },
+			_onChange: function () {
+					this.setState(this.getStateFromStore());
+					var submitter = UserStore.find(this.state.question.user_id);
+					this.setState({ submitter: submitter });
+			},
 	
-	  componentDidMount: function () {
-	    this.userListener = UserStore.addListener(this._onChange);
-	    ApiUtil.fetchSingleUser(this.state.question.user_id);
-	  },
+			componentDidMount: function () {
+					this.questionListener = QuestionStore.addListener(this._onChange);
+					ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
 	
-	  componentWillUnmount: function () {
-	    this.userListener.remove();
-	  },
+					this.userListener = UserStore.addListener(this._onChange);
+					ApiUtil.fetchSingleUser(this.state.question.user_id);
+			},
 	
-	  getInitialState: function () {
-	    return this.getStateFromStore();
-	  },
+			componentWillUnmount: function () {
+					this.userListener.remove();
+					this.questionListener.remove();
+			},
 	
-	  handleDelete: function (e) {
-	    e.preventDefault();
+			getInitialState: function () {
+					return this.getStateFromStore();
+			},
 	
-	    console.log("hit the handle delete in q detail");
-	    ApiUtil.destroyQuestion(this.state.question.id, function () {
-	      this.context.router.push('/');
-	    }.bind(this));
-	  },
+			handleDelete: function (e) {
+					e.preventDefault();
 	
-	  startEdit: function (event) {
-	    event.preventDefault();
-	    console.log("hit handleEdit");
+					console.log("hit the handle delete in q detail");
+					ApiUtil.destroyQuestion(this.state.question.id, function () {
+							this.context.router.push('/');
+					}.bind(this));
+			},
 	
-	    this.setState({ isEditing: true });
-	  },
+			startEdit: function (event) {
+					event.preventDefault();
+					console.log("hit handleEdit");
 	
-	  closeEdit: function () {
-	    this.setState({ isEditing: false });
-	  },
-	  // fetchDetails: function (props) {
-	  //   // if you want to factor out the ApiUtil call
-	  // },
+					this.setState({ isEditing: true });
+			},
 	
-	  startAnswer: function (e) {
-	    this.setState({ isAnswering: true });
-	  },
+			closeEdit: function () {
+					this.setState({ isEditing: false });
+			},
+			// fetchDetails: function (props) {
+			//   // if you want to factor out the ApiUtil call
+			// },
 	
-	  closeAnswer: function () {
-	    this.setState({ isAnswering: false });
-	  },
+			startAnswer: function (e) {
+					this.setState({ isAnswering: true });
+			},
 	
-	  componentWillReceiveProps: function (newProps) {
-	    ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
-	  },
+			closeAnswer: function () {
+					this.setState({ isAnswering: false });
+			},
 	
-	  componentDidMount: function () {
-	    this.questionListener = QuestionStore.addListener(this._onChange);
-	    ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
-	  },
+			componentWillReceiveProps: function (newProps) {
+					ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
+			},
 	
-	  componentWillUnmount: function () {
-	    this.questionListener.remove();
-	  },
+			render: function () {
 	
-	  render: function () {
+					var questionEditButton;
+					if (this.state.submitter && this.state.submitter.id === SessionStore.currentUser().id) {
+							questionEditButton = React.createElement('input', { type: 'submit',
+									value: 'Edit Question and Details',
+									onClick: this.startEdit });
+					}
 	
-	    var questionEditButton;
-	    if (this.state.submitter && this.state.submitter.id === SessionStore.currentUser().id) {
-	      questionEditButton = React.createElement('input', { type: 'submit',
-	        value: 'Edit Question and Details',
-	        onClick: this.startEdit });
-	    }
+					var questionDeleteButton;
+					if (this.state.submitter && this.state.submitter.id === SessionStore.currentUser().id) {
+							questionDeleteButton = React.createElement('input', { type: 'submit',
+									value: 'Delete',
+									onClick: this.handleDelete });
+					}
 	
-	    var questionDeleteButton;
-	    if (this.state.submitter && this.state.submitter.id === SessionStore.currentUser().id) {
-	      questionDeleteButton = React.createElement('input', { type: 'submit',
-	        value: 'Delete',
-	        onClick: this.handleDelete });
-	    }
+					if (!this.state.question) {
+							return React.createElement('div', null);
+					}
+					if (this.state.isEditing) {
+							return React.createElement(QuestionEdit, {
+									question: this.state.question,
+									onEditEnd: this.closeEdit
+							});
+					}
 	
-	    if (!this.state.question) {
-	      return React.createElement('div', null);
-	    }
-	    if (this.state.isEditing) {
-	      return React.createElement(QuestionEdit, {
-	        question: this.state.question,
-	        onEditEnd: this.closeEdit
-	      });
-	    }
+					var answerForm;
+					if (this.state.isAnswering) {
+							answerForm = React.createElement(AnswerForm, {
+									question: this.state.question,
+									onAnswerEnd: this.closeAnswer
+							});
+					}
 	
-	    var answerForm;
-	    if (this.state.isAnswering) {
-	      answerForm = React.createElement(AnswerForm, {
-	        question: this.state.question,
-	        onAnswerEnd: this.closeAnswer
-	      });
-	    }
+					var topicsList;
+					if (this.state.question.topics.length > 0) {
+							topicsList = React.createElement(TopicsList, {
+									className: 'question-show-topics-list',
+									question: this.state.question
+							});
+					} else {
+							topicsList = React.createElement(
+									'div',
+									null,
+									'no topics here'
+							);
+					}
 	
-	    var topicsList;
-	    if (this.state.question.topics.length > 0) {
-	      topicsList = React.createElement(TopicsList, { question: this.state.question });
-	    } else {
-	      topicsList = React.createElement(
-	        'p',
-	        null,
-	        'no topics here'
-	      );
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'question-show-page group' },
-	      React.createElement(
-	        'div',
-	        { className: 'question-detail-topic-list' },
-	        topicsList
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'question-title' },
-	        this.state.question.title
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'question-details' },
-	        this.state.question.details
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'answers-index' },
-	        React.createElement(AnswersIndex, { question: this.state.question })
-	      ),
-	      answerForm,
-	      questionDeleteButton,
-	      questionEditButton,
-	      React.createElement('input', { type: 'submit',
-	        value: 'Answer',
-	        onClick: this.startAnswer,
-	        disabled: this.state.isAnswering })
-	    );
-	  }
+					return React.createElement(
+							'div',
+							{ className: 'question-show-page group' },
+							React.createElement(
+									'div',
+									{ className: 'question-detail-topic-list' },
+									topicsList
+							),
+							React.createElement(
+									'div',
+									{ className: 'question-title' },
+									this.state.question.title
+							),
+							React.createElement(
+									'div',
+									{ className: 'question-details' },
+									this.state.question.details
+							),
+							React.createElement(
+									'div',
+									{ className: 'answers-index' },
+									React.createElement(AnswersIndex, { question: this.state.question })
+							),
+							answerForm,
+							questionDeleteButton,
+							questionEditButton,
+							React.createElement('input', { type: 'submit',
+									value: 'Answer',
+									onClick: this.startAnswer,
+									disabled: this.state.isAnswering })
+					);
+			}
 	});
 	
 	module.exports = QuestionDetail;
@@ -32933,7 +32931,7 @@
 	    }
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: 'answers-index group' },
 	      React.createElement(
 	        'p',
 	        { className: 'answers-count' },

@@ -1,3 +1,7 @@
+.answers-index {
+
+}
+
 ul.answers {
 	-webkit-padding-start: 0;
   font-size: 16px;
@@ -6,11 +10,13 @@ ul.answers {
 
 .answers-count {
 	font-weight: bold;
+	position: relative;
 }
 
 .answer-list-item {
 	border-top: 1px solid #ccc;
 	padding: 15px 0;
+
 }
 
 .answer-list-item-answer {

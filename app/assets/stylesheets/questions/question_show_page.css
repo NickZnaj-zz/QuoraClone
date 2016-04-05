@@ -1,16 +1,24 @@
 .question-show-page{
   width: 602px;
-  padding-top: 30px;
+	padding-left: 30px;
+  /*padding-top: 30px;*/
 }
 
 .question-title {
+	display: block;
   font-size: 24px;
   padding-top: 20px;
   padding-bottom: 10px;
   font-weight: bold;
 }
 
+.topic-list{
+	display: block;
+	padding:10px;
+}
+
 .topic-list-item {
+	display: block;
 	background: #f4f4fa;
 	color: #808393;
 	font-weight: 500;
@@ -18,13 +26,12 @@
 	font-size: 13px;
 	border-radius: 12px;
 	padding: 4px 8px;
-	/*position: relative;*/
+	/*margin-top: -20px;*/
+	margin-right: 20px;
+
 }
 
 .question-detail-topic-list {
 	float: left;
-}
-
-.question-title{
-	float:left;
+	width: 600px;
 }
