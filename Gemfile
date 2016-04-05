@@ -46,6 +46,7 @@ group :development do
 	gem 'binding_of_caller'
 end
 gem 'faker'
+gem 'pg_search'
 
 group :production do
   gem 'newrelic_rpm'
