@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
 
   namespace :api, defaults: {format: :json} do
-
+		resources :searches, only: [:index]
 		resources :users, only: [:new, :create, :edit, :update, :show] do
 			resources :topics, only: [:index]
 		end

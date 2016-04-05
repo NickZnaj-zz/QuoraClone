@@ -3,8 +3,25 @@ var AnswerActions = require('../actions/answer_actions');
 var SessionActions = require('../actions/session_actions');
 var UserActions = require('../actions/user_actions');
 var TopicActions = require('../actions/topic_actions');
+var SearchResultActions = require('../actions/search_result_actions');
 
 var ApiUtil = {
+
+	search: function (query, page) {
+    $.ajax({
+      type: "GET",
+      url: "/api/searches",
+      dataType: "json",
+      data: {query: query, page: page},
+      success: function (response) {
+        SearchResultActions.receiveResults(response);
+      },
+      error: function () {
+        console.log("ApiUtil#search error!");
+      }
+
+    });
+  },
 
 	editUser: function(user, newAttrs, callback) {
 		$.ajax({
