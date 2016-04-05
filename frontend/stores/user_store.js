@@ -21,6 +21,9 @@ var deleteUser = function(id) {
 	delete _users[id];
 };
 
+var editUser = function(user) {
+	_users[user.id] = user;
+};
 
 UserStore.all = function() {
   var users = [];
@@ -46,6 +49,10 @@ UserStore.__onDispatch = function (payload) {
       break;
 		case UserConstants.USER_DELETED:
 			deleteUser(payload.id);
+			UserStore.__emitChange();
+			break;
+		case UserConstants.USER_EDITED:
+			editUser(payload.id);
 			UserStore.__emitChange();
 			break;
   }

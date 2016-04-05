@@ -24,7 +24,7 @@ var UserActions = {
 		});
 	},
 
-	editQuestion: function(user) {
+	editUser: function(user) {
 		Dispatcher.dispatch({
 			actionType: UserConstants.USER_EDITED,
 			user: user

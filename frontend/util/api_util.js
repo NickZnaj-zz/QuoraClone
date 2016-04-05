@@ -2,8 +2,24 @@ var QuestionActions = require('../actions/question_actions');
 var AnswerActions = require('../actions/answer_actions');
 var SessionActions = require('../actions/session_actions');
 var UserActions = require('../actions/user_actions');
+var TopicActions = require('../actions/topic_actions');
 
 var ApiUtil = {
+
+	editUser: function(user, newAttrs, callback) {
+		$.ajax({
+			method: "PATCH",
+			url: "/api/users/" + user.id,
+			data: { user: newAttrs },
+			success: function(user) {
+				UserActions.editUser(user);
+				callback && callback(user);
+			},
+			error: function(e) {
+				console.log("api_util#editUser error");
+		}
+		});
+	},
 
 	fetchSingleUser: function(id) {
 		$.ajax({

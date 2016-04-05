@@ -19715,38 +19715,67 @@
 	var QuestionForm = __webpack_require__(197);
 	
 	var QuestionsIndex = React.createClass({
-	  displayName: 'QuestionsIndex',
+			displayName: 'QuestionsIndex',
 	
-	  getInitialState: function () {
-	    return { questions: QuestionStore.all() };
-	  },
+			getInitialState: function () {
+					return { questions: QuestionStore.all() };
+			},
 	
-	  _onChange: function () {
-	    this.setState({ questions: QuestionStore.all() });
-	  },
+			_onChange: function () {
+					this.setState({ questions: QuestionStore.all() });
+			},
 	
-	  componentDidMount: function () {
-	    this.questionListener = QuestionStore.addListener(this._onChange);
-	    ApiUtil.fetchAllQuestions();
-	  },
+			componentDidMount: function () {
+					this.questionListener = QuestionStore.addListener(this._onChange);
+					ApiUtil.fetchAllQuestions();
+			},
 	
-	  componentWillUnmount: function () {
-	    this.questionListener.remove();
-	  },
+			componentWillUnmount: function () {
+					this.questionListener.remove();
+			},
 	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'ul',
-	        { className: 'questions' },
-	        this.state.questions.map(function (question) {
-	          return React.createElement(IndexItem, { key: question.id, question: question });
-	        })
-	      )
-	    );
-	  }
+			_compareKeys: function (arr1, arr2) {
+					for (var i = 0; i < arr1.length; i++) {
+							var index = arr2.find(function (obj2) {
+									return this._hasOverlap(arr1[i], obj2);
+							}.bind(this));
+							if (index !== undefined) return true;
+					}
+			},
+	
+			_extractIds: function (arr) {
+					var result = [];
+					arr.forEach(function (obj) {
+							for (var key in obj) {
+									if (key === "id") result.concat(obj[key]);
+							}
+					});
+					return result;
+			},
+	
+			_hasOverlap: function (obj1, obj2) {
+					if (obj1.id === obj2.id) {
+							return true;
+					}
+			},
+	
+			render: function () {
+					return React.createElement(
+							'div',
+							null,
+							React.createElement(
+									'ul',
+									{ className: 'questions' },
+									this.state.questions.map(function (question) {
+											var qTopics = question.topics;
+											var uTopics = SessionStore.currentUser().topics;
+											if (this._compareKeys(qTopics, uTopics)) {
+													return React.createElement(IndexItem, { key: question.id, question: question });
+											}
+									}.bind(this))
+							)
+					);
+			}
 	});
 	
 	module.exports = QuestionsIndex;
@@ -26666,8 +26695,24 @@
 	var AnswerActions = __webpack_require__(187);
 	var SessionActions = __webpack_require__(188);
 	var UserActions = __webpack_require__(190);
+	var TopicActions = __webpack_require__(272);
 	
 	var ApiUtil = {
+	
+	  editUser: function (user, newAttrs, callback) {
+	    $.ajax({
+	      method: "PATCH",
+	      url: "/api/users/" + user.id,
+	      data: { user: newAttrs },
+	      success: function (user) {
+	        UserActions.editUser(user);
+	        callback && callback(user);
+	      },
+	      error: function (e) {
+	        console.log("api_util#editUser error");
+	      }
+	    });
+	  },
 	
 	  fetchSingleUser: function (id) {
 	    $.ajax({
@@ -27054,7 +27099,7 @@
 			});
 		},
 	
-		editQuestion: function (user) {
+		editUser: function (user) {
 			Dispatcher.dispatch({
 				actionType: UserConstants.USER_EDITED,
 				user: user
@@ -27369,6 +27414,10 @@
 	  delete _users[id];
 	};
 	
+	var editUser = function (user) {
+	  _users[user.id] = user;
+	};
+	
 	UserStore.all = function () {
 	  var users = [];
 	  for (var id in _users) {
@@ -27393,6 +27442,10 @@
 	      break;
 	    case UserConstants.USER_DELETED:
 	      deleteUser(payload.id);
+	      UserStore.__emitChange();
+	      break;
+	    case UserConstants.USER_EDITED:
+	      editUser(payload.id);
 	      UserStore.__emitChange();
 	      break;
 	  }
@@ -33164,20 +33217,16 @@
 
 	var React = __webpack_require__(1);
 	var SessionStore = __webpack_require__(195);
+	var AddTopicsForm = __webpack_require__(269);
 	
 	var SideBar = React.createClass({
 	  displayName: 'SideBar',
 	
 	  render: function () {
-	    debugger;
 	    return React.createElement(
 	      'div',
 	      { className: 'sidebar group' },
-	      React.createElement(
-	        'div',
-	        null,
-	        SessionStore.currentUser().topics
-	      )
+	      React.createElement(AddTopicsForm, null)
 	    );
 	  }
 	});
@@ -33524,6 +33573,231 @@
 	});
 	
 	module.exports = TopicsList;
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PropTypes = React.PropTypes;
+	var ApiUtil = __webpack_require__(185);
+	var TopicStore = __webpack_require__(270);
+	var SessionStore = __webpack_require__(195);
+	
+	var AddTopicsForm = React.createClass({
+		displayName: 'AddTopicsForm',
+	
+		contextTypes: {
+			router: React.PropTypes.object.isRequired
+		},
+	
+		inCurrentUserTopics: function (topicName) {
+			var userTopics = SessionStore.currentUser().topics;
+			function topicNames(userTopics) {
+				var result = [];
+				userTopics.forEach(function (topic) {
+					result.push(topic.name);
+				});
+				return result;
+			}
+	
+			return topicNames(userTopics).includes(topicName);
+		},
+	
+		getInitialState: function () {
+			return {
+				topics: TopicStore.all(), userTopics: []
+			};
+		},
+	
+		_onStoreChange: function () {
+			this.setState({ topics: TopicStore.all() });
+		},
+	
+		componentDidMount: function () {
+			this.topicListener = TopicStore.addListener(this._onStoreChange);
+			ApiUtil.fetchAllTopics();
+		},
+	
+		componentWillUnmount: function () {
+			this.topicListener.remove();
+		},
+	
+		handleSubmit: function (e) {
+			e.preventDefault();
+	
+			ApiUtil.editUser(SessionStore.currentUser(), { topic_ids: this.state.userTopics }, function () {
+	
+				this.context.router.push('/');
+			});
+		},
+	
+		_onCheckboxClick: function (e) {
+	
+			if (e.currentTarget.checked) {
+				var userTopics = this.state.userTopics.concat(parseInt(e.target.value));
+				this.setState({ userTopics: userTopics });
+			}
+		},
+	
+		render: function () {
+			var topicList = this.state.topics.map(function (topic) {
+				return React.createElement(
+					'label',
+					{ className: 'checkbox-table', key: topic.id },
+					React.createElement('input', {
+						type: 'checkbox',
+						value: topic.id,
+						key: topic.id,
+						onClick: this._onCheckboxClick
+					}),
+					topic.name
+				);
+			}.bind(this));
+			return React.createElement(
+				'div',
+				null,
+				React.createElement(
+					'form',
+					{ className: 'topic-selection-form group', onSubmit: this.handleSubmit },
+					React.createElement(
+						'p',
+						{ className: 'form-words' },
+						'Pick some topics:'
+					),
+					React.createElement(
+						'ul',
+						{ className: 'topic-list' },
+						topicList
+					),
+					React.createElement('input', { type: 'submit',
+						value: 'Submit!',
+						className: 'submit-button'
+					})
+				)
+			);
+		}
+	
+	});
+	
+	module.exports = AddTopicsForm;
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(161).Store;
+	var Dispatcher = __webpack_require__(179);
+	
+	var TopicStore = new Store(Dispatcher);
+	var TopicConstants = __webpack_require__(271);
+	var _topics = {};
+	
+	var resetTopics = function (topics) {
+	  _topics = {};
+	  topics.forEach(function (topic) {
+	    _topics[topic.id] = topic;
+	  });
+	};
+	
+	var resetTopic = function (topic) {
+	  _topics[topic.id] = topic;
+	};
+	
+	var deleteTopic = function (id) {
+	  delete _topics[id];
+	};
+	
+	var editTopic = function (topic) {
+	  _topics[topic.id] = topic;
+	};
+	
+	TopicStore.all = function () {
+	  var topics = [];
+	  for (var id in _topics) {
+	    topics.push(_topics[id]);
+	  }
+	  return topics;
+	};
+	
+	TopicStore.find = function (id) {
+	  return _topics[id];
+	};
+	
+	TopicStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case TopicConstants.TOPICS_RECEIVED:
+	      resetTopics(payload.topics);
+	      TopicStore.__emitChange();
+	      break;
+	    case TopicConstants.TOPIC_RECEIVED:
+	      resetTopic(payload.topic);
+	      TopicStore.__emitChange();
+	      break;
+	    case TopicConstants.TOPIC_DELETED:
+	      deleteTopic(payload.id);
+	      TopicStore.__emitChange();
+	      break;
+	    case TopicConstants.TOPIC_EDITED:
+	      editTopic(payload.topic);
+	      TopicStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	window.TopicStore = TopicStore;
+	
+	module.exports = TopicStore;
+
+/***/ },
+/* 271 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  TOPICS_RECEIVED: "TOPICS_RECEIVED",
+	  TOPIC_RECEIVED: "TOPIC_RECEIVED",
+	  TOPIC_DELETED: "TOPIC_DELETED",
+	  TOPIC_EDITED: "TOPIC_EDITED"
+	};
+
+/***/ },
+/* 272 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(179),
+	    TopicConstants = __webpack_require__(271);
+	
+	var TopicActions = {
+	  receiveAllTopics: function (topics) {
+	    Dispatcher.dispatch({
+	      actionType: TopicConstants.TOPICS_RECEIVED,
+	      topics: topics
+	    });
+	  },
+	
+	  receiveSingleTopic: function (topic) {
+	    Dispatcher.dispatch({
+	      actionType: TopicConstants.TOPIC_RECEIVED,
+	      topic: topic
+	    });
+	  },
+	
+	  destroyTopic: function (id) {
+	    Dispatcher.dispatch({
+	      actionType: TopicConstants.TOPIC_DELETED,
+	      id: id
+	    });
+	  },
+	
+	  editTopic: function (topic) {
+	    Dispatcher.dispatch({
+	      actionType: TopicConstants.TOPIC_EDITED,
+	      topic: topic
+	    });
+	  }
+	};
+	
+	module.exports = TopicActions;
 
 /***/ }
 /******/ ]);

@@ -15,7 +15,7 @@ class Api::QuestionsController < ApplicationController
   end
 
   def show
-    @question = Question.find(params[:id])
+    @question = Question.includes(:topics, :answers).find(params[:id])
   end
 
   def destroy

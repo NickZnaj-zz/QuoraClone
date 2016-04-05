@@ -26,11 +26,12 @@ class Api::UsersController < ApplicationController
   end
 
   def update
+		byebug
     @user = User.find(params[:id])
 
     if @user.update(user_params)
       flash[:success] = "Updated successfully"
-      redirect_to root_url
+      # render :show
     else
       flash.now[:errors] = @user.errors.full_messsages
       render :edit
@@ -40,6 +41,6 @@ class Api::UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :username, :password)
+    params.require(:user).permit(:email, :username, :password, topic_ids: [])
   end
 end
