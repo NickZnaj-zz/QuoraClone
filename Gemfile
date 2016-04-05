@@ -44,8 +44,8 @@ group :development do
 
 	gem 'better_errors'
 	gem 'binding_of_caller'
-	gem 'faker'
 end
+gem 'faker'
 
 group :production do
   gem 'newrelic_rpm'
