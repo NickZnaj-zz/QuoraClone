@@ -120,7 +120,7 @@ var QuestionDetail =  React.createClass({
 				className="question-show-topics-list"
 				question={this.state.question}
 			/>;
-		
+
 		} else {
 			topicsList = <div>no topics here</div>;
 		}

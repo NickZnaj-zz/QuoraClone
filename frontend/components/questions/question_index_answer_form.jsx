@@ -69,7 +69,7 @@ var AnswerForm = React.createClass({
               onClick={this.props.onAnswerEnd}
               className="index-answer-cancel-link"
               value="Cancel">
-						</input>
+					</input>
 
 
           </div>

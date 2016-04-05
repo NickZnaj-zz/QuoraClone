@@ -31,8 +31,6 @@ var AnswerEditForm = React.createClass({
 	handleEdit: function(e) {
     e.preventDefault();
 
-    console.log("hit the answer handleEdit");
-
     ApiUtil.editAnswer(this.props.answer, this.state, function (answer) {
 			this.props.onEditEnd();
     }.bind(this));

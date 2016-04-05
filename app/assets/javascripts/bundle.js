@@ -73,7 +73,7 @@
 		React.createElement(
 			Route,
 			{ path: '/', component: App, onEnter: _requireLoggedIn },
-			React.createElement(IndexRoute, { component: Main, onEnter: _requireLoggedIn }),
+			React.createElement(IndexRoute, { component: Main }),
 			React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail })
 		),
 		React.createElement(Route, { path: '/login', component: LoginForm })
@@ -27467,7 +27467,6 @@
 	};
 	
 	var editUser = function (user) {
-	  debugger;
 	  _users[user.id] = user;
 	};
 	
@@ -33088,8 +33087,6 @@
 		handleEdit: function (e) {
 			e.preventDefault();
 	
-			console.log("hit the answer handleEdit");
-	
 			ApiUtil.editAnswer(this.props.answer, this.state, function (answer) {
 				this.props.onEditEnd();
 			}.bind(this));
@@ -33225,25 +33222,53 @@
 
 	var React = __webpack_require__(1);
 	var PropTypes = React.PropTypes;
+	var EditTopicsList = __webpack_require__(273);
 	
 	var TopicsList = React.createClass({
-		displayName: "TopicsList",
+		displayName: 'TopicsList',
 	
+	
+		getInitialState: function () {
+			return {
+				isEditing: false
+			};
+		},
+	
+		startEdit: function () {
+			this.setState({ isEditing: true });
+		},
+	
+		closeEdit: function () {
+			this.setState({ isEditing: false });
+		},
 	
 		render: function () {
+	
+			var editTopicsList;
+			if (this.state.isEditing) {
+				editTopicsList = React.createElement(EditTopicsList, {
+					question: this.props.question,
+					onEditEnd: this.closeEdit });
+			}
+	
 			var topics = this.props.question.topics.map(function (topic) {
 				return React.createElement(
-					"li",
+					'li',
 					{ key: topic.id,
-						className: "topic-list-item" },
+						className: 'topic-list-item' },
 					topic.name
 				);
 			});
 	
 			return React.createElement(
-				"ul",
-				{ className: "topic-list" },
-				topics
+				'ul',
+				{ className: 'topic-list' },
+				topics,
+				editTopicsList,
+				React.createElement('input', { type: 'button',
+					onClick: this.startEdit,
+					className: 'edit-topics-button',
+					value: 'Edit Topics' })
 			);
 		}
 	
@@ -33338,18 +33363,18 @@
 			router: React.PropTypes.object.isRequired
 		},
 	
-		inCurrentUserTopics: function (topicName) {
-			var userTopics = SessionStore.currentUser().topics;
-			function topicNames(userTopics) {
-				var result = [];
-				userTopics.forEach(function (topic) {
-					result.push(topic.name);
-				});
-				return result;
-			}
-	
-			return topicNames(userTopics).includes(topicName);
-		},
+		// inCurrentUserTopics: function(topicName){
+		// 	var userTopics = SessionStore.currentUser().topics;
+		// 	function topicNames(userTopics) {
+		// 		var result = [];
+		// 		userTopics.forEach(function(topic) {
+		// 			result.push(topic.name);
+		// 		});
+		// 		return result;
+		// 	}
+		//
+		// 	return topicNames(userTopics).includes(topicName);
+		// },
 	
 		getInitialState: function () {
 			return {
@@ -33375,7 +33400,7 @@
 		handleSubmit: function (e) {
 			e.preventDefault();
 			ApiUtil.editUser(SessionStore.currentUser(), { topic_ids: this.state.userTopics }, function () {
-				this.context.router.push('');
+				this.context.router.push('/');
 			}.bind(this));
 			this.setState({ topics: TopicStore.all() });
 		},
@@ -33807,6 +33832,158 @@
 	});
 	
 	module.exports = SignUpForm;
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PropTypes = React.PropTypes;
+	var ApiUtil = __webpack_require__(185);
+	var TopicStore = __webpack_require__(267);
+	
+	var EditTopicsForm = React.createClass({
+		displayName: 'EditTopicsForm',
+	
+		contextTypes: {
+			router: React.PropTypes.object.isRequired
+		},
+	
+		_onStoreChange: function () {
+			this.setState({ allTopics: TopicStore.all() });
+		},
+	
+		getInitialState: function () {
+			return {
+				allTopics: TopicStore.all(),
+				newTopics: this._extractIds(this.props.question.topics),
+				questionTopics: this.props.question.topics
+			};
+		},
+	
+		componentDidMount: function () {
+			this.topicListener = TopicStore.addListener(this._onStoreChange);
+			ApiUtil.fetchAllTopics();
+		},
+	
+		componentWillUnmount: function () {
+			this.topicListener.remove();
+		},
+	
+		// _onTopicChange: function(e){
+		// 	this.setState({newTopics.push()})
+		// },
+	
+		handleEdit: function (e) {
+			e.preventDefault();
+	
+			ApiUtil.editQuestion(this.props.question, { topic_ids: this.state.newTopics }, function () {
+				this.props.onEditEnd();
+			}.bind(this));
+		},
+	
+		_onCheckboxClick: function (e) {
+			if (e.currentTarget.checked) {
+				var newTopics = this.state.newTopics.concat(parseInt(e.target.value));
+				this.setState({ newTopics: newTopics });
+			} else {
+				var nnewTopics = this.state.newTopics;
+				nnewTopics.splice(nnewTopics.indexOf(e.target.value), 1);
+				this.setState({ newTopics: nnewTopics });
+			}
+		},
+	
+		_extractIds: function (arr) {
+			result = [];
+			for (var i = 0; i < arr.length; i++) {
+				result.push(arr[i].id);
+			}
+			return result;
+		},
+	
+		_hasOverlap: function (obj1, obj2) {
+	
+			if (obj1.id === obj2.id) {
+				return true;
+			}
+		},
+	
+		_findUncheckedBoxes: function (topic) {},
+	
+		render: function () {
+	
+			var topicList = this.props.question.topics.map(function (topic) {
+				return React.createElement(
+					'label',
+					{ className: 'checkbox-table', key: topic.id },
+					React.createElement('input', {
+						type: 'checkbox',
+						value: topic.id,
+						key: topic.id,
+						onClick: this._onCheckboxClick,
+						defaultChecked: 'checked'
+					}),
+					topic.name
+				);
+			}.bind(this));
+	
+			//
+			// var qTopics = this.state.questionTopics;
+			// var allTopics = this.state.allTopics;
+	
+			var otherTopics = this.state.allTopics.map(function (topic) {
+				var qKeys = this._extractIds(this.state.questionTopics);
+				if (!qKeys.includes(topic.id)) {
+					return React.createElement(
+						'label',
+						{ className: 'checkbox-table', key: topic.id },
+						React.createElement('input', {
+							type: 'checkbox',
+							value: topic.id,
+							key: topic.id,
+							onClick: this._onCheckboxClick
+						}),
+						topic.name
+					);
+				}
+			}.bind(this));
+			// if (this._compareKeys(qTopics, allTopics)){
+			// 	return (
+			// 		<label className="checkbox-table" key={topic.id}>
+			// 			<input
+			// 				type="checkbox"
+			// 				value={topic.id}
+			// 				key={topic.id}
+			// 				onClick={this._onCheckboxClick}
+			// 				/>
+			// 			{topic.name}
+			// 		</label>);
+			// 	}
+			// }.bind(this));
+	
+			return React.createElement(
+				'form',
+				{ className: 'topic-edit-form group',
+					onSubmit: this.handleEdit },
+				React.createElement(
+					'ul',
+					{ className: 'topic-list' },
+					topicList
+				),
+				React.createElement(
+					'ul',
+					{ className: 'topic-list' },
+					otherTopics
+				),
+				React.createElement('input', {
+					type: 'submit',
+					value: 'Submit!',
+					className: 'submit-form-choice-button' })
+			);
+		}
+	
+	});
+	module.exports = EditTopicsForm;
 
 /***/ }
 /******/ ]);

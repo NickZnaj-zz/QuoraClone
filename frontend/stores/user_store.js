@@ -22,7 +22,6 @@ var deleteUser = function(id) {
 };
 
 var editUser = function(user) {
-	debugger
 	_users[user.id] = user;
 };
 
