@@ -20,3 +20,16 @@
   color: black;
   font-weight: bold;
 }
+
+.top-answer-submitter {
+	margin: 10px 0
+}
+
+.top-answer-user-info {
+	padding-top: 9px;
+}
+
+.top-answer-body {
+	margin: 10px 0;
+	font-family: serif;
+}

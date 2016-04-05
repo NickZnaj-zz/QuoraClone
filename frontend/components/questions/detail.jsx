@@ -127,9 +127,9 @@ var QuestionDetail =  React.createClass({
     return(
       <div className="question-show-page group" >
 
-				{topicsList}
+				<div className="question-detail-topic-list">{topicsList}</div>
 
-        <div className="question">
+        <div className="question-title">
           {this.state.question.title}
         </div>
 

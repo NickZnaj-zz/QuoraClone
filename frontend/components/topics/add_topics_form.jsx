@@ -83,7 +83,7 @@ var AddTopicsForm = React.createClass({
 					</ul>
 					<input type="submit"
 								 value="Submit!"
-								 className="submit-button"
+								 className="submit-form-choice-button"
 					/>
 				</form>
 			</div>

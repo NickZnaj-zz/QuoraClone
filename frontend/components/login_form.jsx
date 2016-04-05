@@ -28,7 +28,7 @@ var LoginForm = React.createClass({
 
     return (
       <div>
-				<div className="login-form">
+				<div className="login-form group">
 	        <h1>Log in</h1>
 
 	        <form onSubmit={this.handleSubmit}>
@@ -63,7 +63,7 @@ var LoginForm = React.createClass({
   _onEmailChange: function(e) {
     this.setState({ email: e.currentTarget.value });
   },
-	
+
   _onPasswordChange: function(e) {
     this.setState({ password: e.currentTarget.value });
   }

@@ -31,7 +31,7 @@ var TopAnswer = React.createClass({
 				(this.props.question.answers.length === 0)) {
 			return(
 			<div>
-				<div>This question hasn't been answered!</div>
+				<div className="top-answer-body">This question hasn't been answered!</div>
 			</div>
 			);
 		}

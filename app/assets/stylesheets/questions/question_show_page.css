@@ -3,9 +3,28 @@
   padding-top: 30px;
 }
 
-.question {
+.question-title {
   font-size: 24px;
   padding-top: 20px;
   padding-bottom: 10px;
   font-weight: bold;
+}
+
+.topic-list-item {
+	background: #f4f4fa;
+	color: #808393;
+	font-weight: 500;
+	line-height: 1.2em;
+	font-size: 13px;
+	border-radius: 12px;
+	padding: 4px 8px;
+	/*position: relative;*/
+}
+
+.question-detail-topic-list {
+	float: left;
+}
+
+.question-title{
+	float:left;
 }
