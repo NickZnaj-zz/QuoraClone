@@ -11,18 +11,18 @@ var AddTopicsForm = React.createClass({
     router: React.PropTypes.object.isRequired
 	},
 
-	inCurrentUserTopics: function(topicName){
-		var userTopics = SessionStore.currentUser().topics;
-		function topicNames(userTopics) {
-			var result = [];
-			userTopics.forEach(function(topic) {
-				result.push(topic.name);
-			});
-			return result;
-		}
-
-		return topicNames(userTopics).includes(topicName);
-	},
+	// inCurrentUserTopics: function(topicName){
+	// 	var userTopics = SessionStore.currentUser().topics;
+	// 	function topicNames(userTopics) {
+	// 		var result = [];
+	// 		userTopics.forEach(function(topic) {
+	// 			result.push(topic.name);
+	// 		});
+	// 		return result;
+	// 	}
+	//
+	// 	return topicNames(userTopics).includes(topicName);
+	// },
 
 	getInitialState: function() {
 		return {
@@ -48,7 +48,7 @@ var AddTopicsForm = React.createClass({
 	handleSubmit: function(e) {
 		e.preventDefault();
 		ApiUtil.editUser(SessionStore.currentUser(), {topic_ids: this.state.userTopics}, function(){
-			this.context.router.push('');
+			this.context.router.push('/');
 		}.bind(this));
 		this.setState ({topics: TopicStore.all()});
 	},
