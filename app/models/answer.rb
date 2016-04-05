@@ -1,4 +1,6 @@
 class Answer < ActiveRecord::Base
+	include PgSearch
+	
   validates :body, :user_id, :question_id, presence: true
 
   belongs_to :question

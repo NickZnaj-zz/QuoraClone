@@ -1,4 +1,5 @@
 class Question < ActiveRecord::Base
+	include PgSearch
   validates :title, presence: true
 
 	has_and_belongs_to_many :topics
