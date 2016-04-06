@@ -2,7 +2,7 @@ var Store = require('flux/utils').Store;
 var Dispatcher = require('../dispatcher/Dispatcher');
 var SearchResultConstants = require('../constants/search_result_constants');
 
-var SearchResultsStore = new Store(AppDispatcher);
+var SearchResultsStore = new Store(Dispatcher);
 
 var _searchResults = [];
 var _meta = {};

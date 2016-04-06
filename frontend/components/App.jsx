@@ -5,6 +5,7 @@ var ApiUtil = require('../util/api_util');
 var RightBar = require('./main/rightbar');
 var NavBar = require('./main/navbar');
 var LoginForm = require('./login_form');
+var Search = require('./search');
 
 var App = React.createClass({
   contextTypes: {
@@ -45,6 +46,7 @@ var App = React.createClass({
     return (
       <div>
 				<NavBar />
+				<Search className="search" />
 				{button}
 				<div className="main group">
 					<RightBar />

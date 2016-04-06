@@ -2,6 +2,7 @@ var React = require('react');
 var QuestionForm = require('../questions/question_form');
 var ApiUtil = require('../../util/api_util');
 var SessionStore = require('../../stores/session_store');
+var NavBarModal = require('./navbar_modal');
 
 var NavBar = React.createClass({
   render: function () {

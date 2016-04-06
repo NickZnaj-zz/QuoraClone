@@ -10,7 +10,7 @@ var ApiUtil = {
 	search: function (query, page) {
     $.ajax({
       type: "GET",
-      url: "/api/searches",
+      url: "/api/searches/",
       dataType: "json",
       data: {query: query, page: page},
       success: function (response) {

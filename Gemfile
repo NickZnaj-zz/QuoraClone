@@ -47,6 +47,7 @@ group :development do
 end
 gem 'faker'
 gem 'pg_search'
+gem 'kaminari'
 
 group :production do
   gem 'newrelic_rpm'

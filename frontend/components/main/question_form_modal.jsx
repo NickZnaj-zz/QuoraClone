@@ -13,24 +13,24 @@ style = {
 		left            : 0,
 		right           : 0,
 		bottom          : 0,
-		backgroundColor : 'rgba(0, 0, 0, 0.75)',
+		backgroundColor : 'rgba(255, 255, 255, 0.75)',
 		zIndex         : 10
 	},
 	content : {
-		position        : 'relative',
-		top             : '0px',
-		left            : '0px',
-		right           : '0px',
-		bottom          : '200px',
+		position        : 'fixed',
+		top             : '100px',
+		left            : '150px',
+		right           : '150px',
+		bottom          : '100px',
 		border          : '1px solid #ccc',
-		// padding         : '20px',
+		padding         : '20px',
 		zIndex         : 11
 	}
 };
 
 
 
-var QuestionForm = React.createClass({
+var QuestionFormInModal = React.createClass({
 
   contextTypes: {
     router: React.PropTypes.object.isRequired
@@ -44,7 +44,6 @@ var QuestionForm = React.createClass({
     return (
 			{ title: '',
 			  user_id: SessionStore.currentUser().id,
-				modalIsOpen: false
 			}
 		);
   },
@@ -57,15 +56,6 @@ var QuestionForm = React.createClass({
     this.setState({title: e.target.value});
   },
 
-
-	closeModal: function() {
-		this.setState({ modalIsOpen: false });
-	},
-
-	openModal: function() {
-		this.setState({ modalIsOpen: true });
-	},
-
   handleSubmit: function(e){
     e.preventDefault();
     // var title = {title: this.state.title};
@@ -77,16 +67,6 @@ var QuestionForm = React.createClass({
   },
 
   render: function() {
-		var navBarModal;
-		if (this.state.modalIsOpen){
-			navBarModal = <Modal
-				isOpen={this.state.modalIsOpen}
-				onRequestClose={this.closeModal}
-				style={style}
-			>
-			<NavBarModal />
-			</Modal>;
-		}
 
     return(
       <div className="question-form">
@@ -105,12 +85,10 @@ var QuestionForm = React.createClass({
 								 />
         </form>
 
-				{ navBarModal }
-
       </div>
     );
   }
 });
 
 
-module.exports = QuestionForm;
+module.exports = QuestionFormInModal;
