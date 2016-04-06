@@ -278,9 +278,35 @@ var ApiUtil = {
 		});
 	},
 
+	createVote: function(vote) {
+		$.ajax({
+			type: "POST",
+			url: "api/answers/" + vote.answer_id + "votes",
+			data: {vote: vote},
+			success: function(vote){
+			VoteActions.createVote(vote);
+			callback && callback(vote.id);
+		},
+		error: function(e) {
+			console.log("api_util#createVote Error");
+		}
+		});
+	},
 
+	updateVote: function(vote, newAttrs, callback) {
+		$.ajax({
+			type: "PATCH",
+			url: "/api/answers/" + vote.answer_id + "/votes/" + vote.id,
+			data: { vote: newAttrs },
+			success: function(vote) {
+				VoteActions.updateVote(vote);
+				callback && callback(vote);
+			},
+			error: function(e) {
+				console.log("api_util#updateVote error");
+			}
+
+		});
+	}
 
 };
-
-
-module.exports = ApiUtil;
