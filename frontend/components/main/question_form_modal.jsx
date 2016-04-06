@@ -4,7 +4,7 @@ var History = require('react-router').History;
 var SessionStore = require('../../stores/session_store');
 var SearchResultsStore = require("../../stores/search_result_store");
 var Modal = require('react-modal');
-
+var SearchResults = require('../search_results');
 
 style = {
 	overlay : {
@@ -131,6 +131,7 @@ var QuestionFormInModal = React.createClass({
   render: function() {
 
     return(
+		<div>
       <div className="question-form">
         <form onSubmit={this.handleSubmit}>
 
@@ -147,14 +148,32 @@ var QuestionFormInModal = React.createClass({
 								 value="Submit Question"
 								 />
         </form>
-				<ul>
-					{ this.resultLis() }
-				</ul>
-
       </div>
+
+
+		</div>
     );
   }
 });
 
+style = {
+  overlay : {
+    position        : 'fixed',
+    top             : 0,
+    left            : 0,
+    right           : 0,
+    bottom          : 0,
+    backgroundColor : 'rgba(255, 255, 255, 0.75)',
+  },
+  content : {
+    position        : 'fixed',
+    top             : '100px',
+    left            : '150px',
+    right           : '150px',
+    bottom          : '100px',
+    border          : '1px solid #ccc',
+    padding         : '20px',
+  }
+};
 
 module.exports = QuestionFormInModal;

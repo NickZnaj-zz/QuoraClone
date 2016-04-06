@@ -2,6 +2,7 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 var Modal = require('react-modal');
 var QuestionFormInModal = require('./question_form_modal');
+var SearchResults = require('../search_results');
 
 
 
@@ -29,6 +30,7 @@ var NavBarModal = React.createClass({
         <div className="header-nav group">
           <a href="/#/" className="logo">Shmora</a>
           <QuestionFormInModal />
+					<SearchResults />
         </div>
       </header>
 		</div>

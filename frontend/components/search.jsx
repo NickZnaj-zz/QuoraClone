@@ -1,6 +1,7 @@
 var React = require("react");
 var SearchResultsStore = require("./../stores/search_result_store");
 var ApiUtil = require('../util/api_util');
+var Modal = require('react-modal');
 
 var Search = React.createClass({
 
@@ -83,9 +84,11 @@ var Search = React.createClass({
 					onClick={ this.search }>
 					GO
 				</button>
-        <ul>
-          { this.resultLis() }
-        </ul>
+				<Modal>
+	        <ul>
+	          { this.resultLis() }
+	        </ul>
+				</Modal>
       </article>
     );
   }
