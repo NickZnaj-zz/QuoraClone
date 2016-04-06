@@ -2,7 +2,7 @@ var React = require('react');
 var ApiUtil = require('../../util/api_util');
 var History = require('react-router').History;
 var SessionStore = require('../../stores/session_store');
-var NavBarModal = require('../main/navbar_modal');
+var SearchResultsStore = require("../../stores/search_result_store");
 var Modal = require('react-modal');
 
 
@@ -44,6 +44,8 @@ var QuestionFormInModal = React.createClass({
     return (
 			{ title: '',
 			  user_id: SessionStore.currentUser().id,
+				query: ''
+
 			}
 		);
   },
@@ -51,10 +53,35 @@ var QuestionFormInModal = React.createClass({
 	componentWillMount: function() {
 		Modal.setAppElement(document.body);
 	},
+	componentDidMount: function(){
+		this.storeListener = SearchResultsStore.addListener(this._onChange);
+	},
+
+	componentWillUnmount: function(){
+		this.storeListener.remove();
+	},
+
 
   _onChange: function(e) {
-    this.setState({title: e.target.value});
+		this.searchInput(e);
+    if (e) this.setState({title: e.target.value});
+		this.setState({results: SearchResultsStore.all()});
+
   },
+
+	searchInput: function (e) {
+		var query;
+		if (e) {query = e.target.value;
+		this.setState({ query: query }, function () {
+			if (query.length >= 0) {
+				this.search();
+			}
+		}.bind(this));}
+	},
+
+	search: function (e) {
+		ApiUtil.search(this.state.query, 1);
+	},
 
   handleSubmit: function(e){
     e.preventDefault();
@@ -64,6 +91,41 @@ var QuestionFormInModal = React.createClass({
       this.context.router.push('/questions/' + id);
     }.bind(this));
     this.setState(this.blankAttrs);
+  },
+
+	resultLis: function () {
+    return SearchResultsStore.all().map(function (result) {
+      if (result._type === "Question") {
+        return (
+          <li key={ result.id } className="search-result-item group">
+						<div className="search-result-container">
+							<a href={"/#/questions/" + result.id}>
+								Question: {result.title}</a>
+						</div>
+          </li>
+        );
+
+      } else if (result._type === "Topic") {
+        return (
+          <li key={ result.id } className="search-result-item group">
+						<div className="search-result-container">
+							<a href={"/#/topics/" + result.id}>
+								Topic: {result.name}</a>
+						</div>
+          </li>
+        );
+
+      }	else {
+        return (
+          <li key={ result.id } className="search-result-item group">
+						<div className="search-result-container">
+							<a href={"/#/users/" + result.id}>
+								Profile: {result.username}</a>
+						</div>
+          </li>
+        );
+      }
+    }.bind(this));
   },
 
   render: function() {
@@ -85,6 +147,9 @@ var QuestionFormInModal = React.createClass({
 								 value="Submit Question"
 								 />
         </form>
+				<ul>
+					{ this.resultLis() }
+				</ul>
 
       </div>
     );

@@ -33828,7 +33828,6 @@
 	var RightBar = __webpack_require__(271);
 	var NavBar = __webpack_require__(267);
 	var LoginForm = __webpack_require__(273);
-	var Search = __webpack_require__(275);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -33880,7 +33879,6 @@
 	      'div',
 	      null,
 	      React.createElement(NavBar, null),
-	      React.createElement(Search, { className: 'search' }),
 	      button,
 	      React.createElement(
 	        'div',
@@ -34078,128 +34076,7 @@
 	module.exports = SignUpForm;
 
 /***/ },
-/* 275 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var SearchResultsStore = __webpack_require__(276);
-	var ApiUtil = __webpack_require__(185);
-	
-	var Search = React.createClass({
-	  displayName: "Search",
-	
-	
-	  getInitialState: function () {
-	    return { query: "" };
-	  },
-	
-	  componentDidMount: function () {
-	    this.storeListener = SearchResultsStore.addListener(this._onChange);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.storeListener.remove();
-	  },
-	
-	  _onChange: function () {
-	    this.setState({ results: SearchResultsStore.all() });
-	  },
-	
-	  handleInputChange: function (e) {
-	    var query = e.currentTarget.value;
-	    this.setState({ query: query }, function () {
-	      if (query.length > 2) {
-	        this.search();
-	      }
-	    }.bind(this));
-	  },
-	
-	  search: function (e) {
-	    ApiUtil.search(this.state.query, 1);
-	  },
-	
-	  nextPage: function () {
-	    var meta = SearchResultsStore.meta();
-	    ApiUtil.search(meta.query, meta.page + 1);
-	  },
-	
-	  resultLis: function () {
-	    return SearchResultsStore.all().map(function (result) {
-	      if (result._type === "Question") {
-	        return React.createElement(
-	          "li",
-	          { key: result.id, className: "search-result-item group" },
-	          React.createElement(
-	            "div",
-	            { className: "search-result-container" },
-	            React.createElement(
-	              "a",
-	              { href: "/#/questions/" + result.id },
-	              "Question: ",
-	              result.title
-	            )
-	          )
-	        );
-	      } else if (result._type === "Topic") {
-	        return React.createElement(
-	          "li",
-	          { key: result.id, className: "search-result-item group" },
-	          React.createElement(
-	            "div",
-	            { className: "search-result-container" },
-	            React.createElement(
-	              "a",
-	              { href: "/#/topics/" + result.id },
-	              "Topic: ",
-	              result.name
-	            )
-	          )
-	        );
-	      } else {
-	        return React.createElement(
-	          "li",
-	          { key: result.id, className: "search-result-item group" },
-	          React.createElement(
-	            "div",
-	            { className: "search-result-container" },
-	            React.createElement(
-	              "a",
-	              { href: "/#/users/" + result.id },
-	              "Profile: ",
-	              result.username
-	            )
-	          )
-	        );
-	      }
-	    }.bind(this));
-	  },
-	
-	  render: function () {
-	    var meta = SearchResultsStore.meta();
-	    return React.createElement(
-	      "article",
-	      { className: "search-result-list group" },
-	      React.createElement("input", { type: "text", onChange: this.handleInputChange }),
-	      React.createElement(
-	        "button",
-	        {
-	          className: "search-button",
-	          onClick: this.search },
-	        "GO"
-	      ),
-	      React.createElement(
-	        "ul",
-	        null,
-	        this.resultLis()
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = Search;
-
-/***/ },
+/* 275 */,
 /* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -36228,90 +36105,173 @@
 	var ApiUtil = __webpack_require__(185);
 	var History = __webpack_require__(200).History;
 	var SessionStore = __webpack_require__(198);
-	var NavBarModal = __webpack_require__(278);
+	var SearchResultsStore = __webpack_require__(276);
 	var Modal = __webpack_require__(279);
 	
 	style = {
-			overlay: {
-					position: 'fixed',
-					top: 0,
-					left: 0,
-					right: 0,
-					bottom: 0,
-					backgroundColor: 'rgba(255, 255, 255, 0.75)',
-					zIndex: 10
-			},
-			content: {
-					position: 'fixed',
-					top: '100px',
-					left: '150px',
-					right: '150px',
-					bottom: '100px',
-					border: '1px solid #ccc',
-					padding: '20px',
-					zIndex: 11
-			}
+		overlay: {
+			position: 'fixed',
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			backgroundColor: 'rgba(255, 255, 255, 0.75)',
+			zIndex: 10
+		},
+		content: {
+			position: 'fixed',
+			top: '100px',
+			left: '150px',
+			right: '150px',
+			bottom: '100px',
+			border: '1px solid #ccc',
+			padding: '20px',
+			zIndex: 11
+		}
 	};
 	
 	var QuestionFormInModal = React.createClass({
-			displayName: 'QuestionFormInModal',
+		displayName: 'QuestionFormInModal',
 	
 	
-			contextTypes: {
-					router: React.PropTypes.object.isRequired
-			},
+		contextTypes: {
+			router: React.PropTypes.object.isRequired
+		},
 	
-			blankAttrs: {
-					title: ''
-			},
+		blankAttrs: {
+			title: ''
+		},
 	
-			getInitialState: function () {
-					return { title: '',
-							user_id: SessionStore.currentUser().id
-					};
-			},
+		getInitialState: function () {
+			return { title: '',
+				user_id: SessionStore.currentUser().id,
+				query: ''
 	
-			componentWillMount: function () {
-					Modal.setAppElement(document.body);
-			},
+			};
+		},
 	
-			_onChange: function (e) {
-					this.setState({ title: e.target.value });
-			},
+		componentWillMount: function () {
+			Modal.setAppElement(document.body);
+		},
+		componentDidMount: function () {
+			this.storeListener = SearchResultsStore.addListener(this._onChange);
+		},
 	
-			handleSubmit: function (e) {
-					e.preventDefault();
-					// var title = {title: this.state.title};
+		componentWillUnmount: function () {
+			this.storeListener.remove();
+		},
 	
-					ApiUtil.createQuestion(this.state, function (id) {
-							this.context.router.push('/questions/' + id);
-					}.bind(this));
-					this.setState(this.blankAttrs);
-			},
+		_onChange: function (e) {
+			this.searchInput(e);
+			if (e) this.setState({ title: e.target.value });
+			this.setState({ results: SearchResultsStore.all() });
+		},
 	
-			render: function () {
-	
-					return React.createElement(
-							'div',
-							{ className: 'question-form' },
-							React.createElement(
-									'form',
-									{ onSubmit: this.handleSubmit },
-									React.createElement('input', { name: 'title',
-											type: 'text',
-											autofocus: 'autofocus',
-											onChange: this._onChange,
-											onClick: this.openModal,
-											value: this.state.title,
-											className: 'modal-question-input'
-									}),
-									React.createElement('input', { type: 'submit',
-											className: 'question-submit',
-											value: 'Submit Question'
-									})
-							)
-					);
+		searchInput: function (e) {
+			var query;
+			if (e) {
+				query = e.target.value;
+				this.setState({ query: query }, function () {
+					if (query.length >= 0) {
+						this.search();
+					}
+				}.bind(this));
 			}
+		},
+	
+		search: function (e) {
+			ApiUtil.search(this.state.query, 1);
+		},
+	
+		handleSubmit: function (e) {
+			e.preventDefault();
+			// var title = {title: this.state.title};
+	
+			ApiUtil.createQuestion(this.state, function (id) {
+				this.context.router.push('/questions/' + id);
+			}.bind(this));
+			this.setState(this.blankAttrs);
+		},
+	
+		resultLis: function () {
+			return SearchResultsStore.all().map(function (result) {
+				if (result._type === "Question") {
+					return React.createElement(
+						'li',
+						{ key: result.id, className: 'search-result-item group' },
+						React.createElement(
+							'div',
+							{ className: 'search-result-container' },
+							React.createElement(
+								'a',
+								{ href: "/#/questions/" + result.id },
+								'Question: ',
+								result.title
+							)
+						)
+					);
+				} else if (result._type === "Topic") {
+					return React.createElement(
+						'li',
+						{ key: result.id, className: 'search-result-item group' },
+						React.createElement(
+							'div',
+							{ className: 'search-result-container' },
+							React.createElement(
+								'a',
+								{ href: "/#/topics/" + result.id },
+								'Topic: ',
+								result.name
+							)
+						)
+					);
+				} else {
+					return React.createElement(
+						'li',
+						{ key: result.id, className: 'search-result-item group' },
+						React.createElement(
+							'div',
+							{ className: 'search-result-container' },
+							React.createElement(
+								'a',
+								{ href: "/#/users/" + result.id },
+								'Profile: ',
+								result.username
+							)
+						)
+					);
+				}
+			}.bind(this));
+		},
+	
+		render: function () {
+	
+			return React.createElement(
+				'div',
+				{ className: 'question-form' },
+				React.createElement(
+					'form',
+					{ onSubmit: this.handleSubmit },
+					React.createElement('input', { name: 'title',
+						type: 'text',
+						autofocus: 'autofocus',
+						onChange: this._onChange,
+						onClick: this.openModal,
+						value: this.state.title,
+						className: 'modal-question-input'
+					}),
+					React.createElement('input', { type: 'submit',
+						className: 'question-submit',
+						value: 'Submit Question'
+					})
+				),
+				React.createElement(
+					'ul',
+					null,
+					this.resultLis()
+				)
+			);
+		}
 	});
 	
 	module.exports = QuestionFormInModal;
