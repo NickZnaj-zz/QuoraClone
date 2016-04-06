@@ -74,10 +74,11 @@ var QuestionFormInModal = React.createClass({
 
           <input name="title"
 								 type="text"
+								 autofocus="autofocus"
 								 onChange={this._onChange}
 								 onClick={this.openModal}
 								 value={this.state.title}
-								 className="nav-bar-input"
+								 className="modal-question-input"
 								 />
           <input type="submit"
 								 className="question-submit"

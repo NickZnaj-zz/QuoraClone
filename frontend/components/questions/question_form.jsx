@@ -100,8 +100,8 @@ var QuestionForm = React.createClass({
 								 className="nav-bar-input"
 								 />
           <input type="submit"
-								 className="question-submit"
-								 value="Submit Question"
+								 className="ask-question-button"
+								 value="Ask Question"
 								 />
         </form>
 

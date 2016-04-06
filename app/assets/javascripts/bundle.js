@@ -27591,8 +27591,8 @@
 						className: 'nav-bar-input'
 					}),
 					React.createElement('input', { type: 'submit',
-						className: 'question-submit',
-						value: 'Submit Question'
+						className: 'ask-question-button',
+						value: 'Ask Question'
 					})
 				),
 				navBarModal
@@ -34188,19 +34188,6 @@
 	        "GO"
 	      ),
 	      React.createElement(
-	        "nav",
-	        null,
-	        "Displaying page ",
-	        meta.page,
-	        " of ",
-	        meta.total_pages,
-	        React.createElement(
-	          "button",
-	          { onClick: this.nextPage },
-	          "NEXT PAGE"
-	        )
-	      ),
-	      React.createElement(
 	        "ul",
 	        null,
 	        this.resultLis()
@@ -36312,10 +36299,11 @@
 									{ onSubmit: this.handleSubmit },
 									React.createElement('input', { name: 'title',
 											type: 'text',
+											autofocus: 'autofocus',
 											onChange: this._onChange,
 											onClick: this.openModal,
 											value: this.state.title,
-											className: 'nav-bar-input'
+											className: 'modal-question-input'
 									}),
 									React.createElement('input', { type: 'submit',
 											className: 'question-submit',

@@ -83,12 +83,6 @@ var Search = React.createClass({
 					onClick={ this.search }>
 					GO
 				</button>
-
-        <nav>
-          Displaying page { meta.page } of { meta.total_pages }
-          <button onClick={ this.nextPage }>NEXT PAGE</button>
-        </nav>
-
         <ul>
           { this.resultLis() }
         </ul>

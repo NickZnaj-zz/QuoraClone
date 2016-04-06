@@ -6,3 +6,28 @@
 	top: -1px;
 
 }
+
+.question-submit {
+	font-size: 13px;
+	color: white;
+	background: #3e78ad;
+	width:auto;
+	padding: 3px 7px 4px 7px;
+	border: 1px solid #3a66ad;
+	border-radius: 2px;
+	margin-left: 20px;
+}
+
+.modal-question-input {
+	box-sizing:padding-box;
+	border: 1px solid #e2e2e2;
+	color: #333;
+	background: #fff;
+	border-radius: 2px;
+	width: 600px;
+	height: 21px;
+	padding: 2px 8px 3px 8px;
+	margin: 10px 0px 11px 14px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
