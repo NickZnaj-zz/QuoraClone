@@ -34128,23 +34128,47 @@
 	      if (result._type === "Question") {
 	        return React.createElement(
 	          "li",
-	          { key: result.id },
-	          "Question: ",
-	          result.title
+	          { key: result.id, className: "search-result-item group" },
+	          React.createElement(
+	            "div",
+	            { className: "search-result-container" },
+	            React.createElement(
+	              "a",
+	              { href: "/#/questions/" + result.id },
+	              "Question: ",
+	              result.title
+	            )
+	          )
 	        );
 	      } else if (result._type === "Topic") {
 	        return React.createElement(
 	          "li",
-	          { key: result.id },
-	          "Topic: ",
-	          result.name
+	          { key: result.id, className: "search-result-item group" },
+	          React.createElement(
+	            "div",
+	            { className: "search-result-container" },
+	            React.createElement(
+	              "a",
+	              { href: "/#/topics/" + result.id },
+	              "Topic: ",
+	              result.name
+	            )
+	          )
 	        );
 	      } else {
 	        return React.createElement(
 	          "li",
-	          { key: result.id },
-	          "Profile: ",
-	          result.username
+	          { key: result.id, className: "search-result-item group" },
+	          React.createElement(
+	            "div",
+	            { className: "search-result-container" },
+	            React.createElement(
+	              "a",
+	              { href: "/#/users/" + result.id },
+	              "Profile: ",
+	              result.username
+	            )
+	          )
 	        );
 	      }
 	    }.bind(this));

@@ -42,22 +42,31 @@ var Search = React.createClass({
     return SearchResultsStore.all().map(function (result) {
       if (result._type === "Question") {
         return (
-          <li key={ result.id }>
-            Question: { result.title }
+          <li key={ result.id } className="search-result-item group">
+						<div className="search-result-container">
+							<a href={"/#/questions/" + result.id}>
+								Question: {result.title}</a>
+						</div>
           </li>
         );
 
       } else if (result._type === "Topic") {
         return (
-          <li key={ result.id }>
-            Topic: { result.name }
+          <li key={ result.id } className="search-result-item group">
+						<div className="search-result-container">
+							<a href={"/#/topics/" + result.id}>
+								Topic: {result.name}</a>
+						</div>
           </li>
         );
 
       }	else {
         return (
-          <li key={ result.id }>
-            Profile: { result.username }
+          <li key={ result.id } className="search-result-item group">
+						<div className="search-result-container">
+							<a href={"/#/users/" + result.id}>
+								Profile: {result.username}</a>
+						</div>
           </li>
         );
       }
