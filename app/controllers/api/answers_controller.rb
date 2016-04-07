@@ -2,11 +2,11 @@ class Api::AnswersController < ApplicationController
 
   def index
     if params.has_key?(:question_id)
-      @answers = Answer.where(question_id: params[:question_id])
+      @answers = Answer.where(question_id: params[:question_id]).includes(:user, :votes)
     else
       @answers = Answer.all
     end
-    render json: @answers
+    render :index
   end
 
   def create
@@ -20,7 +20,7 @@ class Api::AnswersController < ApplicationController
   end
 
   def show
-    @answer = Answer.find(params[:id]).includes(:user)
+    @answer = Answer.includes(:user, :votes).find(params[:id])
   end
 
   def destroy

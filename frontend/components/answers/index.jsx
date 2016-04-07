@@ -43,7 +43,7 @@ var AnswersIndex = React.createClass({
 							 								 answer={answer}
 
 										/>;
-          })}
+								}.bind(this))}
         </ul>
       </div>
     );

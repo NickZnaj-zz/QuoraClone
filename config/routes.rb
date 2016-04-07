@@ -12,8 +12,8 @@ Rails.application.routes.draw do
     end
 
 		resources :answers, except: [:index] do
-			resources :votes, only: [:create, :update]
 		end
+		resources :votes, only: [:create, :update, :destroy]
 
 		resource :session, only: [:show, :create, :destroy]
 		resources :topics

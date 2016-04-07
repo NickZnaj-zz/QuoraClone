@@ -20,6 +20,10 @@ var AnswerEditForm = React.createClass({
 		this.answerListener = AnswerStore.addListener(this._onStoreChange);
 	},
 
+	_onStoreChange: function() {
+
+	},
+
 	componentWillUnmount: function() {
 		this.answerListener.remove();
 	},

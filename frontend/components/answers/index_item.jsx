@@ -3,7 +3,8 @@ var AnswerEditForm = require('./edit');
 var ApiUtil = require('../../util/api_util.js');
 var UserStore = require('../../stores/user_store');
 var SessionStore = require('../../stores/session_store');
-
+var UpvoteButton = require('../votes/upvote_button');
+var DownvoteButton = require('../votes/downvote_button');
 
 var IndexItem = React.createClass({
 	contextTypes: {
@@ -53,7 +54,7 @@ var IndexItem = React.createClass({
 		}
 
 		var editButton;
-		if (this.state.submitter.id === SessionStore.currentUser().id){
+		if (this.state.submitter.id && (this.state.submitter.id === SessionStore.currentUser().id)){
 			editButton = <input type="submit"
 						 							value="Edit Answer"
 						 							onClick={this.startEdit} />;
@@ -69,7 +70,7 @@ var IndexItem = React.createClass({
       <li className="answer-list-item group">
 
 				<div className="answer-header group">
-					<div  className="user-pic"  />
+					<div className="user-pic"  />
 					<p className="user-info">{this.state.submitter.username}</p>
 				</div>
 
@@ -82,6 +83,16 @@ var IndexItem = React.createClass({
 			{editButton}
 
 			{deleteButton}
+
+			<UpvoteButton
+				user={SessionStore.currentUser().id}
+				answer={this.state.answer}
+			/>
+
+			 <DownvoteButton
+				user={SessionStore.currentUser().id}
+				answer={this.state.answer}
+			/>
 
       </li>
     );

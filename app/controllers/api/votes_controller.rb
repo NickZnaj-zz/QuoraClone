@@ -10,9 +10,30 @@ class Api::VotesController < ApplicationController
 	end
 
 	def create
-		@vote = Vote.new
-		@vote.user_id = current_user.id
-		@vote.answer_id = params([:answer_id])
+		if params[:vote][:value] == "true"
+			params[:vote][:value] = true
+		else
+			params[:vote][:value] = false
+		end
+
+		if params[:vote][:user_id].is_a? String
+			params[:vote][:user_id] = params[:vote][:user_id].to_i
+		end
+
+		if params[:vote][:answer_id].is_a? String
+			params[:vote][:answer_id] = params[:vote][:answer_id].to_i
+		end
+
+
+		@vote = Vote.new(vote_params)
+
+
+
+		if @vote.save
+			render :show
+		else
+			render json: @vote.errors.full_messages, status: 422
+		end
 	end
 
 	def update
@@ -20,7 +41,7 @@ class Api::VotesController < ApplicationController
 		if @vote.update(vote_params)
 			render :update
 		else
-			render json: @vote.errors.full_messages, status 422
+			render json: @vote.errors.full_messages, status: 422
 		end
 	end
 
@@ -31,6 +52,6 @@ class Api::VotesController < ApplicationController
 	private
 
 	def vote_params
-		params.require(:vote).permit(:answer_id, :value, :user_id)
+		params.require(:vote).permit(:value, :user_id, :answer_id)
 	end
 end

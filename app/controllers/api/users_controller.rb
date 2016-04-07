@@ -4,7 +4,7 @@ class Api::UsersController < ApplicationController
 	end
 
 	def show
-		@user = User.includes(:topics, :questions, :answers).find(params[:id])
+		@user = User.includes(:topics, :questions, :answers, :votes).find(params[:id])
 	end
 
 

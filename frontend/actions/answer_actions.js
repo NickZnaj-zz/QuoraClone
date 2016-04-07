@@ -24,9 +24,9 @@ var AnswerActions = {
 		});
 	},
 
-	editQuestion: function(answer) {
+	editAnswer: function(answer) {
 		Dispatcher.dispatch({
-			actionType: AnswerConstants.ANSWER_EDITED,
+			actionType: AnswerConstants.ANSWER_RECEIVED,
 			answer: answer
 		});
 	}

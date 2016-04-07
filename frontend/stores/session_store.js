@@ -6,6 +6,17 @@ var SessionStore = new Store(Dispatcher);
 
 var _currentUser;
 var _currentUserHasBeenFetched = false;
+var _votes = {};
+
+SessionStore.currentUserVotes = function() {
+	var currentUserVotes = {};
+	if (_currentUser.votes) {
+		_currentUser.votes.forEach(function(vote) {
+			_votes[vote.id] = vote;
+		});
+	}
+	return currentUserVotes;
+};
 
 SessionStore.currentUser = function() {
   return _currentUser;

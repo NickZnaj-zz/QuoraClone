@@ -26700,6 +26700,7 @@
 	var UserActions = __webpack_require__(191);
 	var TopicActions = __webpack_require__(192);
 	var SearchResultActions = __webpack_require__(194);
+	var VoteActions = __webpack_require__(306);
 	
 	var ApiUtil = {
 	
@@ -26909,7 +26910,7 @@
 				url: "/api/answers/" + answer.id,
 				data: { answer: newAttrs },
 				success: function (answer) {
-					AnswerActions.editQuestion(answer);
+					AnswerActions.editAnswer(answer);
 					callback && callback(answer);
 				},
 				error: function (e) {
@@ -26976,11 +26977,10 @@
 		createVote: function (vote) {
 			$.ajax({
 				type: "POST",
-				url: "api/answers/" + vote.answer_id + "votes",
+				url: "api/votes",
 				data: { vote: vote },
 				success: function (vote) {
-					VoteActions.createVote(vote);
-					callback && callback(vote.id);
+					VoteActions.receiveSingleVote(vote);
 				},
 				error: function (e) {
 					console.log("api_util#createVote Error");
@@ -27002,9 +27002,25 @@
 				}
 	
 			});
+		},
+	
+		destroyVote: function (id) {
+			$.ajax({
+				type: "DELETE",
+				url: "/api/vote/" + id,
+				success: function () {
+					VoteActions.destroyVote(id);
+					callback && callback(id);
+				},
+				error: function (e) {
+					console.log("api_util#destroyVote Error");
+				}
+			});
 		}
 	
 	};
+	
+	module.exports = ApiUtil;
 
 /***/ },
 /* 186 */
@@ -27075,9 +27091,9 @@
 			});
 		},
 	
-		editQuestion: function (answer) {
+		editAnswer: function (answer) {
 			Dispatcher.dispatch({
-				actionType: AnswerConstants.ANSWER_EDITED,
+				actionType: AnswerConstants.ANSWER_RECEIVED,
 				answer: answer
 			});
 		}
@@ -27483,6 +27499,17 @@
 	
 	var _currentUser;
 	var _currentUserHasBeenFetched = false;
+	var _votes = {};
+	
+	SessionStore.currentUserVotes = function () {
+	  var currentUserVotes = {};
+	  if (_currentUser.votes) {
+	    _currentUser.votes.forEach(function (vote) {
+	      _votes[vote.id] = vote;
+	    });
+	  }
+	  return currentUserVotes;
+	};
 	
 	SessionStore.currentUser = function () {
 	  return _currentUser;
@@ -32709,154 +32736,154 @@
 	var UserStore = __webpack_require__(183);
 	
 	var QuestionDetail = React.createClass({
-			displayName: 'QuestionDetail',
+		displayName: 'QuestionDetail',
 	
-			contextTypes: {
-					router: React.PropTypes.object.isRequired
-			},
+		contextTypes: {
+			router: React.PropTypes.object.isRequired
+		},
 	
-			getStateFromStore: function () {
-					return { question: QuestionStore.find(parseInt(this.props.params.questionId)) };
-			},
+		getInitialState: function () {
+			return this.getStateFromStore();
+		},
 	
-			_onChange: function () {
-					this.setState(this.getStateFromStore());
-					var submitter = UserStore.find(this.state.question.user_id);
-					this.setState({ submitter: submitter });
-			},
+		getStateFromStore: function () {
+			return { question: QuestionStore.find(this.props.params.questionId) };
+		},
 	
-			componentDidMount: function () {
-					this.questionListener = QuestionStore.addListener(this._onChange);
-					ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
+		_onChange: function () {
+			this.setState(this.getStateFromStore());
+			var submitter = UserStore.find(this.state.question.user_id);
+			this.setState({ submitter: submitter });
+		},
 	
-					this.userListener = UserStore.addListener(this._onChange);
-					ApiUtil.fetchSingleUser(this.state.question.user_id);
-			},
+		componentDidMount: function () {
+			this.questionListener = QuestionStore.addListener(this._onChange);
+			ApiUtil.fetchSingleQuestion(this.props.params.questionId);
 	
-			componentWillUnmount: function () {
-					this.userListener.remove();
-					this.questionListener.remove();
-			},
+			this.userListener = UserStore.addListener(this._onChange);
+			this.state.question && ApiUtil.fetchSingleUser(this.getStateFromStore().question.user_id);
+		},
 	
-			getInitialState: function () {
-					return this.getStateFromStore();
-			},
+		componentWillUnmount: function () {
+			this.userListener.remove();
+			this.questionListener.remove();
+		},
 	
-			handleDelete: function (e) {
-					e.preventDefault();
+		handleDelete: function (e) {
+			e.preventDefault();
 	
-					console.log("hit the handle delete in q detail");
-					ApiUtil.destroyQuestion(this.state.question.id, function () {
-							this.context.router.push('/');
-					}.bind(this));
-			},
+			console.log("hit the handle delete in q detail");
+			ApiUtil.destroyQuestion(this.state.question.id, function () {
+				this.context.router.push('/');
+			}.bind(this));
+		},
 	
-			startEdit: function (event) {
-					event.preventDefault();
-					console.log("hit handleEdit");
+		startEdit: function (event) {
+			event.preventDefault();
+			console.log("hit handleEdit");
 	
-					this.setState({ isEditing: true });
-			},
+			this.setState({ isEditing: true });
+		},
 	
-			closeEdit: function () {
-					this.setState({ isEditing: false });
-			},
-			// fetchDetails: function (props) {
-			//   // if you want to factor out the ApiUtil call
-			// },
+		closeEdit: function () {
+			this.setState({ isEditing: false });
+		},
+		// fetchDetails: function (props) {
+		//   // if you want to factor out the ApiUtil call
+		// },
 	
-			startAnswer: function (e) {
-					this.setState({ isAnswering: true });
-			},
+		startAnswer: function (e) {
+			this.setState({ isAnswering: true });
+		},
 	
-			closeAnswer: function () {
-					this.setState({ isAnswering: false });
-			},
+		closeAnswer: function () {
+			this.setState({ isAnswering: false });
+		},
 	
-			componentWillReceiveProps: function (newProps) {
-					ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
-			},
+		componentWillReceiveProps: function (newProps) {
+			ApiUtil.fetchSingleQuestion(parseInt(newProps.params.questionId));
+		},
 	
-			render: function () {
+		render: function () {
 	
-					var questionEditButton;
-					if (this.state.submitter && this.state.submitter.id === SessionStore.currentUser().id) {
-							questionEditButton = React.createElement('input', { type: 'submit',
-									value: 'Edit Question and Details',
-									onClick: this.startEdit });
-					}
-	
-					var questionDeleteButton;
-					if (this.state.submitter && this.state.submitter.id === SessionStore.currentUser().id) {
-							questionDeleteButton = React.createElement('input', { type: 'submit',
-									value: 'Delete',
-									onClick: this.handleDelete });
-					}
-	
-					if (!this.state.question) {
-							return React.createElement('div', null);
-					}
-					if (this.state.isEditing) {
-							return React.createElement(QuestionEdit, {
-									question: this.state.question,
-									onEditEnd: this.closeEdit
-							});
-					}
-	
-					var answerForm;
-					if (this.state.isAnswering) {
-							answerForm = React.createElement(AnswerForm, {
-									question: this.state.question,
-									onAnswerEnd: this.closeAnswer
-							});
-					}
-	
-					var topicsList;
-					if (this.state.question.topics.length > 0) {
-							topicsList = React.createElement(TopicsList, {
-									className: 'question-show-topics-list',
-									question: this.state.question
-							});
-					} else {
-							topicsList = React.createElement(
-									'div',
-									null,
-									'no topics here'
-							);
-					}
-	
-					return React.createElement(
-							'div',
-							{ className: 'question-show-page group' },
-							React.createElement(
-									'div',
-									{ className: 'question-detail-topic-list' },
-									topicsList
-							),
-							React.createElement(
-									'div',
-									{ className: 'question-title' },
-									this.state.question.title
-							),
-							React.createElement(
-									'div',
-									{ className: 'question-details' },
-									this.state.question.details
-							),
-							React.createElement(
-									'div',
-									{ className: 'answers-index' },
-									React.createElement(AnswersIndex, { question: this.state.question })
-							),
-							answerForm,
-							questionDeleteButton,
-							questionEditButton,
-							React.createElement('input', { type: 'submit',
-									value: 'Answer',
-									onClick: this.startAnswer,
-									disabled: this.state.isAnswering })
-					);
+			var questionEditButton;
+			if (this.state.submitter && this.state.submitter.id === SessionStore.currentUser().id) {
+				questionEditButton = React.createElement('input', { type: 'submit',
+					value: 'Edit Question and Details',
+					onClick: this.startEdit });
 			}
+	
+			var questionDeleteButton;
+			if (this.state.submitter && this.state.submitter.id === SessionStore.currentUser().id) {
+				questionDeleteButton = React.createElement('input', { type: 'submit',
+					value: 'Delete',
+					onClick: this.handleDelete });
+			}
+	
+			if (!this.state.question) {
+				return React.createElement('div', null);
+			}
+			if (this.state.isEditing) {
+				return React.createElement(QuestionEdit, {
+					question: this.state.question,
+					onEditEnd: this.closeEdit
+				});
+			}
+	
+			var answerForm;
+			if (this.state.isAnswering) {
+				answerForm = React.createElement(AnswerForm, {
+					question: this.state.question,
+					onAnswerEnd: this.closeAnswer
+				});
+			}
+	
+			var topicsList;
+			if (this.state.question.topics.length > 0) {
+				topicsList = React.createElement(TopicsList, {
+					className: 'question-show-topics-list',
+					question: this.state.question
+				});
+			} else {
+				topicsList = React.createElement(
+					'div',
+					null,
+					'no topics here'
+				);
+			}
+	
+			return React.createElement(
+				'div',
+				{ className: 'question-show-page group' },
+				React.createElement(
+					'div',
+					{ className: 'question-detail-topic-list' },
+					topicsList
+				),
+				React.createElement(
+					'div',
+					{ className: 'question-title' },
+					this.state.question.title
+				),
+				React.createElement(
+					'div',
+					{ className: 'question-details' },
+					this.state.question.details
+				),
+				React.createElement(
+					'div',
+					{ className: 'answers-index' },
+					React.createElement(AnswersIndex, { question: this.state.question })
+				),
+				answerForm,
+				questionDeleteButton,
+				questionEditButton,
+				React.createElement('input', { type: 'submit',
+					value: 'Answer',
+					onClick: this.startAnswer,
+					disabled: this.state.isAnswering })
+			);
+		}
 	});
 	
 	module.exports = QuestionDetail;
@@ -33005,7 +33032,7 @@
 	            answer: answer
 	
 	          });
-	        })
+	        }.bind(this))
 	      )
 	    );
 	  }
@@ -33080,6 +33107,8 @@
 	var ApiUtil = __webpack_require__(185);
 	var UserStore = __webpack_require__(183);
 	var SessionStore = __webpack_require__(198);
+	var UpvoteButton = __webpack_require__(302);
+	var DownvoteButton = __webpack_require__(303);
 	
 	var IndexItem = React.createClass({
 		displayName: 'IndexItem',
@@ -33130,7 +33159,7 @@
 			}
 	
 			var editButton;
-			if (this.state.submitter.id === SessionStore.currentUser().id) {
+			if (this.state.submitter.id && this.state.submitter.id === SessionStore.currentUser().id) {
 				editButton = React.createElement('input', { type: 'submit',
 					value: 'Edit Answer',
 					onClick: this.startEdit });
@@ -33161,7 +33190,15 @@
 				),
 				answerEditForm,
 				editButton,
-				deleteButton
+				deleteButton,
+				React.createElement(UpvoteButton, {
+					user: SessionStore.currentUser().id,
+					answer: this.state.answer
+				}),
+				React.createElement(DownvoteButton, {
+					user: SessionStore.currentUser().id,
+					answer: this.state.answer
+				})
 			);
 		}
 	});
@@ -33193,6 +33230,8 @@
 		componentDidMount: function () {
 			this.answerListener = AnswerStore.addListener(this._onStoreChange);
 		},
+	
+		_onStoreChange: function () {},
 	
 		componentWillUnmount: function () {
 			this.answerListener.remove();
@@ -36443,6 +36482,298 @@
 	});
 	
 	module.exports = SearchResults;
+
+/***/ },
+/* 301 */,
+/* 302 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PropTypes = React.PropTypes;
+	var VoteStore = __webpack_require__(304);
+	var SessionStore = __webpack_require__(198);
+	var ApiUtil = __webpack_require__(185);
+	
+	var UpvoteButton = React.createClass({
+		displayName: 'UpvoteButton',
+	
+	
+		getInitialState: function () {
+			return {
+				value: this._decideCurrentState(),
+				user_id: this.props.user,
+				answer_id: this.props.answer.id
+			};
+		},
+	
+		_decideCurrentState: function () {
+			var userVotes = SessionStore.currentUserVotes();
+	
+			for (var i = 0; i < userVotes.length; i++) {
+				if (userVotes[i].answer_id == this.props.answer.id) {
+					this.voteID = i;
+					return true;
+				}
+			}
+			return false;
+		},
+	
+		_onStoreChange: function () {
+			this.setState({ value: this._decideCurrentState() });
+		},
+	
+		componentDidMount: function () {
+			this.userHasVoted = null;
+			this.voteID = "";
+			this.voteListener = VoteStore.addListener(this._onStoreChange);
+		},
+	
+		componentWillUnmount: function () {
+			this.voteListener.remove();
+		},
+	
+		_onChange: function (e) {},
+	
+		deleteVote: function (e) {
+			e.preventDefault();
+	
+			ApiUtil.destroyVote(this.voteID);
+		},
+	
+		createVote: function (e) {
+			e.preventDefault();
+	
+			ApiUtil.createVote(this.state);
+		},
+	
+		_findButtonString: function () {
+			return "Upvote | " + this.props.answer.votes.length;
+		},
+	
+		render: function () {
+			var upvoteButton;
+	
+			if (this.state.value === true) {
+				upvoteButton = React.createElement('input', {
+					type: 'submit',
+					value: this._findButtonString(),
+					onClick: this.deleteVote,
+					className: 'upvote-button-already-voted' });
+			}
+	
+			if (this.state.value === false) {
+				upvoteButton = React.createElement('input', {
+					type: 'submit',
+					value: this._findButtonString(),
+					onClick: this.createVote,
+					className: 'upvote-button-not-yet-voted' });
+			}
+	
+			return React.createElement(
+				'div',
+				null,
+				upvoteButton
+			);
+		}
+	
+	});
+	
+	module.exports = UpvoteButton;
+
+/***/ },
+/* 303 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PropTypes = React.PropTypes;
+	var VoteStore = __webpack_require__(304);
+	var SessionStore = __webpack_require__(198);
+	var ApiUtil = __webpack_require__(185);
+	
+	var DownvoteButton = React.createClass({
+		displayName: 'DownvoteButton',
+	
+	
+		getInitialState: function () {
+			return {
+				value: this._decideCurrentState(),
+				user_id: this.props.user,
+				answer_id: this.props.answer.id
+			};
+		},
+	
+		_decideCurrentState: function () {
+			debugger;
+			var userVotes = SessionStore.currentUserVotes();
+			for (var i = 0; i < userVotes.length; i++) {
+				if (userVotes[i].answer_id == this.props.answer.id) {
+					this.voteID = i;
+					return true;
+				}
+			}
+			return false;
+		},
+	
+		_onStoreChange: function () {
+			this.setState({ voted: this._decideCurrentState() });
+		},
+	
+		componentDidMount: function () {
+			this.voteID = "";
+			this.voteListener = VoteStore.addListener(this._onStoreChange);
+		},
+	
+		componentWillUnmount: function () {
+			this.voteListener.remove();
+		},
+	
+		_onChange: function (e) {},
+	
+		deleteVote: function (e) {
+			e.preventDefault();
+	
+			ApiUtil.destroyVote(this.voteID);
+		},
+	
+		createVote: function (e) {
+			e.preventDefault();
+	
+			ApiUtil.createVote(this.state);
+		},
+	
+		_findButtonString: function () {
+			return "Downvote | " + this.props.answer.votes.length;
+		},
+	
+		render: function () {
+			var downvoteButton;
+	
+			if (this.state.value === true) {
+				downvoteButton = React.createElement('input', {
+					type: 'submit',
+					value: this._findButtonString(),
+					onClick: this.deleteVote,
+					className: 'upvote-button-already-voted' });
+			}
+	
+			if (this.state.value === false) {
+				downvoteButton = React.createElement('input', {
+					type: 'submit',
+					value: this._findButtonString(),
+					onClick: this.createVote,
+					className: 'upvote-button-not-yet-voted' });
+			}
+	
+			return React.createElement(
+				'div',
+				null,
+				downvoteButton
+			);
+		}
+	
+	});
+	
+	module.exports = DownvoteButton;
+
+/***/ },
+/* 304 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(161).Store;
+	var Dispatcher = __webpack_require__(179);
+	
+	var VoteStore = new Store(Dispatcher);
+	var VoteConstants = __webpack_require__(305);
+	
+	var _votes = {};
+	
+	var resetVotes = function (votes) {
+	  _votes = {};
+	  votes.forEach(function (vote) {
+	    _votes[vote.id] = vote;
+	  });
+	};
+	
+	var resetVote = function (vote) {
+	  _votes[vote.id] = vote;
+	};
+	
+	var deleteVote = function (id) {
+	  delete _votes[id];
+	};
+	
+	VoteStore.all = function () {
+	  var votes = [];
+	  for (var id in _votes) {
+	    votes.push(_votes[id]);
+	  }
+	  return votes;
+	};
+	
+	// VoteStore.find()
+	
+	VoteStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case VoteConstants.VOTES_RECEIVED:
+	      resetVotes(payload.votes);
+	      VoteStore.__emitChange();
+	      break;
+	    case VoteConstants.VOTE_RECEIVED:
+	      resetVote(payload.vote);
+	      VoteStore.__emitChange();
+	      break;
+	    case VoteConstants.VOTE_DELETED:
+	      resetVote(payload.vote);
+	      VoteStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = VoteStore;
+
+/***/ },
+/* 305 */
+/***/ function(module, exports) {
+
+	var VoteConstants = {
+		VOTE_RECEIEVED: "VOTE_RECEIEVED",
+		VOTE_UPDATED: "VOTE_UPDATED",
+		VOTE_DELETED: "VOTE_DELETED"
+	};
+	
+	module.exports = VoteConstants;
+
+/***/ },
+/* 306 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Dispatcher = __webpack_require__(179),
+	    VoteConstants = __webpack_require__(305);
+	
+	var VoteActions = {
+		receiveSingleVote: function (vote) {
+			Dispatcher.dispatch({
+				actionType: VoteConstants.VOTE_RECEIEVED,
+				vote: vote
+			});
+		},
+	
+		updateVote: function (vote) {
+			Dispatcher.dispatch({
+				actionType: VoteConstants.VOTE_RECEIEVED,
+				vote: vote
+			});
+		},
+	
+		destroyVote: function (id) {
+			Dispatcher.dispatch({
+				actionType: VoteConstants.VOTE_DELETED,
+				id: id
+			});
+		}
+	};
+	
+	module.exports = VoteActions;
 
 /***/ }
 /******/ ]);

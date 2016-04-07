@@ -4,6 +4,8 @@ var SessionActions = require('../actions/session_actions');
 var UserActions = require('../actions/user_actions');
 var TopicActions = require('../actions/topic_actions');
 var SearchResultActions = require('../actions/search_result_actions');
+var VoteActions = require('../actions/vote_actions');
+
 
 var ApiUtil = {
 
@@ -214,7 +216,7 @@ var ApiUtil = {
       url: "/api/answers/" + answer.id,
       data: { answer: newAttrs },
       success: function(answer) {
-        AnswerActions.editQuestion(answer);
+        AnswerActions.editAnswer(answer);
         callback && callback(answer);
       },
       error: function(e) {
@@ -281,11 +283,10 @@ var ApiUtil = {
 	createVote: function(vote) {
 		$.ajax({
 			type: "POST",
-			url: "api/answers/" + vote.answer_id + "votes",
+			url: "api/votes",
 			data: {vote: vote},
 			success: function(vote){
-			VoteActions.createVote(vote);
-			callback && callback(vote.id);
+			VoteActions.receiveSingleVote(vote);
 		},
 		error: function(e) {
 			console.log("api_util#createVote Error");
@@ -307,6 +308,22 @@ var ApiUtil = {
 			}
 
 		});
+	},
+
+	destroyVote: function(id) {
+		$.ajax({
+			type: "DELETE",
+			url: "/api/vote/" + id,
+			success: function () {
+				VoteActions.destroyVote(id);
+				callback && callback(id);
+			},
+			error: function(e) {
+				console.log("api_util#destroyVote Error");
+			}
+		});
 	}
 
 };
+
+module.exports = ApiUtil;

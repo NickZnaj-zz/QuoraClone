@@ -14,8 +14,12 @@ var QuestionDetail =  React.createClass({
     router: React.PropTypes.object.isRequired
   },
 
+	getInitialState: function () {
+		return (this.getStateFromStore());
+	},
+
   getStateFromStore: function () {
-    return { question: QuestionStore.find(parseInt(this.props.params.questionId))};
+    return { question: QuestionStore.find(this.props.params.questionId)};
   },
 
   _onChange: function () {
@@ -26,10 +30,10 @@ var QuestionDetail =  React.createClass({
 
 	componentDidMount: function () {
 		this.questionListener = QuestionStore.addListener(this._onChange);
-		ApiUtil.fetchSingleQuestion(parseInt(this.props.params.questionId));
+		ApiUtil.fetchSingleQuestion(this.props.params.questionId);
 
 		this.userListener = UserStore.addListener(this._onChange);
-		ApiUtil.fetchSingleUser(this.state.question.user_id);
+		this.state.question && ApiUtil.fetchSingleUser(this.getStateFromStore().question.user_id);
 	},
 
 	componentWillUnmount: function () {
@@ -37,9 +41,6 @@ var QuestionDetail =  React.createClass({
 		this.questionListener.remove();
 	},
 
-  getInitialState: function () {
-    return this.getStateFromStore();
-  },
 
   handleDelete: function(e) {
     e.preventDefault();
