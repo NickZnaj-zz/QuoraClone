@@ -39,9 +39,10 @@ var AddTopicsForm = React.createClass({
 
 	_getCurrentUserTopics: function() {
 		var topicIDs = [];
-		SessionStore.currentUser().topics.forEach(function(topic) {
-			topicIDs.push(topic.id);
-		});
+		if (SessionStore.currentUser())
+			 {SessionStore.currentUser().topics.forEach(function(topic) {
+				 topicIDs.push(topic.id);});}
+
 		return topicIDs;
 	},
 

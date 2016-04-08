@@ -26,27 +26,52 @@ var LoginForm = React.createClass({
 			);
 		}
 
-    return (
-      <div>
-				<div className="login-form group">
-	        <h1>Log in</h1>
+		return (
+			<div className="login-screen">
+	      <div className= "login-page">
+	        <h1 className="login-message">Log In</h1>
 
-	        <form onSubmit={this.handleSubmit}>
-	          <label htmlFor="email">Email</label>
-	          <input onChange={this._onEmailChange} type="text" value={this.state.email}/>
+	        <form onSubmit={this.handleSubmit} className="login-form group">
+						<div className="traditional-login group">
 
-	          <label htmlFor="password">Password</label>
-	          <input onChange={this._onPasswordChange} type="password" value={this.state.password}/>
+							<div className="login-field">
+										<label htmlFor="email" className="login-form-label">Email</label>
+					          <input
+											onChange={this._onEmailChange}
+											type="text"
+											value={this.state.email}
+											className="login-form-input"/>
+							</div>
 
-	          <button>Submit</button>
+							<div className="login-field">
+										<label htmlFor="password" className="login-form-label">Password</label>
+				          <input
+										onChange={this._onPasswordChange}
+										type="password"
+										value={this.state.password}
+										className="login-form-input"/>
+							</div>
+
+							<button className="login-button">Submit</button>
+								<input
+									className="login-form-button"
+									type="button"
+									value="No account? Sign Up!"/>
+						</div>
+
+
+						<div className="o-auth-buttons">
+							<a className="google-button" href="#">
+								<span className="google-button-text">Continue with Google</span>
+							</a>
+							<a className="facebook-button" href="#">
+								<span className="facebook-button-text">Continue with Facebook</span>
+							</a>
+						</div>
+
 	        </form>
-					<input type="button"
-								 value="No account? Sign up!"
-								 className="sing-up-link"
-								 onClick={this.startSignUp}
-					/>
-				</div>
-      </div>
+	      </div>
+			</div>
     );
   },
 

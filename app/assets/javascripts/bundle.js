@@ -33875,9 +33875,12 @@
 	
 		_getCurrentUserTopics: function () {
 			var topicIDs = [];
-			SessionStore.currentUser().topics.forEach(function (topic) {
-				topicIDs.push(topic.id);
-			});
+			if (SessionStore.currentUser()) {
+				SessionStore.currentUser().topics.forEach(function (topic) {
+					topicIDs.push(topic.id);
+				});
+			}
+	
 			return topicIDs;
 		},
 	
@@ -34089,87 +34092,128 @@
 	var SignUpForm = __webpack_require__(274);
 	
 	var LoginForm = React.createClass({
-	  displayName: 'LoginForm',
+		displayName: 'LoginForm',
 	
-	  contextTypes: {
-	    router: React.PropTypes.object.isRequired
-	  },
+		contextTypes: {
+			router: React.PropTypes.object.isRequired
+		},
 	
-	  getInitialState: function () {
-	    return {
-	      email: "",
-	      password: "",
-	      signingUp: false
-	    };
-	  },
+		getInitialState: function () {
+			return {
+				email: "",
+				password: "",
+				signingUp: false
+			};
+		},
 	
-	  startSignUp: function () {
-	    this.setState({ signingUp: true });
-	  },
+		startSignUp: function () {
+			this.setState({ signingUp: true });
+		},
 	
-	  render: function () {
-	    if (this.state.signingUp) {
-	      return React.createElement(SignUpForm, null);
-	    }
+		render: function () {
+			if (this.state.signingUp) {
+				return React.createElement(SignUpForm, null);
+			}
 	
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'div',
-	        { className: 'login-form group' },
-	        React.createElement(
-	          'h1',
-	          null,
-	          'Log in'
-	        ),
-	        React.createElement(
-	          'form',
-	          { onSubmit: this.handleSubmit },
-	          React.createElement(
-	            'label',
-	            { htmlFor: 'email' },
-	            'Email'
-	          ),
-	          React.createElement('input', { onChange: this._onEmailChange, type: 'text', value: this.state.email }),
-	          React.createElement(
-	            'label',
-	            { htmlFor: 'password' },
-	            'Password'
-	          ),
-	          React.createElement('input', { onChange: this._onPasswordChange, type: 'password', value: this.state.password }),
-	          React.createElement(
-	            'button',
-	            null,
-	            'Submit'
-	          )
-	        ),
-	        React.createElement('input', { type: 'button',
-	          value: 'No account? Sign up!',
-	          className: 'sing-up-link',
-	          onClick: this.startSignUp
-	        })
-	      )
-	    );
-	  },
+			return React.createElement(
+				'div',
+				{ className: 'login-screen' },
+				React.createElement(
+					'div',
+					{ className: 'login-page' },
+					React.createElement(
+						'h1',
+						{ className: 'login-message' },
+						'Log In'
+					),
+					React.createElement(
+						'form',
+						{ onSubmit: this.handleSubmit, className: 'login-form group' },
+						React.createElement(
+							'div',
+							{ className: 'traditional-login group' },
+							React.createElement(
+								'div',
+								{ className: 'login-field' },
+								React.createElement(
+									'label',
+									{ htmlFor: 'email', className: 'login-form-label' },
+									'Email'
+								),
+								React.createElement('input', {
+									onChange: this._onEmailChange,
+									type: 'text',
+									value: this.state.email,
+									className: 'login-form-input' })
+							),
+							React.createElement(
+								'div',
+								{ className: 'login-field' },
+								React.createElement(
+									'label',
+									{ htmlFor: 'password', className: 'login-form-label' },
+									'Password'
+								),
+								React.createElement('input', {
+									onChange: this._onPasswordChange,
+									type: 'password',
+									value: this.state.password,
+									className: 'login-form-input' })
+							),
+							React.createElement(
+								'button',
+								{ className: 'login-button' },
+								'Submit'
+							),
+							React.createElement('input', {
+								className: 'login-form-button',
+								type: 'button',
+								value: 'No account? Sign Up!' })
+						),
+						React.createElement(
+							'div',
+							{ className: 'o-auth-buttons' },
+							React.createElement(
+								'a',
+								{ className: 'google-button', href: '#' },
+								React.createElement(
+									'span',
+									{ className: 'google-button-text' },
+									'Continue with Google'
+								)
+							),
+							React.createElement(
+								'a',
+								{ className: 'facebook-button', href: '#' },
+								React.createElement(
+									'span',
+									{ className: 'facebook-button-text' },
+									'Continue with Facebook'
+								)
+							)
+						)
+					)
+				)
+			);
+		},
 	
-	  handleSubmit: function (e) {
-	    e.preventDefault();
+		handleSubmit: function (e) {
+			e.preventDefault();
 	
-	    var router = this.context.router;
+			var router = this.context.router;
 	
-	    ApiUtil.login(this.state, function () {
-	      router.push("/");
-	    });
-	  },
+			ApiUtil.login(this.state, function () {
+				router.push("/");
+			});
+		},
 	
-	  _onEmailChange: function (e) {
-	    this.setState({ email: e.currentTarget.value });
-	  },
+		_onEmailChange: function (e) {
+			this.setState({ email: e.currentTarget.value });
+		},
 	
-	  _onPasswordChange: function (e) {
-	    this.setState({ password: e.currentTarget.value });
-	  }
+		_onPasswordChange: function (e) {
+			this.setState({ password: e.currentTarget.value });
+		}
 	
 	});
 	

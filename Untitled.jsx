@@ -18,7 +18,7 @@ var SignUpForm = React.createClass({
     return (
 			<div className="login-screen">
 	      <div className= "login-page">
-	        <h1 className="login-message">Sign Up</h1>
+	        <h1 className="login-message">Log In</h1>
 
 	        <form onSubmit={this.handleSubmit} className="login-form group">
 						<div className="traditional-login group">
