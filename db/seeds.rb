@@ -49,6 +49,8 @@ end
 	username = Faker::Name.name
 	password = Faker::Internet.password(8)
 	email = Faker::Internet.safe_email
+
+	user = User.create!(username: username, password: password, email: email)
 end
 
 7000.times do |n|
