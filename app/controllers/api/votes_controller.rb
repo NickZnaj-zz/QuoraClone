@@ -28,7 +28,6 @@ class Api::VotesController < ApplicationController
 		@vote = Vote.new(vote_params)
 
 
-
 		if @vote.save
 			render :show
 		else
@@ -47,6 +46,13 @@ class Api::VotesController < ApplicationController
 
 	def show
 		@vote = Vote.find(params[:id])
+	end
+
+	def destroy
+		answer = Answer.find(params[:id])
+		@vote = answer.votes.where(user_id: current_user.id).first
+		@vote.destroy
+		render :show
 	end
 
 	private

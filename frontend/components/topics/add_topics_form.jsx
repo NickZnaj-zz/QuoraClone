@@ -30,33 +30,45 @@ var AddTopicsForm = React.createClass({
 		};
 	},
 
+
+
 	_onStoreChange: function() {
+		this.setState({userTopics: this._getCurrentUserTopics()});
 		this.setState({topics: TopicStore.all()});
+	},
+
+	_getCurrentUserTopics: function() {
+		var topicIDs = [];
+		SessionStore.currentUser().topics.forEach(function(topic) {
+			topicIDs.push(topic.id);
+		});
+		return topicIDs;
 	},
 
 	componentDidMount: function () {
 		this.topicListener = TopicStore.addListener(this._onStoreChange);
 		ApiUtil.fetchAllTopics();
-		this.userListener = UserStore.addListener(this._onStoreChange);
+		this.sessionListener = SessionStore.addListener(this._onStoreChange);
 	},
 
 	componentWillUnmount: function () {
 		this.topicListener.remove();
-		this.userListener.remove();
+		this.sessionListener.remove();
 	},
 
 	handleSubmit: function(e) {
 		e.preventDefault();
+
 		ApiUtil.editUser(SessionStore.currentUser(), {topic_ids: this.state.userTopics}, function(){
-			this.context.router.push('/');
+			this.setState({userTopics: this._getCurrentUserTopics() });
 		}.bind(this));
-		this.setState ({topics: TopicStore.all()});
 	},
 
 	_onCheckboxClick: function(e){
+		var currentTopics = this.state.userTopics;
 
-		if (e.currentTarget.checked) {
-			var userTopics = this.state.userTopics.concat(parseInt(e.target.value));
+		if (e.currentTarget.checked && !currentTopics.includes(e.target.value)) {
+			var userTopics = [].concat(parseInt(e.target.value));
 			this.setState({userTopics: userTopics });
 		}
 	},

@@ -69,10 +69,15 @@
 	 background: transparent;
 	 border: none;
 	 float:left;
+	 cursor: pointer;
+ }
+
+ .logout-link:hover {
+	 background: #ccc;
  }
 
  .current-user {
-	 width: 100px;
+	 width: 130px;
 	 float:right;
 	margin-top: 12px;
  }
@@ -81,6 +86,7 @@
 	 margin: 0;
 	 font-size: 13px;
 	 font-weight: 500px;
+	 margin-top: 3px;
 	 color: #999;
 	 float: left;
  }
@@ -89,11 +95,36 @@
 	 width: 22px;
 	 height: 22px;
 	 float:left;
-	 margin-right: 10px;
+	 margin-right: 7px;
 	 border-radius: 50%;
 	 content: asset-url(default_profile_pic);
  }
 
  .search-result-list {
 	 padding-top: 100px;
+ }
+
+ .answer-wrapper {
+	 float:left;
+	 padding:15px;
+	 height: auto;
+ }
+
+ .answer-wrapper:hover {
+	background: #eee;
+
+ }
+
+ .read-wrapper {
+	 float: left;
+	 padding:15px;
+	 height: auto;
+ }
+
+ .read-wrapper:before{
+ }
+
+ .read-wrapper:hover {
+	 background: #eee;
+
  }

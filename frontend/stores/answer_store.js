@@ -21,6 +21,15 @@ var deleteAnswer = function(id) {
 	delete _answers[id];
 };
 
+var addVote = function(answerID) {
+	_answers[answerID].score++;
+};
+
+var removeVote = function(answerID) {
+	_answers[answerID].score--;
+
+};
+
 
 AnswerStore.all = function() {
   var answers = [];
@@ -46,6 +55,14 @@ AnswerStore.__onDispatch = function (payload) {
       break;
 		case AnswerConstants.ANSWER_DELETED:
 			deleteAnswer(payload.id);
+			AnswerStore.__emitChange();
+			break;
+		case AnswerConstants.VOTE_REMOVED:
+			removeVote(payload.answerID);
+			AnswerStore.__emitChange();
+			break;
+		case AnswerConstants.VOTE_ADDED:
+			addVote(payload.answerID);
 			AnswerStore.__emitChange();
 			break;
   }

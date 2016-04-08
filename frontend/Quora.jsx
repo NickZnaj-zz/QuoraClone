@@ -10,6 +10,7 @@ var SideBar = require('./components/main/sidebar');
 var Main = require('./components/main/main');
 var RightBar = require('./components/main/rightbar');
 var App = require('./components/App');
+var AnswerView = require('./components/main/answer_view');
 
 var Router = require('react-router').Router;
 var Route = require('react-router').Route;
@@ -25,7 +26,7 @@ var routes = (
 	<Router history={hashHistory}>
 		<Route path='/' component={App} onEnter={_requireLoggedIn} >
 			<IndexRoute component={Main} />
-
+			<Route path="answer" component={AnswerView} />
 			<Route path="questions/:questionId" component={QuestionDetail} />
 
 		</Route>

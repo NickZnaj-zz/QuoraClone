@@ -7,11 +7,15 @@ var VoteConstants = require('../constants/vote_constants');
 var _votes = {};
 
 var resetVotes = function(votes) {
-  _votes = {};
-  votes.forEach(function (vote){
-    _votes[vote.id] = vote;
-  });
+	if (votes && votes.length > 0){
+	  _votes = {};
+	  votes.forEach(function (vote){
+	    _votes[vote.id] = vote;
+	  });
+	}
 };
+
+
 
 var resetVote = function(vote){
   _votes[vote.id] = vote;
@@ -42,7 +46,7 @@ VoteStore.__onDispatch = function (payload) {
       VoteStore.__emitChange();
       break;
 		case VoteConstants.VOTE_DELETED:
-      resetVote(payload.vote);
+      deleteVote(payload.id);
       VoteStore.__emitChange();
       break;
   }

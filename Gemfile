@@ -48,6 +48,9 @@ end
 gem 'faker'
 gem 'pg_search'
 gem 'kaminari'
+gem "paperclip", '5.0.0.beta1'
+gem 'figaro'
+gem 'aws-sdk', '>= 2.0'
 
 group :production do
   gem 'newrelic_rpm'

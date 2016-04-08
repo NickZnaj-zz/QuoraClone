@@ -25,9 +25,10 @@
 }
 
 .checkbox-table {
-	float: left;
+	/*float: left;*/
 	font-size: 14px;
-	color: #111A2D
+	color: #111A2D;
+	display:block;
 ;
 }
 

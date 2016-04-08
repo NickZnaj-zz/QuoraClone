@@ -5,6 +5,7 @@ class Api::UsersController < ApplicationController
 
 	def show
 		@user = User.includes(:topics, :questions, :answers, :votes).find(params[:id])
+		render :show
 	end
 
 

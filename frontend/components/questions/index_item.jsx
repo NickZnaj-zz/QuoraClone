@@ -38,6 +38,11 @@ var IndexItem = React.createClass({
 
     return (
       <li className="question-list-item">
+				<ul className="question-list-item-topics group">
+					{this.props.question.topics.map(function(topic) {
+						return <li key={topic.id} className="question-list-item-topic">{topic.name}</li>;
+					}.bind(this))}
+				</ul>
 
         <div className="question-index-item">
 

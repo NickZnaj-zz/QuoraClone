@@ -29,6 +29,20 @@ var AnswerActions = {
 			actionType: AnswerConstants.ANSWER_RECEIVED,
 			answer: answer
 		});
+	},
+
+	addVote: function(answerID) {
+		Dispatcher.dispatch({
+			actionType: AnswerConstants.VOTE_ADDED,
+			answerID: answerID
+		});
+	},
+
+	removeVote: function(answerID) {
+		Dispatcher.dispatch({
+			actionType: AnswerConstants.VOTE_REMOVED,
+			answerID: answerID
+		});
 	}
 };
 

@@ -1,6 +1,6 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
-var VoteStore = require('../../stores/vote_store');
+// var VoteStore = require('../../stores/vote_store');
 var SessionStore = require('../../stores/session_store');
 var ApiUtil = require('../../util/api_util.js');
 
@@ -16,29 +16,28 @@ var UpvoteButton = React.createClass({
 	},
 
 	_decideCurrentState: function(){
-		var userVotes = SessionStore.currentUserVotes();
-
+		var userVotes = SessionStore.allVotes();
 		for (var i = 0; i < userVotes.length; i++) {
-			if (userVotes[i].answer_id == this.props.answer.id) {
-				this.voteID = i;
-				return true;
+			if (userVotes[i] == this.props.answer.id) {
+				this.voteID = userVotes[i];
+				return;
 			}
 		}
-		return false;
+		return true;
+		// return false;
 	},
 
 	_onStoreChange: function() {
 		this.setState({value: this._decideCurrentState()});
+		console.log("emit change");
 	},
 
 	componentDidMount: function() {
-		this.userHasVoted = null;
-		this.voteID = "";
-		this.voteListener = VoteStore.addListener(this._onStoreChange);
+		this.sessionListener = SessionStore.addListener(this._onStoreChange);
 	},
 
 	componentWillUnmount: function() {
-		this.voteListener.remove();
+		this.sessionListener.remove();
 	},
 
 	_onChange: function(e) {
@@ -48,7 +47,7 @@ var UpvoteButton = React.createClass({
 	deleteVote: function(e) {
 		e.preventDefault();
 
-		ApiUtil.destroyVote(this.voteID);
+		ApiUtil.destroyVote(this.voteID, this.props.answer.id);
 	},
 
 	createVote: function(e) {
@@ -59,7 +58,7 @@ var UpvoteButton = React.createClass({
 	},
 
 	_findButtonString: function() {
-		return ("Upvote | " + this.props.answer.votes.length);
+		return ("Upvote | " + this.props.answer.score);
 	},
 
 	render: function() {
@@ -70,21 +69,19 @@ var UpvoteButton = React.createClass({
 			<input
 				type="submit"
 				value={this._findButtonString()}
-				onClick={this.deleteVote}
-				className="upvote-button-already-voted"/>;
-		}
-
-		if (this.state.value === false) {
+				onClick={this.createVote}
+				className="upvote-button-not-yet-voted"/>;
+		} else  {
 			upvoteButton =
 			<input
 				type="submit"
 				value={this._findButtonString()}
-				onClick={this.createVote}
-				className="upvote-button-not-yet-voted"/>;
+				onClick={this.deleteVote}
+				className="upvote-button-already-voted"/>;
 		}
 
 		return (
-			<div>{upvoteButton}</div>
+			<div className="upvote-button-wrapper">{upvoteButton}</div>
 		);
 	}
 

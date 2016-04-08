@@ -21,6 +21,7 @@ class Api::AnswersController < ApplicationController
 
   def show
     @answer = Answer.includes(:user, :votes).find(params[:id])
+		render :show
   end
 
   def destroy

@@ -16,37 +16,34 @@ var SignUpForm = React.createClass({
 
   render: function() {
     return (
-			<div className="sign-up-screen">
-	      <div className= "sign-up-page">
-	        <h1 className="sign-up-message">Sign Up</h1>
+			<div className="login-screen">
+	      <div className= "login-page">
+	        <h1 className="login-message">Sign Up</h1>
 
-	        <form onSubmit={this.handleSubmit} className="sign-up-form group">
-						<div className="traditional-sign-up group">
-							<div className="sign-up-field">
-									<label htmlFor="username" className="sign-up-form-label">Full Name</label>
-										<input
-											onChange={this._onUsernameChange}
-											type="text"
-											value={this.state.username}
-											className="sign-up-form-input"/>
-							</div>
-							<div className="sign-up-field">
-										<label htmlFor="email" className="sign-up-form-label">Email</label>
+	        <form onSubmit={this.handleSubmit} className="login-form group">
+						<div className="traditional-login group">
+
+							<div className="login-field">
+										<label htmlFor="email" className="login-form-label">Email</label>
 					          <input
 											onChange={this._onEmailChange}
 											type="text"
 											value={this.state.email}
-											className="sign-up-form-input"/>
+											className="login-form-input"/>
 							</div>
-							<div className="sign-up-field">
-										<label htmlFor="password" className="sign-up-form-label">Password</label>
+
+							<div className="login-field">
+										<label htmlFor="password" className="login-form-label">Password</label>
 				          <input
 										onChange={this._onPasswordChange}
 										type="password"
 										value={this.state.password}
-										className="sign-up-form-input"/>
+										className="login-form-input"/>
 							</div>
-								<button className="sign-up-form-button">Submit</button>
+								<input
+									className="login-form-button"
+									type="button"
+									value="No account? Sign Up!"/>
 						</div>
 
 

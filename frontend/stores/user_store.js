@@ -4,7 +4,7 @@ var Dispatcher = require('../dispatcher/Dispatcher');
 var UserStore = new Store(Dispatcher);
 var UserConstants = require('../constants/user_constants');
 var _users = {};
-
+var _topicIDs = [];
 
 // var resetUsers = function(users) {
 //   _users = {};
@@ -12,6 +12,7 @@ var _users = {};
 //     _users[user.id] = user;
 //   });
 // };
+
 
 var resetUser = function(user){
   _users[user.id] = user;

@@ -9,12 +9,12 @@ var VoteActions = {
 		});
 	},
 
-	updateVote: function(vote) {
-		Dispatcher.dispatch({
-			actionType: VoteConstants.VOTE_RECEIEVED,
-			vote: vote
-		});
-	},
+	// updateVote: function(vote) {
+	// 	Dispatcher.dispatch({
+	// 		actionType: VoteConstants.VOTE_RECEIEVED,
+	// 		vote: vote
+	// 	});
+	// },
 
 	destroyVote: function(id) {
 		Dispatcher.dispatch({

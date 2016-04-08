@@ -60,7 +60,7 @@ render: function() {
 						uTopics = SessionStore.currentUser().topics;
 					}
 
-					if (this._compareKeys(qTopics, uTopics)) {
+					if (this._compareKeys(qTopics, uTopics) && question.answers.length < 2) {
           return <IndexItem key={question.id} question={question} />;
 					}
         }.bind(this))}

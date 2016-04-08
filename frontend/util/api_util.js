@@ -29,6 +29,8 @@ var ApiUtil = {
 		$.ajax({
 			method: "PATCH",
 			url: "/api/users/" + user.id,
+			// processData: false,
+			// contentType: false,
 			data: { user: newAttrs },
 			success: function(user) {
 				UserActions.editUser(user);
@@ -287,35 +289,21 @@ var ApiUtil = {
 			data: {vote: vote},
 			success: function(vote){
 			VoteActions.receiveSingleVote(vote);
-		},
-		error: function(e) {
-			console.log("api_util#createVote Error");
-		}
-		});
-	},
-
-	updateVote: function(vote, newAttrs, callback) {
-		$.ajax({
-			type: "PATCH",
-			url: "/api/answers/" + vote.answer_id + "/votes/" + vote.id,
-			data: { vote: newAttrs },
-			success: function(vote) {
-				VoteActions.updateVote(vote);
-				callback && callback(vote);
+			AnswerActions.addVote(vote.answer_id);
 			},
 			error: function(e) {
-				console.log("api_util#updateVote error");
+				console.log("api_util#createVote Error");
 			}
-
 		});
 	},
 
-	destroyVote: function(id) {
+	destroyVote: function(id, answerID) {
 		$.ajax({
 			type: "DELETE",
-			url: "/api/vote/" + id,
+			url: "/api/votes/" + id,
 			success: function () {
 				VoteActions.destroyVote(id);
+				AnswerActions.removeVote(answerID);
 				callback && callback(id);
 			},
 			error: function(e) {

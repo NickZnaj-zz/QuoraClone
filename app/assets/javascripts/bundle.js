@@ -56,6 +56,7 @@
 	var Main = __webpack_require__(270);
 	var RightBar = __webpack_require__(271);
 	var App = __webpack_require__(272);
+	var AnswerView = __webpack_require__(307);
 	
 	var Router = __webpack_require__(200).Router;
 	var Route = __webpack_require__(200).Route;
@@ -74,6 +75,7 @@
 			Route,
 			{ path: '/', component: App, onEnter: _requireLoggedIn },
 			React.createElement(IndexRoute, { component: Main }),
+			React.createElement(Route, { path: 'answer', component: AnswerView }),
 			React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail })
 		),
 		React.createElement(Route, { path: '/login', component: LoginForm })
@@ -19709,71 +19711,75 @@
 	var React = __webpack_require__(1);
 	var QuestionStore = __webpack_require__(160);
 	var UserStore = __webpack_require__(183);
-	
+	var SessionStore = __webpack_require__(198);
 	var ApiUtil = __webpack_require__(185);
 	var IndexItem = __webpack_require__(195);
 	var QuestionForm = __webpack_require__(199);
 	
 	var QuestionsIndex = React.createClass({
-			displayName: 'QuestionsIndex',
+		displayName: 'QuestionsIndex',
 	
-			getInitialState: function () {
-					return { questions: QuestionStore.all() };
-			},
+		getInitialState: function () {
+			return { questions: QuestionStore.all() };
+		},
 	
-			_onChange: function () {
-					this.setState({ questions: QuestionStore.all() });
-			},
+		_onChange: function () {
+			this.setState({ questions: QuestionStore.all() });
+		},
 	
-			componentDidMount: function () {
-					this.questionListener = QuestionStore.addListener(this._onChange);
-					ApiUtil.fetchAllQuestions();
-					this.userListener = UserStore.addListener(this._onChange);
-			},
+		_onUserStoreChange: function () {
+			this.setState({ currentUserTopics: [] });
+		},
 	
-			componentWillUnmount: function () {
-					this.questionListener.remove();
-					this.userListener.remove();
-			},
+		componentDidMount: function () {
+			this.questionListener = QuestionStore.addListener(this._onChange);
+			ApiUtil.fetchAllQuestions();
+			this.userListener = UserStore.addListener(this._onUserStoreChange);
+		},
 	
-			_compareKeys: function (arr1, arr2) {
-					for (var i = 0; i < arr1.length; i++) {
-							var index = arr2.find(function (obj2) {
-									return this._hasOverlap(arr1[i], obj2);
-							}.bind(this));
-							if (index !== undefined) return true;
-					}
-			},
+		componentWillUnmount: function () {
+			this.questionListener.remove();
+			this.userListener.remove();
+		},
 	
-			_hasOverlap: function (obj1, obj2) {
-	
-					if (obj1.id === obj2.id) {
-							return true;
-					}
-			},
-	
-			render: function () {
-					return React.createElement(
-							'div',
-							null,
-							React.createElement(
-									'ul',
-									{ className: 'questions' },
-									this.state.questions.map(function (question) {
-											var qTopics = question.topics;
-	
-											var uTopics = [];
-											if (SessionStore.currentUser().topics && SessionStore.currentUser().topics.length > 0) {
-													uTopics = SessionStore.currentUser().topics;
-											}
-	
-											if (this._compareKeys(qTopics, uTopics)) {
-													return React.createElement(IndexItem, { key: question.id, question: question });
-											}
-									}.bind(this))
-							)
-					);
+		_compareKeys: function (arr1, arr2) {
+			for (var i = 0; i < arr1.length; i++) {
+				var index = arr2.find(function (obj2) {
+					return this._hasOverlap(arr1[i], obj2);
+				}.bind(this));
+				if (index !== undefined) return true;
 			}
+		},
+	
+		_hasOverlap: function (obj1, obj2) {
+	
+			if (obj1.id === obj2.id) {
+				return true;
+			}
+		},
+	
+		render: function () {
+			return React.createElement(
+				'div',
+				null,
+				React.createElement(
+					'ul',
+					{ className: 'questions' },
+					this.state.questions.map(function (question) {
+						var qTopics = question.topics;
+	
+						var uTopics = [];
+						if (SessionStore.currentUser() && SessionStore.currentUser().topics && SessionStore.currentUser().topics.length > 0) {
+							uTopics = SessionStore.currentUser().topics;
+						}
+	
+						if (this._compareKeys(qTopics, uTopics)) {
+							return React.createElement(IndexItem, { key: question.id, question: question });
+						}
+					}.bind(this))
+				)
+			);
+		}
 	});
 	
 	module.exports = QuestionsIndex;
@@ -26627,6 +26633,7 @@
 	var UserStore = new Store(Dispatcher);
 	var UserConstants = __webpack_require__(184);
 	var _users = {};
+	var _topicIDs = [];
 	
 	// var resetUsers = function(users) {
 	//   _users = {};
@@ -26687,7 +26694,8 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-	  USER_RECEIVED: "USER_RECEIVED"
+	  USER_RECEIVED: "USER_RECEIVED",
+	  USER_EDITED: "USER_EDITED"
 	};
 
 /***/ },
@@ -26724,6 +26732,8 @@
 			$.ajax({
 				method: "PATCH",
 				url: "/api/users/" + user.id,
+				// processData: false,
+				// contentType: false,
 				data: { user: newAttrs },
 				success: function (user) {
 					UserActions.editUser(user);
@@ -26981,6 +26991,7 @@
 				data: { vote: vote },
 				success: function (vote) {
 					VoteActions.receiveSingleVote(vote);
+					AnswerActions.addVote(vote.answer_id);
 				},
 				error: function (e) {
 					console.log("api_util#createVote Error");
@@ -26988,28 +26999,13 @@
 			});
 		},
 	
-		updateVote: function (vote, newAttrs, callback) {
-			$.ajax({
-				type: "PATCH",
-				url: "/api/answers/" + vote.answer_id + "/votes/" + vote.id,
-				data: { vote: newAttrs },
-				success: function (vote) {
-					VoteActions.updateVote(vote);
-					callback && callback(vote);
-				},
-				error: function (e) {
-					console.log("api_util#updateVote error");
-				}
-	
-			});
-		},
-	
-		destroyVote: function (id) {
+		destroyVote: function (id, answerID) {
 			$.ajax({
 				type: "DELETE",
-				url: "/api/vote/" + id,
+				url: "/api/votes/" + id,
 				success: function () {
 					VoteActions.destroyVote(id);
+					AnswerActions.removeVote(answerID);
 					callback && callback(id);
 				},
 				error: function (e) {
@@ -27096,6 +27092,20 @@
 				actionType: AnswerConstants.ANSWER_RECEIVED,
 				answer: answer
 			});
+		},
+	
+		addVote: function (answerID) {
+			Dispatcher.dispatch({
+				actionType: AnswerConstants.VOTE_ADDED,
+				answerID: answerID
+			});
+		},
+	
+		removeVote: function (answerID) {
+			Dispatcher.dispatch({
+				actionType: AnswerConstants.VOTE_REMOVED,
+				answerID: answerID
+			});
 		}
 	};
 	
@@ -27109,7 +27119,9 @@
 	  ANSWERS_RECEIVED: "ANSWERS_RECEIVED",
 	  ANSWER_RECEIVED: "ANSWER_RECEIVED",
 	  ANSWER_DELETED: "ANSWER_DELETED",
-	  ANSWER_EDITED: "ANSWER_EDITED"
+	  ANSWER_EDITED: "ANSWER_EDITED",
+	  VOTE_REMOVED: 'VOTE_REMOVED',
+	  VOTE_ADDED: 'VOTE_ADDED'
 	};
 
 /***/ },
@@ -27302,6 +27314,17 @@
 				'li',
 				{ className: 'question-list-item' },
 				React.createElement(
+					'ul',
+					{ className: 'question-list-item-topics group' },
+					this.props.question.topics.map(function (topic) {
+						return React.createElement(
+							'li',
+							{ key: topic.id, className: 'question-list-item-topic' },
+							topic.name
+						);
+					}.bind(this))
+				),
+				React.createElement(
 					'div',
 					{ className: 'question-index-item' },
 					React.createElement(
@@ -27493,22 +27516,47 @@
 
 	var Store = __webpack_require__(161).Store;
 	var SessionConstants = __webpack_require__(190);
+	var VoteConstants = __webpack_require__(305);
 	var Dispatcher = __webpack_require__(179);
-	
 	var SessionStore = new Store(Dispatcher);
 	
 	var _currentUser;
 	var _currentUserHasBeenFetched = false;
 	var _votes = {};
 	
-	SessionStore.currentUserVotes = function () {
-	  var currentUserVotes = {};
+	// returns an array of the ids of answers the user has voted on
+	// SessionStore.currentUserVotes = function() {
+	// 	var currentUserVotes = [];
+	// 	if (_currentUser.votes) {
+	// 		_currentUser.votes.forEach(function(vote) {
+	// 			currentUserVotes.push(vote.answer_id);
+	// 		});
+	// 	}
+	// 	return currentUserVotes;
+	// };
+	
+	var fetchVotes = function () {
 	  if (_currentUser.votes) {
 	    _currentUser.votes.forEach(function (vote) {
 	      _votes[vote.id] = vote;
 	    });
 	  }
-	  return currentUserVotes;
+	};
+	
+	var updateVote = function (vote) {
+	  _votes[vote.id] = vote;
+	};
+	
+	var deleteVote = function (id) {
+	  delete _votes[id];
+	};
+	
+	SessionStore.allVotes = function () {
+	  var votes = [];
+	  for (var id in _votes) {
+	    votes.push(_votes[id].answer_id);
+	  }
+	  return votes;
 	};
 	
 	SessionStore.currentUser = function () {
@@ -27528,16 +27576,23 @@
 	    case SessionConstants.CURRENT_USER_RECEIVED:
 	      _currentUser = payload.currentUser;
 	      _currentUserHasBeenFetched = true;
+	      fetchVotes();
 	      SessionStore.__emitChange();
 	      break;
 	    case SessionConstants.LOGOUT:
 	      _currentUser = null;
 	      SessionStore.__emitChange();
 	      break;
+	    case VoteConstants.VOTE_RECEIVED:
+	      updateVote(payload.vote);
+	      SessionStore.__emitChange();
+	      break;
+	    case VoteConstants.VOTE_DELETED:
+	      deleteVote(payload.id);
+	      SessionStore.__emitChange();
+	      break;
 	  }
 	};
-	
-	window.SessionStore = SessionStore;
 	
 	module.exports = SessionStore;
 
@@ -32731,7 +32786,7 @@
 	var AnswersIndex = __webpack_require__(259);
 	var AnswerForm = __webpack_require__(263);
 	var TopicsList = __webpack_require__(264);
-	
+	var SessionStore = __webpack_require__(198);
 	var QuestionStore = __webpack_require__(160);
 	var UserStore = __webpack_require__(183);
 	
@@ -32870,6 +32925,11 @@
 					{ className: 'question-details' },
 					this.state.question.details
 				),
+				React.createElement('input', { type: 'submit',
+					value: 'Answer',
+					className: 'submit-answer-button-detail-page',
+					onClick: this.startAnswer,
+					disabled: this.state.isAnswering }),
 				React.createElement(
 					'div',
 					{ className: 'answers-index' },
@@ -32877,11 +32937,7 @@
 				),
 				answerForm,
 				questionDeleteButton,
-				questionEditButton,
-				React.createElement('input', { type: 'submit',
-					value: 'Answer',
-					onClick: this.startAnswer,
-					disabled: this.state.isAnswering })
+				questionEditButton
 			);
 		}
 	});
@@ -33067,6 +33123,14 @@
 	  delete _answers[id];
 	};
 	
+	var addVote = function (answerID) {
+	  _answers[answerID].score++;
+	};
+	
+	var removeVote = function (answerID) {
+	  _answers[answerID].score--;
+	};
+	
 	AnswerStore.all = function () {
 	  var answers = [];
 	  for (var id in _answers) {
@@ -33091,6 +33155,14 @@
 	      break;
 	    case AnswerConstants.ANSWER_DELETED:
 	      deleteAnswer(payload.id);
+	      AnswerStore.__emitChange();
+	      break;
+	    case AnswerConstants.VOTE_REMOVED:
+	      removeVote(payload.answerID);
+	      AnswerStore.__emitChange();
+	      break;
+	    case AnswerConstants.VOTE_ADDED:
+	      addVote(payload.answerID);
 	      AnswerStore.__emitChange();
 	      break;
 	  }
@@ -33424,8 +33496,8 @@
 				editTopicsList,
 				React.createElement('input', { type: 'button',
 					onClick: this.startEdit,
-					className: 'edit-topics-button',
-					value: 'Edit Topics' })
+					className: 'edit-topics-button'
+				})
 			);
 		}
 	
@@ -33664,43 +33736,75 @@
 	var SearchResults = __webpack_require__(300);
 	
 	var NavBar = React.createClass({
-			displayName: 'NavBar',
+		displayName: 'NavBar',
 	
-			render: function () {
-					var currentUser = SessionStore.currentUser();
-					return React.createElement(
+		render: function () {
+			var currentUser = SessionStore.currentUser();
+			debugger;
+			return React.createElement(
+				'div',
+				null,
+				React.createElement(
+					'header',
+					{ className: 'header' },
+					React.createElement(
+						'div',
+						{ className: 'header-nav group' },
+						React.createElement(
+							'a',
+							{ href: '/#/', className: 'logo' },
+							'Shmora'
+						),
+						React.createElement(QuestionForm, null),
+						React.createElement(
 							'div',
-							null,
+							{ className: 'navbar-buttons' },
 							React.createElement(
-									'header',
-									{ className: 'header' },
-									React.createElement(
-											'div',
-											{ className: 'header-nav group' },
-											React.createElement(
-													'a',
-													{ href: '/#/', className: 'logo' },
-													'Shmora'
-											),
-											React.createElement(QuestionForm, null),
-											React.createElement(
-													'div',
-													{ className: 'current-user group' },
-													React.createElement('input', { type: 'submit',
-															className: 'logout-link',
-															value: 'Logout',
-															onClick: ApiUtil.logout }),
-													React.createElement('div', { className: 'current-user-pic' }),
-													React.createElement(
-															'p',
-															{ className: 'current-user-name' },
-															currentUser.username
-													)
-											)
-									)
+								'div',
+								{ className: 'read-wrapper' },
+								React.createElement('img', { src: 'read.svg', className: 'read-icon' }),
+								React.createElement(
+									'a',
+									{ type: 'submit',
+										href: '/#/',
+										className: 'read-view-link',
+										onClick: this.beginRead },
+									'Read'
+								)
+							),
+							React.createElement(
+								'div',
+								{ className: 'answer-wrapper' },
+								React.createElement('img', { src: 'answer.svg', className: 'answer-icon' }),
+								React.createElement(
+									'a',
+									{ type: 'submit',
+										href: '/#/answer',
+										className: 'answer-view-link',
+										onClick: this.beginAnswer },
+									'Answer'
+								)
+							),
+							React.createElement(
+								'div',
+								{ className: 'current-user group' },
+								React.createElement('div', { className: 'current-user-pic' }),
+								React.createElement(
+									'p',
+									{ className: 'current-user-name' },
+									currentUser.username
+								),
+								React.createElement('input', { type: 'submit',
+									className: 'logout-link',
+									value: 'Logout',
+									onClick: ApiUtil.logout
+								})
 							)
-					);
-			}
+						)
+					)
+				)
+			);
+		}
 	});
 	
 	module.exports = NavBar;
@@ -33765,32 +33869,42 @@
 		},
 	
 		_onStoreChange: function () {
+			this.setState({ userTopics: this._getCurrentUserTopics() });
 			this.setState({ topics: TopicStore.all() });
+		},
+	
+		_getCurrentUserTopics: function () {
+			var topicIDs = [];
+			SessionStore.currentUser().topics.forEach(function (topic) {
+				topicIDs.push(topic.id);
+			});
+			return topicIDs;
 		},
 	
 		componentDidMount: function () {
 			this.topicListener = TopicStore.addListener(this._onStoreChange);
 			ApiUtil.fetchAllTopics();
-			this.userListener = UserStore.addListener(this._onStoreChange);
+			this.sessionListener = SessionStore.addListener(this._onStoreChange);
 		},
 	
 		componentWillUnmount: function () {
 			this.topicListener.remove();
-			this.userListener.remove();
+			this.sessionListener.remove();
 		},
 	
 		handleSubmit: function (e) {
 			e.preventDefault();
+	
 			ApiUtil.editUser(SessionStore.currentUser(), { topic_ids: this.state.userTopics }, function () {
-				this.context.router.push('/');
+				this.setState({ userTopics: this._getCurrentUserTopics() });
 			}.bind(this));
-			this.setState({ topics: TopicStore.all() });
 		},
 	
 		_onCheckboxClick: function (e) {
+			var currentTopics = this.state.userTopics;
 	
-			if (e.currentTarget.checked) {
-				var userTopics = this.state.userTopics.concat(parseInt(e.target.value));
+			if (e.currentTarget.checked && !currentTopics.includes(e.target.value)) {
+				var userTopics = [].concat(parseInt(e.target.value));
 				this.setState({ userTopics: userTopics });
 			}
 		},
@@ -34069,80 +34183,134 @@
 	var ApiUtil = __webpack_require__(185);
 	
 	var SignUpForm = React.createClass({
-	  displayName: 'SignUpForm',
+			displayName: 'SignUpForm',
 	
-	  contextTypes: {
-	    router: React.PropTypes.object.isRequired
-	  },
+			contextTypes: {
+					router: React.PropTypes.object.isRequired
+			},
 	
-	  getInitialState: function () {
-	    return {
-	      email: "",
-	      username: "",
-	      password: ""
-	    };
-	  },
+			getInitialState: function () {
+					return {
+							email: "",
+							username: "",
+							password: ""
+					};
+			},
 	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'h1',
-	        null,
-	        'Sign Up'
-	      ),
-	      React.createElement(
-	        'form',
-	        { onSubmit: this.handleSubmit },
-	        React.createElement(
-	          'label',
-	          { htmlFor: 'username' },
-	          'Full Name'
-	        ),
-	        React.createElement('input', { onChange: this._onUsernameChange, type: 'text', value: this.state.username }),
-	        React.createElement(
-	          'label',
-	          { htmlFor: 'email' },
-	          'Email'
-	        ),
-	        React.createElement('input', { onChange: this._onEmailChange, type: 'text', value: this.state.email }),
-	        React.createElement(
-	          'label',
-	          { htmlFor: 'password' },
-	          'Password'
-	        ),
-	        React.createElement('input', { onChange: this._onPasswordChange, type: 'password', value: this.state.password }),
-	        React.createElement(
-	          'button',
-	          null,
-	          'Submit'
-	        )
-	      )
-	    );
-	  },
+			render: function () {
+					return React.createElement(
+							'div',
+							{ className: 'sign-up-screen' },
+							React.createElement(
+									'div',
+									{ className: 'sign-up-page' },
+									React.createElement(
+											'h1',
+											{ className: 'sign-up-message' },
+											'Sign Up'
+									),
+									React.createElement(
+											'form',
+											{ onSubmit: this.handleSubmit, className: 'sign-up-form group' },
+											React.createElement(
+													'div',
+													{ className: 'traditional-sign-up group' },
+													React.createElement(
+															'div',
+															{ className: 'sign-up-field' },
+															React.createElement(
+																	'label',
+																	{ htmlFor: 'username', className: 'sign-up-form-label' },
+																	'Full Name'
+															),
+															React.createElement('input', {
+																	onChange: this._onUsernameChange,
+																	type: 'text',
+																	value: this.state.username,
+																	className: 'sign-up-form-input' })
+													),
+													React.createElement(
+															'div',
+															{ className: 'sign-up-field' },
+															React.createElement(
+																	'label',
+																	{ htmlFor: 'email', className: 'sign-up-form-label' },
+																	'Email'
+															),
+															React.createElement('input', {
+																	onChange: this._onEmailChange,
+																	type: 'text',
+																	value: this.state.email,
+																	className: 'sign-up-form-input' })
+													),
+													React.createElement(
+															'div',
+															{ className: 'sign-up-field' },
+															React.createElement(
+																	'label',
+																	{ htmlFor: 'password', className: 'sign-up-form-label' },
+																	'Password'
+															),
+															React.createElement('input', {
+																	onChange: this._onPasswordChange,
+																	type: 'password',
+																	value: this.state.password,
+																	className: 'sign-up-form-input' })
+													),
+													React.createElement(
+															'button',
+															{ className: 'sign-up-form-button' },
+															'Submit'
+													)
+											),
+											React.createElement(
+													'div',
+													{ className: 'o-auth-buttons' },
+													React.createElement(
+															'a',
+															{ className: 'google-button', href: '#' },
+															React.createElement(
+																	'span',
+																	{ className: 'google-button-text' },
+																	'Continue with Google'
+															)
+													),
+													React.createElement(
+															'a',
+															{ className: 'facebook-button', href: '#' },
+															React.createElement(
+																	'span',
+																	{ className: 'facebook-button-text' },
+																	'Continue with Facebook'
+															)
+													)
+											)
+									)
+							)
+					);
+			},
 	
-	  handleSubmit: function (e) {
-	    e.preventDefault();
+			handleSubmit: function (e) {
+					e.preventDefault();
 	
-	    var router = this.context.router;
-	    ApiUtil.signUp(this.state);
-	    ApiUtil.login(this.state, function () {
-	      router.push("/");
-	    });
-	  },
+					var router = this.context.router;
+					ApiUtil.signUp(this.state);
+					ApiUtil.login(this.state, function () {
+							router.push("/");
+					});
+			},
 	
-	  _onEmailChange: function (e) {
-	    this.setState({ email: e.currentTarget.value });
-	  },
+			_onEmailChange: function (e) {
+					this.setState({ email: e.currentTarget.value });
+			},
 	
-	  _onUsernameChange: function (e) {
-	    this.setState({ username: e.currentTarget.value });
-	  },
+			_onUsernameChange: function (e) {
+					this.setState({ username: e.currentTarget.value });
+			},
 	
-	  _onPasswordChange: function (e) {
-	    this.setState({ password: e.currentTarget.value });
-	  }
+			_onPasswordChange: function (e) {
+					this.setState({ password: e.currentTarget.value });
+			}
 	
 	});
 	
@@ -36490,7 +36658,7 @@
 
 	var React = __webpack_require__(1);
 	var PropTypes = React.PropTypes;
-	var VoteStore = __webpack_require__(304);
+	// var VoteStore = require('../../stores/vote_store');
 	var SessionStore = __webpack_require__(198);
 	var ApiUtil = __webpack_require__(185);
 	
@@ -36507,29 +36675,28 @@
 		},
 	
 		_decideCurrentState: function () {
-			var userVotes = SessionStore.currentUserVotes();
-	
+			var userVotes = SessionStore.allVotes();
 			for (var i = 0; i < userVotes.length; i++) {
-				if (userVotes[i].answer_id == this.props.answer.id) {
-					this.voteID = i;
-					return true;
+				if (userVotes[i] == this.props.answer.id) {
+					this.voteID = userVotes[i];
+					return;
 				}
 			}
-			return false;
+			return true;
+			// return false;
 		},
 	
 		_onStoreChange: function () {
 			this.setState({ value: this._decideCurrentState() });
+			console.log("emit change");
 		},
 	
 		componentDidMount: function () {
-			this.userHasVoted = null;
-			this.voteID = "";
-			this.voteListener = VoteStore.addListener(this._onStoreChange);
+			this.sessionListener = SessionStore.addListener(this._onStoreChange);
 		},
 	
 		componentWillUnmount: function () {
-			this.voteListener.remove();
+			this.sessionListener.remove();
 		},
 	
 		_onChange: function (e) {},
@@ -36537,7 +36704,7 @@
 		deleteVote: function (e) {
 			e.preventDefault();
 	
-			ApiUtil.destroyVote(this.voteID);
+			ApiUtil.destroyVote(this.voteID, this.props.answer.id);
 		},
 	
 		createVote: function (e) {
@@ -36547,7 +36714,7 @@
 		},
 	
 		_findButtonString: function () {
-			return "Upvote | " + this.props.answer.votes.length;
+			return "Upvote | " + this.props.answer.score;
 		},
 	
 		render: function () {
@@ -36557,21 +36724,19 @@
 				upvoteButton = React.createElement('input', {
 					type: 'submit',
 					value: this._findButtonString(),
+					onClick: this.createVote,
+					className: 'upvote-button-not-yet-voted' });
+			} else {
+				upvoteButton = React.createElement('input', {
+					type: 'submit',
+					value: this._findButtonString(),
 					onClick: this.deleteVote,
 					className: 'upvote-button-already-voted' });
 			}
 	
-			if (this.state.value === false) {
-				upvoteButton = React.createElement('input', {
-					type: 'submit',
-					value: this._findButtonString(),
-					onClick: this.createVote,
-					className: 'upvote-button-not-yet-voted' });
-			}
-	
 			return React.createElement(
 				'div',
-				null,
+				{ className: 'upvote-button-wrapper' },
 				upvoteButton
 			);
 		}
@@ -36586,7 +36751,7 @@
 
 	var React = __webpack_require__(1);
 	var PropTypes = React.PropTypes;
-	var VoteStore = __webpack_require__(304);
+	// var VoteStore = require('../../stores/vote_store');
 	var SessionStore = __webpack_require__(198);
 	var ApiUtil = __webpack_require__(185);
 	
@@ -36603,36 +36768,34 @@
 		},
 	
 		_decideCurrentState: function () {
-			debugger;
-			var userVotes = SessionStore.currentUserVotes();
+			var userVotes = SessionStore.allVotes();
 			for (var i = 0; i < userVotes.length; i++) {
-				if (userVotes[i].answer_id == this.props.answer.id) {
-					this.voteID = i;
-					return true;
+				if (userVotes[i] == this.props.answer.id) {
+					this.voteID = userVotes[i];
+					return;
 				}
 			}
 			return false;
+			// return false;
 		},
 	
 		_onStoreChange: function () {
-			this.setState({ voted: this._decideCurrentState() });
+			this.setState({ value: this._decideCurrentState() });
 		},
 	
 		componentDidMount: function () {
-			this.voteID = "";
-			this.voteListener = VoteStore.addListener(this._onStoreChange);
+			this.sessionListener = SessionStore.addListener(this._onStoreChange);
 		},
 	
 		componentWillUnmount: function () {
-			this.voteListener.remove();
+			this.sessionListener.remove();
 		},
 	
 		_onChange: function (e) {},
 	
 		deleteVote: function (e) {
 			e.preventDefault();
-	
-			ApiUtil.destroyVote(this.voteID);
+			ApiUtil.destroyVote(this.voteID, this.props.answer.id);
 		},
 	
 		createVote: function (e) {
@@ -36642,31 +36805,37 @@
 		},
 	
 		_findButtonString: function () {
-			return "Downvote | " + this.props.answer.votes.length;
+			if (this.state.value === false) {
+				return "Downvote";
+			} else {
+				return "Downvoted";
+			}
 		},
 	
 		render: function () {
 			var downvoteButton;
 	
-			if (this.state.value === true) {
-				downvoteButton = React.createElement('input', {
-					type: 'submit',
-					value: this._findButtonString(),
-					onClick: this.deleteVote,
-					className: 'upvote-button-already-voted' });
-			}
-	
 			if (this.state.value === false) {
-				downvoteButton = React.createElement('input', {
-					type: 'submit',
-					value: this._findButtonString(),
-					onClick: this.createVote,
-					className: 'upvote-button-not-yet-voted' });
+				downvoteButton = React.createElement(
+					'a',
+					{
+						onClick: this.createVote,
+						className: 'downvote-button-not-yet-voted' },
+					this._findButtonString()
+				);
+			} else {
+				downvoteButton = React.createElement(
+					'a',
+					{
+						onClick: this.deleteVote,
+						className: 'downvote-button-already-voted' },
+					this._findButtonString()
+				);
 			}
 	
 			return React.createElement(
 				'div',
-				null,
+				{ className: 'downvote-button-wrapper' },
 				downvoteButton
 			);
 		}
@@ -36676,62 +36845,7 @@
 	module.exports = DownvoteButton;
 
 /***/ },
-/* 304 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(161).Store;
-	var Dispatcher = __webpack_require__(179);
-	
-	var VoteStore = new Store(Dispatcher);
-	var VoteConstants = __webpack_require__(305);
-	
-	var _votes = {};
-	
-	var resetVotes = function (votes) {
-	  _votes = {};
-	  votes.forEach(function (vote) {
-	    _votes[vote.id] = vote;
-	  });
-	};
-	
-	var resetVote = function (vote) {
-	  _votes[vote.id] = vote;
-	};
-	
-	var deleteVote = function (id) {
-	  delete _votes[id];
-	};
-	
-	VoteStore.all = function () {
-	  var votes = [];
-	  for (var id in _votes) {
-	    votes.push(_votes[id]);
-	  }
-	  return votes;
-	};
-	
-	// VoteStore.find()
-	
-	VoteStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case VoteConstants.VOTES_RECEIVED:
-	      resetVotes(payload.votes);
-	      VoteStore.__emitChange();
-	      break;
-	    case VoteConstants.VOTE_RECEIVED:
-	      resetVote(payload.vote);
-	      VoteStore.__emitChange();
-	      break;
-	    case VoteConstants.VOTE_DELETED:
-	      resetVote(payload.vote);
-	      VoteStore.__emitChange();
-	      break;
-	  }
-	};
-	
-	module.exports = VoteStore;
-
-/***/ },
+/* 304 */,
 /* 305 */
 /***/ function(module, exports) {
 
@@ -36758,12 +36872,12 @@
 			});
 		},
 	
-		updateVote: function (vote) {
-			Dispatcher.dispatch({
-				actionType: VoteConstants.VOTE_RECEIEVED,
-				vote: vote
-			});
-		},
+		// updateVote: function(vote) {
+		// 	Dispatcher.dispatch({
+		// 		actionType: VoteConstants.VOTE_RECEIEVED,
+		// 		vote: vote
+		// 	});
+		// },
 	
 		destroyVote: function (id) {
 			Dispatcher.dispatch({
@@ -36774,6 +36888,42 @@
 	};
 	
 	module.exports = VoteActions;
+
+/***/ },
+/* 307 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PropTypes = React.PropTypes;
+	var NavBar = __webpack_require__(267);
+	var RightBar = __webpack_require__(271);
+	var SideBar = __webpack_require__(268);
+	var QuestionsIndex = __webpack_require__(159);
+	
+	var AnswerView = React.createClass({
+		displayName: 'AnswerView',
+	
+	
+		render: function () {
+			return React.createElement(
+				'div',
+				null,
+				React.createElement(SideBar, null),
+				React.createElement(
+					'div',
+					{ className: 'center-panel group' },
+					React.createElement(
+						'div',
+						{ className: 'questions-list group' },
+						React.createElement(QuestionsIndex, null)
+					)
+				)
+			);
+		}
+	
+	});
+	
+	module.exports = AnswerView;
 
 /***/ }
 /******/ ]);

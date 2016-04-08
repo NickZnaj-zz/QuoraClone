@@ -7,11 +7,11 @@ class Answer < ActiveRecord::Base
   belongs_to :user
 	has_many :votes
 
-  after_initialize :ensure_user_id
 
-  def ensure_user_id
-    if !self.user_id
-      self.user_id = 1
-    end
-  end
+	def score
+		self.votes.where(value: true).count -
+		self.votes.where(value: false).count
+	end
+
+
 end

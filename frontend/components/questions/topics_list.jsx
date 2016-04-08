@@ -46,7 +46,7 @@ var TopicsList = React.createClass({
 				<input type="button"
 						onClick={this.startEdit}
 						className="edit-topics-button"
-						value="Edit Topics">
+						>
 				</input>
 			</ul>
 		);

@@ -4,3 +4,4 @@ json.extract!(
 )
 
 json.votes answer.votes
+json.score answer.score

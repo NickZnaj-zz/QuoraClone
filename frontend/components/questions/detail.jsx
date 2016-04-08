@@ -4,7 +4,7 @@ var QuestionEdit = require('./edit');
 var AnswersIndex = require('../answers/index');
 var AnswerForm = require('../answers/answer_form');
 var TopicsList = require('./topics_list');
-
+var SessionStore = require('../../stores/session_store');
 var QuestionStore = require('../../stores/question_store.js');
 var UserStore = require('../../stores/user_store');
 
@@ -137,9 +137,17 @@ var QuestionDetail =  React.createClass({
           {this.state.question.title}
         </div>
 
-        <div className="question-details">
-          {this.state.question.details}
-        </div>
+				<div className="question-details">
+					{this.state.question.details}
+				</div>
+
+
+				
+				<input type="submit"
+					value="Answer"
+					className="submit-answer-button-detail-page"
+					onClick={this.startAnswer}
+					disabled={this.state.isAnswering}/>
 
         <div className="answers-index" >
           <AnswersIndex question={this.state.question} />
@@ -151,10 +159,6 @@ var QuestionDetail =  React.createClass({
 
 				{questionEditButton}
 
-				<input type="submit"
-							 value="Answer"
-							 onClick={this.startAnswer}
-							 disabled={this.state.isAnswering}/>
       </div>
     );
   }

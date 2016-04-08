@@ -1,3 +1,4 @@
 module.exports = {
   USER_RECEIVED: "USER_RECEIVED",
+	USER_EDITED: "USER_EDITED"
 };

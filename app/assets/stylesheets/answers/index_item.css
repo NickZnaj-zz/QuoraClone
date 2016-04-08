@@ -1,7 +1,27 @@
+.answer-list-item {
+	padding: 20px 0;
+  border-top: 1px solid #ccc;
+}
 
+.answer-header {
+
+}
+
+.user-pic {
+
+}
 
 .user-info {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 15px;
 	font-weight: bold;
+	float: left;
+  position: relative;
+	top: 0px;
+	left: 0px;
+}
+
+.answer-list-item-answer {
+	margin: 10px 0;
+	font-family: serif;
 }
