@@ -56,7 +56,8 @@
 	var Main = __webpack_require__(270);
 	var RightBar = __webpack_require__(271);
 	var App = __webpack_require__(272);
-	var AnswerView = __webpack_require__(307);
+	var AnswerView = __webpack_require__(308);
+	var TopicView = __webpack_require__(309);
 	
 	var Router = __webpack_require__(200).Router;
 	var Route = __webpack_require__(200).Route;
@@ -76,6 +77,7 @@
 			{ path: '/', component: App, onEnter: _requireLoggedIn },
 			React.createElement(IndexRoute, { component: Main }),
 			React.createElement(Route, { path: 'answer', component: AnswerView }),
+			React.createElement(Route, { path: 'topics/:topicID', component: TopicView }),
 			React.createElement(Route, { path: 'questions/:questionId', component: QuestionDetail })
 		),
 		React.createElement(Route, { path: '/login', component: LoginForm })
@@ -19727,19 +19729,19 @@
 			this.setState({ questions: QuestionStore.all() });
 		},
 	
-		_onUserStoreChange: function () {
+		_onSessionStoreChange: function () {
 			this.setState({ currentUserTopics: [] });
 		},
 	
 		componentDidMount: function () {
 			this.questionListener = QuestionStore.addListener(this._onChange);
 			ApiUtil.fetchAllQuestions();
-			this.userListener = UserStore.addListener(this._onUserStoreChange);
+			this.sessionListener = UserStore.addListener(this._onSessionStoreChange);
 		},
 	
 		componentWillUnmount: function () {
 			this.questionListener.remove();
-			this.userListener.remove();
+			this.sessionListener.remove();
 		},
 	
 		_compareKeys: function (arr1, arr2) {
@@ -26736,6 +26738,7 @@
 				// contentType: false,
 				data: { user: newAttrs },
 				success: function (user) {
+					SessionActions.currentUserReceived(user);
 					UserActions.editUser(user);
 					callback && callback(user);
 				},
@@ -26942,7 +26945,7 @@
 			});
 		},
 	
-		fetchSingleTopic: function () {
+		fetchSingleTopic: function (id) {
 			$.ajax({
 				type: "GET",
 				url: "/api/topics/" + id,
@@ -27006,7 +27009,6 @@
 				success: function () {
 					VoteActions.destroyVote(id);
 					AnswerActions.removeVote(answerID);
-					callback && callback(id);
 				},
 				error: function (e) {
 					console.log("api_util#destroyVote Error");
@@ -27318,8 +27320,8 @@
 					{ className: 'question-list-item-topics group' },
 					this.props.question.topics.map(function (topic) {
 						return React.createElement(
-							'li',
-							{ key: topic.id, className: 'question-list-item-topic' },
+							'a',
+							{ href: "/#/topics/" + topic.id, key: topic.id, className: 'question-list-item-topic' },
 							topic.name
 						);
 					}.bind(this))
@@ -27552,6 +27554,7 @@
 	};
 	
 	SessionStore.allVotes = function () {
+	
 	  var votes = [];
 	  for (var id in _votes) {
 	    votes.push(_votes[id].answer_id);
@@ -27586,8 +27589,10 @@
 	    case VoteConstants.VOTE_RECEIVED:
 	      updateVote(payload.vote);
 	      SessionStore.__emitChange();
+	      console.log("VOTE_RECEIVED");
 	      break;
 	    case VoteConstants.VOTE_DELETED:
+	      console.log("VOTE_DELETED");
 	      deleteVote(payload.id);
 	      SessionStore.__emitChange();
 	      break;
@@ -32930,12 +32935,12 @@
 					className: 'submit-answer-button-detail-page',
 					onClick: this.startAnswer,
 					disabled: this.state.isAnswering }),
+				answerForm,
 				React.createElement(
 					'div',
 					{ className: 'answers-index' },
 					React.createElement(AnswersIndex, { question: this.state.question })
 				),
-				answerForm,
 				questionDeleteButton,
 				questionEditButton
 			);
@@ -33068,7 +33073,6 @@
 	  },
 	
 	  render: function () {
-	
 	    if (!this.state.answers) {
 	      return React.createElement('div', null);
 	    }
@@ -33085,7 +33089,8 @@
 	        { className: 'answers' },
 	        this.state.answers.map(function (answer) {
 	          return React.createElement(IndexItem, { key: answer.id,
-	            answer: answer
+	            answer: answer,
+	            submitter: answer.user
 	
 	          });
 	        }.bind(this))
@@ -33190,21 +33195,23 @@
 		},
 	
 		getInitialState: function () {
-			return { isEditing: false, answer: this.props.answer, submitter: {} };
+	
+			// var submitter = UserStore.find(this.props.answer.user_id);
+			return { isEditing: false, answer: this.props.answer };
 		},
 	
 		_onChange: function () {
-			var submitter = UserStore.find(this.props.answer.user_id);
-			this.setState({ submitter: submitter });
+			// var submitter = UserStore.find(this.props.answer.user_id);
+			// this.setState({submitter: submitter});
 		},
 	
 		componentDidMount: function () {
-			this.userListener = UserStore.addListener(this._onChange);
-			ApiUtil.fetchSingleUser(this.props.answer.user_id);
+			// this.userListener = UserStore.addListener(this._onChange);
+			// ApiUtil.fetchSingleUser(this.props.answer.user_id);
 		},
 	
 		componentWillUnmount: function () {
-			this.userListener.remove();
+			// this.userListener.remove();
 		},
 	
 		startEdit: function () {
@@ -33225,22 +33232,25 @@
 			var answerEditForm;
 			if (this.state.isEditing) {
 				answerEditForm = React.createElement(AnswerEditForm, {
+					submitter: this.props.submitter,
 					answer: this.state.answer,
 					onEditEnd: this.closeEdit
 				});
 			}
 	
 			var editButton;
-			if (this.state.submitter.id && this.state.submitter.id === SessionStore.currentUser().id) {
+			if (this.props.submitter && this.props.submitter.id === SessionStore.currentUser().id) {
 				editButton = React.createElement('input', { type: 'submit',
 					value: 'Edit Answer',
-					onClick: this.startEdit });
+					onClick: this.startEdit,
+					className: 'edit-answer-button' });
 			}
 	
 			var deleteButton;
-			if (this.state.submitter.id === SessionStore.currentUser().id) deleteButton = React.createElement('input', { type: 'submit',
+			if (this.props.submitter && this.props.submitter.id === SessionStore.currentUser().id) deleteButton = React.createElement('input', { type: 'submit',
 				value: 'Delete Answer',
-				onClick: this.handleDelete });
+				onClick: this.handleDelete,
+				className: 'delete-answer-button' });
 	
 			return React.createElement(
 				'li',
@@ -33252,7 +33262,7 @@
 					React.createElement(
 						'p',
 						{ className: 'user-info' },
-						this.state.submitter.username
+						this.props.submitter.username
 					)
 				),
 				React.createElement(
@@ -33261,8 +33271,6 @@
 					this.props.answer.body
 				),
 				answerEditForm,
-				editButton,
-				deleteButton,
 				React.createElement(UpvoteButton, {
 					user: SessionStore.currentUser().id,
 					answer: this.state.answer
@@ -33270,7 +33278,13 @@
 				React.createElement(DownvoteButton, {
 					user: SessionStore.currentUser().id,
 					answer: this.state.answer
-				})
+				}),
+				React.createElement(
+					'div',
+					{ className: 'answer-modify-buttons-group' },
+					editButton,
+					deleteButton
+				)
 			);
 		}
 	});
@@ -33337,8 +33351,8 @@
 						React.createElement('img', { className: 'user-pic' }),
 						React.createElement(
 							'p',
-							null,
-							'user info here'
+							{ className: 'user-info' },
+							this.props.submitter.username
 						)
 					)
 				),
@@ -33352,7 +33366,15 @@
 					React.createElement('input', { type: 'submit',
 						className: 'submit-answer-button',
 						value: 'Submit Answer'
-					})
+					}),
+					React.createElement(
+						'a',
+						{ href: "/#/questions/" + this.props.answer.question_id,
+							onClick: this.props.onEditEnd,
+							className: 'cancel-link',
+							value: 'Cancel' },
+						'Cancel'
+					)
 				)
 			);
 		}
@@ -33491,7 +33513,7 @@
 	
 			return React.createElement(
 				'ul',
-				{ className: 'topic-list' },
+				{ className: 'topic-list group' },
 				topics,
 				editTopicsList,
 				React.createElement('input', { type: 'button',
@@ -33740,7 +33762,6 @@
 	
 		render: function () {
 			var currentUser = SessionStore.currentUser();
-			debugger;
 			return React.createElement(
 				'div',
 				null,
@@ -33750,11 +33771,7 @@
 					React.createElement(
 						'div',
 						{ className: 'header-nav group' },
-						React.createElement(
-							'a',
-							{ href: '/#/', className: 'logo' },
-							'Shmora'
-						),
+						React.createElement('a', { href: '/#/', className: 'logo' }),
 						React.createElement(QuestionForm, null),
 						React.createElement(
 							'div',
@@ -33762,7 +33779,6 @@
 							React.createElement(
 								'div',
 								{ className: 'read-wrapper' },
-								React.createElement('img', { src: 'read.svg', className: 'read-icon' }),
 								React.createElement(
 									'a',
 									{ type: 'submit',
@@ -33775,7 +33791,6 @@
 							React.createElement(
 								'div',
 								{ className: 'answer-wrapper' },
-								React.createElement('img', { src: 'answer.svg', className: 'answer-icon' }),
 								React.createElement(
 									'a',
 									{ type: 'submit',
@@ -33875,7 +33890,7 @@
 	
 		_getCurrentUserTopics: function () {
 			var topicIDs = [];
-			if (SessionStore.currentUser()) {
+			if (SessionStore.currentUser() && SessionStore.currentUser.topics) {
 				SessionStore.currentUser().topics.forEach(function (topic) {
 					topicIDs.push(topic.id);
 				});
@@ -34161,14 +34176,19 @@
 									className: 'login-form-input' })
 							),
 							React.createElement(
-								'button',
-								{ className: 'login-button' },
-								'Submit'
-							),
-							React.createElement('input', {
-								className: 'login-form-button',
-								type: 'button',
-								value: 'No account? Sign Up!' })
+								'div',
+								{ className: 'login-form-button-group' },
+								React.createElement(
+									'button',
+									{ className: 'login-button' },
+									'Submit'
+								),
+								React.createElement('input', {
+									className: 'login-form-button',
+									type: 'button',
+									value: 'No account? Sign Up!',
+									onClick: this.startSignUp })
+							)
 						),
 						React.createElement(
 							'div',
@@ -36711,8 +36731,9 @@
 	
 	
 		getInitialState: function () {
+			var value = this._decideCurrentState();
 			return {
-				value: this._decideCurrentState(),
+				value: value,
 				user_id: this.props.user,
 				answer_id: this.props.answer.id
 			};
@@ -36731,7 +36752,9 @@
 		},
 	
 		_onStoreChange: function () {
-			this.setState({ value: this._decideCurrentState() });
+			console.log("_onStoreChange" + this.state.value);
+			this.setState({ value: this.state.value ? false : true });
+			// this.voteID = null;
 			console.log("emit change");
 		},
 	
@@ -36747,8 +36770,9 @@
 	
 		deleteVote: function (e) {
 			e.preventDefault();
-	
 			ApiUtil.destroyVote(this.voteID, this.props.answer.id);
+			// console.log(this.props);
+			// console.log("voteID "  + this.voteID);
 		},
 	
 		createVote: function (e) {
@@ -36762,7 +36786,9 @@
 		},
 	
 		render: function () {
+			console.log(this.props.answer.id);
 			var upvoteButton;
+			// console.log(this.state.value);
 	
 			if (this.state.value === true) {
 				upvoteButton = React.createElement('input', {
@@ -36804,8 +36830,9 @@
 	
 	
 		getInitialState: function () {
+			var value = this._decideCurrentState();
 			return {
-				value: this._decideCurrentState(),
+				value: value,
 				user_id: this.props.user,
 				answer_id: this.props.answer.id
 			};
@@ -36824,7 +36851,7 @@
 		},
 	
 		_onStoreChange: function () {
-			this.setState({ value: this._decideCurrentState() });
+			this.setState({ value: this.state.value ? true : false });
 		},
 	
 		componentDidMount: function () {
@@ -36911,7 +36938,7 @@
 	var VoteActions = {
 		receiveSingleVote: function (vote) {
 			Dispatcher.dispatch({
-				actionType: VoteConstants.VOTE_RECEIEVED,
+				actionType: VoteConstants.VOTE_RECEIVED,
 				vote: vote
 			});
 		},
@@ -36934,40 +36961,145 @@
 	module.exports = VoteActions;
 
 /***/ },
-/* 307 */
+/* 307 */,
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var PropTypes = React.PropTypes;
-	var NavBar = __webpack_require__(267);
-	var RightBar = __webpack_require__(271);
-	var SideBar = __webpack_require__(268);
-	var QuestionsIndex = __webpack_require__(159);
+	var QuestionStore = __webpack_require__(160);
+	var UserStore = __webpack_require__(183);
+	var SessionStore = __webpack_require__(198);
+	var ApiUtil = __webpack_require__(185);
+	var IndexItem = __webpack_require__(195);
+	var QuestionForm = __webpack_require__(199);
 	
 	var AnswerView = React.createClass({
 		displayName: 'AnswerView',
 	
+		getInitialState: function () {
+			return { questions: QuestionStore.all() };
+		},
+	
+		_onChange: function () {
+			this.setState({ questions: QuestionStore.all() });
+		},
+	
+		_onUserStoreChange: function () {
+			this.setState({ currentUserTopics: [] });
+		},
+	
+		componentDidMount: function () {
+			this.questionListener = QuestionStore.addListener(this._onChange);
+			ApiUtil.fetchAllQuestions();
+			this.userListener = UserStore.addListener(this._onUserStoreChange);
+		},
+	
+		componentWillUnmount: function () {
+			this.questionListener.remove();
+			this.userListener.remove();
+		},
+	
+		_compareKeys: function (arr1, arr2) {
+			for (var i = 0; i < arr1.length; i++) {
+				var index = arr2.find(function (obj2) {
+					return this._hasOverlap(arr1[i], obj2);
+				}.bind(this));
+				if (index !== undefined) return true;
+			}
+		},
+	
+		_hasOverlap: function (obj1, obj2) {
+	
+			if (obj1.id === obj2.id) {
+				return true;
+			}
+		},
 	
 		render: function () {
 			return React.createElement(
 				'div',
 				null,
-				React.createElement(SideBar, null),
 				React.createElement(
-					'div',
-					{ className: 'center-panel group' },
-					React.createElement(
-						'div',
-						{ className: 'questions-list group' },
-						React.createElement(QuestionsIndex, null)
-					)
+					'ul',
+					{ className: 'questions' },
+					this.state.questions.map(function (question) {
+						var qTopics = question.topics;
+	
+						var uTopics = [];
+						if (SessionStore.currentUser() && SessionStore.currentUser().topics && SessionStore.currentUser().topics.length > 0) {
+							uTopics = SessionStore.currentUser().topics;
+						}
+	
+						if (this._compareKeys(qTopics, uTopics) && question.answers.length < 1) {
+							return React.createElement(IndexItem, { key: question.id, question: question });
+						}
+					}.bind(this))
 				)
+			);
+		}
+	});
+	
+	module.exports = AnswerView;
+
+/***/ },
+/* 309 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PropTypes = React.PropTypes;
+	var TopicStore = __webpack_require__(266);
+	var IndexItem = __webpack_require__(195);
+	var ApiUtil = __webpack_require__(185);
+	
+	var TopicView = React.createClass({
+		displayName: 'TopicView',
+	
+	
+		getInitialState: function () {
+			return this.getStateFromStore();
+		},
+	
+		getStateFromStore: function () {
+			return { topic: TopicStore.find(this.props.params.topicID) };
+		},
+	
+		_onChange: function () {
+			this.setState(this.getStateFromStore());
+		},
+	
+		componentDidMount: function () {
+			this.topicListener = TopicStore.addListener(this._onChange);
+			ApiUtil.fetchSingleTopic(this.props.params.topicID);
+		},
+	
+		componentWillUnmount: function () {
+			this.topicListener.remove();
+		},
+	
+		renderQuestionsList: function () {
+			if (!this.state.topic) return;
+			debugger;
+			return React.createElement(
+				'ul',
+				{ className: 'questions' },
+				this.state.topic.questions.map(function (question) {
+					return React.createElement(IndexItem, { question: question, key: question.id });
+				}.bind(this))
+			);
+		},
+	
+		render: function () {
+	
+			return React.createElement(
+				'div',
+				{ className: 'topic-view-question-list' },
+				this.renderQuestionsList()
 			);
 		}
 	
 	});
 	
-	module.exports = AnswerView;
+	module.exports = TopicView;
 
 /***/ }
 /******/ ]);

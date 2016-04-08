@@ -16,13 +16,11 @@
  }
 
  .logo {
-   font-family: 'Inknut Antiqua', serif;
-   font-weight: 800;
-   font-size: 24px;
-   color: #b92b27;
-   float: left;
-   padding: 11px 0;
-   text-decoration: none;
+	 float: left;
+   width: 94px;
+   height: 30px;
+	 content:  asset-url(shmora);
+	 margin-top: 8px;
  }
 
  .question-form {

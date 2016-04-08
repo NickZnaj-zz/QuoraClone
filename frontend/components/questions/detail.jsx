@@ -142,18 +142,19 @@ var QuestionDetail =  React.createClass({
 				</div>
 
 
-				
+
 				<input type="submit"
 					value="Answer"
 					className="submit-answer-button-detail-page"
 					onClick={this.startAnswer}
 					disabled={this.state.isAnswering}/>
 
+				{answerForm}
+				
         <div className="answers-index" >
           <AnswersIndex question={this.state.question} />
         </div>
 
-				{answerForm}
 
         {questionDeleteButton}
 

@@ -6,7 +6,7 @@ var ApiUtil = require('../../util/api_util');
 var IndexItem = require('./index_item');
 var QuestionForm = require('./question_form');
 
-var QuestionsIndex = React.createClass({
+var AnswerView = React.createClass({
   getInitialState: function() {
   return { questions: QuestionStore.all() };
 },
@@ -60,7 +60,7 @@ render: function() {
 						uTopics = SessionStore.currentUser().topics;
 					}
 
-					if (this._compareKeys(qTopics, uTopics) && question.answers.length < 2) {
+					if (this._compareKeys(qTopics, uTopics) && question.answers.length < 1) {
           return <IndexItem key={question.id} question={question} />;
 					}
         }.bind(this))}
@@ -72,4 +72,4 @@ render: function() {
 
 
 
-module.exports = QuestionsIndex;
+module.exports = AnswerView;

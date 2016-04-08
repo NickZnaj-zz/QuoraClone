@@ -51,12 +51,14 @@ var LoginForm = React.createClass({
 										value={this.state.password}
 										className="login-form-input"/>
 							</div>
-
-							<button className="login-button">Submit</button>
-								<input
-									className="login-form-button"
-									type="button"
-									value="No account? Sign Up!"/>
+								<div className="login-form-button-group">
+									<button className="login-button">Submit</button>
+										<input
+											className="login-form-button"
+											type="button"
+											value="No account? Sign Up!"
+											onClick={this.startSignUp}/>
+									</div>
 						</div>
 
 

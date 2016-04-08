@@ -4,7 +4,7 @@ var Dispatcher = require('../dispatcher/Dispatcher'),
 var VoteActions = {
 	receiveSingleVote:function(vote) {
 		Dispatcher.dispatch({
-			actionType: VoteConstants.VOTE_RECEIEVED,
+			actionType: VoteConstants.VOTE_RECEIVED,
 			vote: vote
 		});
 	},

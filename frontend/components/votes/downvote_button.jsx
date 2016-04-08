@@ -8,8 +8,9 @@ var ApiUtil = require('../../util/api_util.js');
 var DownvoteButton = React.createClass({
 
 		getInitialState: function() {
+			var value = this._decideCurrentState();
 			return {
-				value: this._decideCurrentState(),
+				value: value,
 				user_id: this.props.user,
 				answer_id: this.props.answer.id
 			};
@@ -28,7 +29,7 @@ var DownvoteButton = React.createClass({
 		},
 
 		_onStoreChange: function() {
-			this.setState({value: this._decideCurrentState()});
+			this.setState({value: this.state.value ? true : false});
 		},
 
 		componentDidMount: function() {

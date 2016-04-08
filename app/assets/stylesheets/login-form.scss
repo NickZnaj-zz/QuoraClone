@@ -125,6 +125,10 @@
 	border-radius: 3px;
 }
 
+.login-form-button-group {
+
+}
+
 .login-form-button {
 	border-radius: 3px;
   display: inline-block;
@@ -138,10 +142,13 @@
   border: 1px solid #3a66ad;
   box-shadow: 0 1px 1px 0 rgba(200, 200, 200, 0.6);
   margin: auto;
+	margin-right: 47px;
   position: relative;
   float: right;
   top: 14px;
   right: 20px;
+	margin-top: 26px;
+
 }
 
 .login-button {
@@ -161,4 +168,6 @@
 	float: right;
 	top: 14px;
 	right: 20px;
+	margin-top: 26px;
+
 }

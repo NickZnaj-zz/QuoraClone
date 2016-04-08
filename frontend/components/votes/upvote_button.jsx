@@ -8,8 +8,9 @@ var ApiUtil = require('../../util/api_util.js');
 var UpvoteButton = React.createClass({
 
 	getInitialState: function() {
+		var value = this._decideCurrentState();
 		return {
-			value: this._decideCurrentState(),
+			value: value,
 			user_id: this.props.user,
 			answer_id: this.props.answer.id
 		};
@@ -28,8 +29,11 @@ var UpvoteButton = React.createClass({
 	},
 
 	_onStoreChange: function() {
-		this.setState({value: this._decideCurrentState()});
+		console.log("_onStoreChange" + this.state.value);
+		this.setState({value: this.state.value ? false : true });
+		// this.voteID = null;
 		console.log("emit change");
+
 	},
 
 	componentDidMount: function() {
@@ -46,8 +50,9 @@ var UpvoteButton = React.createClass({
 
 	deleteVote: function(e) {
 		e.preventDefault();
-
 		ApiUtil.destroyVote(this.voteID, this.props.answer.id);
+		// console.log(this.props);
+		// console.log("voteID "  + this.voteID);
 	},
 
 	createVote: function(e) {
@@ -62,7 +67,9 @@ var UpvoteButton = React.createClass({
 	},
 
 	render: function() {
+		console.log(this.props.answer.id);
 		var upvoteButton;
+		// console.log(this.state.value);
 
 		if (this.state.value === true) {
 			upvoteButton =

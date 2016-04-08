@@ -15,19 +15,19 @@ _onChange: function() {
   this.setState({questions: QuestionStore.all() });
 },
 
-_onUserStoreChange: function() {
+_onSessionStoreChange: function() {
 	this.setState({currentUserTopics: []});
 },
 
 componentDidMount: function() {
   this.questionListener = QuestionStore.addListener(this._onChange);
   ApiUtil.fetchAllQuestions();
-	this.userListener = UserStore.addListener(this._onUserStoreChange);
+	this.sessionListener = UserStore.addListener(this._onSessionStoreChange);
 },
 
 componentWillUnmount: function() {
   this.questionListener.remove();
-	this.userListener.remove();
+	this.sessionListener.remove();
 },
 
 _compareKeys: function(arr1, arr2) {

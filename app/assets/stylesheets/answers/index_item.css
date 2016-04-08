@@ -25,3 +25,44 @@
 	margin: 10px 0;
 	font-family: serif;
 }
+
+.delete-answer-button {
+	border: 1px solid #2865a1;
+	color: #2865a1;
+	background: #f1f8fb;
+	cursor: pointer;
+	border-radius: 3px;
+	box-shadow: 0 1px 1px 0 rgba(200,200,200,0.2);
+	display: inline-block;
+	font-weight: 500;
+	outline: 0;
+	padding: 3px 7px 4px 7px;
+	transition: border, background, color 500ms;
+}
+
+.delete-answer-button:hover {
+	border: 1px solid #333;
+	color: #333;
+	transition: border, color 500ms;
+}
+
+.edit-answer-button {
+	border: 1px solid #2865a1;
+	color: #2865a1;
+	background: #f1f8fb;
+	cursor: pointer;
+	border-radius: 3px;
+	box-shadow: 0 1px 1px 0 rgba(200,200,200,0.2);
+	display: inline-block;
+	font-weight: 500;
+	outline: 0;
+	padding: 3px 7px 4px 7px;
+	transition: border, background, color 500ms;
+	margin-right: 20px;
+}
+
+.edit-answer-button:hover {
+	border: 1px solid #333;
+	color: #333;
+	transition: border, color 500ms;
+}

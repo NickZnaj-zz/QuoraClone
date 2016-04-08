@@ -40,7 +40,7 @@ var TopicsList = React.createClass({
 
 
 		return (
-			<ul className="topic-list">
+			<ul className="topic-list group">
 				{topics}
 				{editTopicsList}
 				<input type="button"

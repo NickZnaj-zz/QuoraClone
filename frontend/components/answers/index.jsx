@@ -32,7 +32,6 @@ var AnswersIndex = React.createClass({
 	},
 
   render: function() {
-
     if (!this.state.answers) { return <div></div>; }
     return (
       <div className="answers-index group">
@@ -41,6 +40,7 @@ var AnswersIndex = React.createClass({
           {this.state.answers.map(function(answer){
              return <IndexItem key={answer.id}
 							 								 answer={answer}
+															 submitter={answer.user}
 
 										/>;
 								}.bind(this))}

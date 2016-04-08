@@ -36,6 +36,7 @@ var deleteVote = function(id){
 };
 
 SessionStore.allVotes = function() {
+
   var votes = [];
   for (var id in _votes) {
     votes.push(_votes[id].answer_id);
@@ -70,8 +71,10 @@ SessionStore.__onDispatch = function (payload) {
     case VoteConstants.VOTE_RECEIVED:
       updateVote(payload.vote);
       SessionStore.__emitChange();
+			console.log("VOTE_RECEIVED");
       break;
 		case VoteConstants.VOTE_DELETED:
+		console.log("VOTE_DELETED");
       deleteVote(payload.id);
       SessionStore.__emitChange();
       break;

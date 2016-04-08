@@ -33,6 +33,7 @@ var ApiUtil = {
 			// contentType: false,
 			data: { user: newAttrs },
 			success: function(user) {
+				SessionActions.currentUserReceived(user);
 				UserActions.editUser(user);
 				callback && callback(user);
 			},
@@ -240,7 +241,7 @@ var ApiUtil = {
     });
 	},
 
-	fetchSingleTopic: function() {
+	fetchSingleTopic: function(id) {
 		$.ajax({
       type: "GET",
       url: "/api/topics/" + id,
@@ -304,7 +305,6 @@ var ApiUtil = {
 			success: function () {
 				VoteActions.destroyVote(id);
 				AnswerActions.removeVote(answerID);
-				callback && callback(id);
 			},
 			error: function(e) {
 				console.log("api_util#destroyVote Error");

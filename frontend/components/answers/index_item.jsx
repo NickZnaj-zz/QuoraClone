@@ -12,21 +12,23 @@ var IndexItem = React.createClass({
 	},
 
 	getInitialState: function() {
-		return { isEditing: false, answer: this.props.answer, submitter: {} };
+
+		// var submitter = UserStore.find(this.props.answer.user_id);
+		return { isEditing: false, answer: this.props.answer, };
 	},
 
 	_onChange: function() {
-		var submitter = UserStore.find(this.props.answer.user_id);
-		this.setState({submitter: submitter});
+		// var submitter = UserStore.find(this.props.answer.user_id);
+		// this.setState({submitter: submitter});
 	},
 
 	componentDidMount: function() {
-		this.userListener = UserStore.addListener(this._onChange);
-		ApiUtil.fetchSingleUser(this.props.answer.user_id);
+		// this.userListener = UserStore.addListener(this._onChange);
+		// ApiUtil.fetchSingleUser(this.props.answer.user_id);
 	},
 
 	componentWillUnmount: function() {
-		this.userListener.remove();
+		// this.userListener.remove();
 	},
 
 	startEdit: function() {
@@ -48,30 +50,34 @@ var IndexItem = React.createClass({
 		var answerEditForm;
 		if (this.state.isEditing) {
 			answerEditForm = <AnswerEditForm
+				submitter={this.props.submitter}
 				answer={this.state.answer}
 				onEditEnd={this.closeEdit}
 			/>;
 		}
 
 		var editButton;
-		if (this.state.submitter.id && (this.state.submitter.id === SessionStore.currentUser().id)){
+		if (this.props.submitter && (this.props.submitter.id === SessionStore.currentUser().id)){
 			editButton = <input type="submit"
 						 							value="Edit Answer"
-						 							onClick={this.startEdit} />;
+						 							onClick={this.startEdit}
+													className="edit-answer-button"/>;
 		}
 
 		var deleteButton;
-		if (this.state.submitter.id === SessionStore.currentUser().id)
+		if (this.props.submitter && (this.props.submitter.id === SessionStore.currentUser().id))
 			deleteButton = <input type="submit"
 						 								value="Delete Answer"
-						 								onClick={this.handleDelete} />;
+						 								onClick={this.handleDelete}
+														className="delete-answer-button" />;
+
 
     return (
       <li className="answer-list-item group">
 
 				<div className="answer-header group">
-					<div className="user-pic"  />
-					<p className="user-info">{this.state.submitter.username}</p>
+					<div className="user-pic"/>
+					<p className="user-info">{this.props.submitter.username}</p>
 				</div>
 
         <div className="answer-list-item-answer">
@@ -80,9 +86,6 @@ var IndexItem = React.createClass({
 
 			{answerEditForm}
 
-			{editButton}
-
-			{deleteButton}
 
 			<UpvoteButton
 				user={SessionStore.currentUser().id}
@@ -93,7 +96,11 @@ var IndexItem = React.createClass({
 				user={SessionStore.currentUser().id}
 				answer={this.state.answer}
 			/>
+		<div className="answer-modify-buttons-group">
+			{editButton}
 
+			{deleteButton}
+		</div>
       </li>
     );
   }

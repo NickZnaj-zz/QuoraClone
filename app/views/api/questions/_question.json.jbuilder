@@ -4,3 +4,4 @@ json.extract!(
 )
 json.answers question.answers
 json.topics question.topics
+json.user question.user

@@ -49,7 +49,7 @@ class Api::VotesController < ApplicationController
 	end
 
 	def destroy
-		answer = Answer.find(params[:id])
+ 		answer = Answer.find(params[:id])
 		@vote = answer.votes.where(user_id: current_user.id).first
 		@vote.destroy
 		render :show

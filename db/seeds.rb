@@ -8,7 +8,7 @@
 #
 
 
-topics = (1..5).to_a.map do |n|
+topics = (1..15).to_a.map do |n|
 	name = Faker::Book.genre
 
 	Topic.create!(
@@ -16,11 +16,15 @@ topics = (1..5).to_a.map do |n|
 	)
 end
 
-50.times do |n|
-	title = Faker::Lorem.sentence + "?"
-	user_id = rand(1..3)
+200.times do |n|
+	title1 = "Where do I find a " + Faker::Commerce.product_name + "?"
+	title2 = "How do I make a " + Faker::Commerce.product_name + "?"
+	title3 = "What in the world is a " + Faker::Commerce.product_name + "?"
+	user_id = rand(1..15)
 
-	question = Question.create!(title: title, user_id: user_id)
+	question = Question.create!(title: title1, user_id: user_id)
+	question = Question.create!(title: title2, user_id: user_id)
+	question = Question.create!(title: title3, user_id: user_id)
 
 	question.topic_ids = (topics[0].id)
 
@@ -29,14 +33,25 @@ end
 
 end
 
-40.times do |n|
+1500.times do |n|
 	body = Faker::Hacker.say_something_smart
-	user_id = rand(1..3)
-	question_id = rand(1..50)
+	user_id = rand(1..15)
+	question_id = rand(1..200)
 
 	answer = Answer.create!(
 	body: body,
 	user_id: user_id,
 	question_id: question_id
 	)
+end
+
+15.times do |n|
+	username = Faker::Name.name
+	password = Faker::Internet.password(8)
+	email = Faker::Internet.safe_email
+end
+
+7000.times do |n|
+	user_id = rand(1..15)
+	answer_id = rand(1..1800)
 end

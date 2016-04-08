@@ -50,7 +50,7 @@ var AnswerEditForm = React.createClass({
 				<section className="user-section">
 					<div className="user-info">
 						<img className="user-pic" />
-						<p>user info here</p>
+						<p className="user-info">{this.props.submitter.username}</p>
 					</div>
 				</section>
 
@@ -65,6 +65,11 @@ var AnswerEditForm = React.createClass({
 								 className="submit-answer-button"
 								 value="Submit Answer"
 								 />
+
+							 <a href={"/#/questions/" + this.props.answer.question_id}
+            onClick={this.props.onEditEnd}
+            className="cancel-link"
+            value="Cancel">Cancel</a>
 				</div>
 			</form>
 		);
