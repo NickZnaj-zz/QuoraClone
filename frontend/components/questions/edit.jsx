@@ -38,7 +38,7 @@ var QuestionEdit =  React.createClass({
   handleEdit: function(e) {
     e.preventDefault();
 
-    console.log("hit the handle EDIT");
+    // console.log("hit the handle EDIT");
     ApiUtil.editQuestion(this.props.question, this.state, function (question) {
       this.props.onEditEnd();
     }.bind(this));

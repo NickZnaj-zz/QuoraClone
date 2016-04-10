@@ -51,8 +51,8 @@ var UpvoteButton = React.createClass({
 	deleteVote: function(e) {
 		e.preventDefault();
 		ApiUtil.destroyVote(this.voteID, this.props.answer.id);
-		// console.log(this.props);
-		// console.log("voteID "  + this.voteID);
+		// // console.log(this.props);
+		// // console.log("voteID "  + this.voteID);
 	},
 
 	createVote: function(e) {
@@ -67,10 +67,10 @@ var UpvoteButton = React.createClass({
 	},
 
 	render: function() {
-		console.log(this.props.answer.id);
+		// console.log(this.props.answer.id);
 		var upvoteButton;
-		// console.log(this.state.value);
-
+		// // console.log(this.state.value);
+		debugger
 		if (this.state.value === true) {
 			upvoteButton =
 			<input

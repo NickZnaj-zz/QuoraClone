@@ -3,6 +3,8 @@ var ReactDOM = require('react-dom');
 var PropTypes = React.PropTypes;
 var ApiUtil = require('../../util/api_util.js');
 var SessionStore = require('../../stores/session_store');
+var ReactQuill = require('react-quill');
+
 
 var AnswerForm = React.createClass({
 	contextTypes: {
@@ -40,8 +42,7 @@ var AnswerForm = React.createClass({
 		return (
 				<form className="answer-form group"
 							onSubmit={this.handleSubmit}
-							id="answer-form"
-							>
+							id="answer-form">
 
 					<section className="user-section">
 						<div className="user-info">
@@ -50,11 +51,13 @@ var AnswerForm = React.createClass({
 						</div>
 					</section>
 
-					<input type="textarea"
+					<ReactQuill
+						type="textarea"
+						theme="snow"
 						className="answer-body"
 						onChange={this._onBodyChange}
 						value={this.state.body}>
-					</input>
+					</ReactQuill>
 
           <div className="submit-area group">
             <input type="submit"

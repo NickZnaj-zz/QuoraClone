@@ -19,7 +19,7 @@ var ApiUtil = {
         SearchResultActions.receiveResults(response);
       },
       error: function () {
-        console.log("ApiUtil#search error!");
+        // console.log("ApiUtil#search error!");
       }
 
     });
@@ -38,7 +38,7 @@ var ApiUtil = {
 				callback && callback(user);
 			},
 			error: function(e) {
-				console.log("api_util#editUser error");
+				// console.log("api_util#editUser error");
 		}
 		});
 	},
@@ -50,10 +50,10 @@ var ApiUtil = {
 			dataType: "json",
 			success: function(user) {
 				UserActions.receiveSingleUser(user);
-				console.log("hit api call");
+				// console.log("hit api call");
 			},
 			error: function(e) {
-				console.log("api_util#fetchSingleUser error");
+				// console.log("api_util#fetchSingleUser error");
 			}
 		});
 	},
@@ -150,7 +150,7 @@ var ApiUtil = {
         callback && callback(question.id);
       },
       error: function(e) {
-        console.log("api_util#createQuestion");
+        // console.log("api_util#createQuestion");
       }
     });
   },
@@ -165,7 +165,7 @@ var ApiUtil = {
         callback && callback(question);
       },
       error: function(e) {
-        console.log("api_util#editQuestion error");
+        // console.log("api_util#editQuestion error");
     }
     });
   },
@@ -179,7 +179,7 @@ var ApiUtil = {
 
       },
 			error: function(e) {
-				console.log("api_util#fetchAllAnswers Error");
+				// console.log("api_util#fetchAllAnswers Error");
 			}
     });
   },
@@ -194,7 +194,7 @@ var ApiUtil = {
 				callback && callback(answer.id);
 			},
 			error: function(e) {
-				console.log("api_util#createAnswer Error");
+				// console.log("api_util#createAnswer Error");
 			}
 		});
 	},
@@ -208,7 +208,7 @@ var ApiUtil = {
 				callback && callback(id)
 			},
 			error: function(e) {
-				console.log("api_util#destroyAnswer Error");
+				// console.log("api_util#destroyAnswer Error");
 			}
 		});
 	},
@@ -223,7 +223,7 @@ var ApiUtil = {
         callback && callback(answer);
       },
       error: function(e) {
-        console.log("api_util#editAnswer error");
+        // console.log("api_util#editAnswer error");
     }
     });
 	},
@@ -236,7 +236,7 @@ var ApiUtil = {
         TopicActions.receiveAllTopics(topics);
       },
 			error: function(e){
-				console.log("api#utilfetchAllTopics Error");
+				// console.log("api#utilfetchAllTopics Error");
 			}
     });
 	},
@@ -249,7 +249,7 @@ var ApiUtil = {
         TopicActions.receiveSingleTopic(topic);
       },
 			error: function(e){
-				console.log("api#utilfetchSingleTopic Error");
+				// console.log("api#utilfetchSingleTopic Error");
 			}
     });
 	},
@@ -264,7 +264,7 @@ var ApiUtil = {
 				callback && callback(topic.id);
 			},
 			error: function(e) {
-				console.log("api_util#createTopic Error");
+				// console.log("api_util#createTopic Error");
 			}
 		});
 	},
@@ -278,7 +278,7 @@ var ApiUtil = {
 				callback && callback(id)
 			},
 			error: function(e) {
-				console.log("api_util#destroyTopic Error");
+				// console.log("api_util#destroyTopic Error");
 			}
 		});
 	},
@@ -293,7 +293,7 @@ var ApiUtil = {
 			AnswerActions.addVote(vote.answer_id);
 			},
 			error: function(e) {
-				console.log("api_util#createVote Error");
+				// console.log("api_util#createVote Error");
 			}
 		});
 	},
@@ -307,7 +307,7 @@ var ApiUtil = {
 				AnswerActions.removeVote(answerID);
 			},
 			error: function(e) {
-				console.log("api_util#destroyVote Error");
+				// console.log("api_util#destroyVote Error");
 			}
 		});
 	}

@@ -32,7 +32,8 @@ var AnswersIndex = React.createClass({
 	},
 
   render: function() {
-    if (!this.state.answers) { return <div></div>; }
+    if (!this.state.answers) return <div></div>; 
+
     return (
       <div className="answers-index group">
 				<p className="answers-count">{this.answerCount()}</p>

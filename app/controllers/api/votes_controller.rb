@@ -49,6 +49,7 @@ class Api::VotesController < ApplicationController
 	end
 
 	def destroy
+		byebug
  		answer = Answer.find(params[:id])
 		@vote = answer.votes.where(user_id: current_user.id).first
 		@vote.destroy

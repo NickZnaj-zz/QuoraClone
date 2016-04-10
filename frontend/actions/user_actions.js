@@ -10,7 +10,7 @@ var UserActions = {
   },
 
 	receiveSingleUser: function(user) {
-		console.log("hit receiveSingleUser");
+		// console.log("hit receiveSingleUser");
 		Dispatcher.dispatch({
 			actionType: UserConstants.USER_RECEIVED,
 			user: user,

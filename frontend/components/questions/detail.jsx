@@ -45,7 +45,7 @@ var QuestionDetail =  React.createClass({
   handleDelete: function(e) {
     e.preventDefault();
 
-    console.log("hit the handle delete in q detail");
+    // console.log("hit the handle delete in q detail");
     ApiUtil.destroyQuestion(this.state.question.id, function () {
       this.context.router.push('/');
     }.bind(this));
@@ -53,7 +53,7 @@ var QuestionDetail =  React.createClass({
 
   startEdit: function(event) {
     event.preventDefault();
-    console.log("hit handleEdit");
+    // console.log("hit handleEdit");
 
     this.setState({ isEditing: true });
   },
