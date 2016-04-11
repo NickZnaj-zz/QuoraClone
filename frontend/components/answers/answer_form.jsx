@@ -53,7 +53,6 @@ var AnswerForm = React.createClass({
 
 					<ReactQuill
 						type="textarea"
-						theme="snow"
 						className="answer-body"
 						onChange={this._onBodyChange}
 						value={this.state.body}>

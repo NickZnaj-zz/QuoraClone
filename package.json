@@ -30,8 +30,9 @@
     "react": "^0.14.8",
     "react-dom": "^0.14.8",
     "react-modal": "^0.6.1",
+    "react-quill": "^0.4.1",
     "react-router": "^2.0.1",
-    "webpack": "^1.12.14"
+    "webpack": "^1.12.15"
   },
   "engines": {
     "node": "5.1.0",
