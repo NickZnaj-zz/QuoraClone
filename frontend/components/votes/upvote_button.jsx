@@ -1,6 +1,5 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
-// var VoteStore = require('../../stores/vote_store');
 var SessionStore = require('../../stores/session_store');
 var ApiUtil = require('../../util/api_util.js');
 
@@ -19,20 +18,17 @@ var UpvoteButton = React.createClass({
 	_decideCurrentState: function(){
 		var userVotes = SessionStore.allVotes();
 		for (var i = 0; i < userVotes.length; i++) {
-			if (userVotes[i] == this.props.answer.id) {
-				this.voteID = userVotes[i];
+			if (userVotes[i].answer_id == this.props.answer.id) {
+				this.voteID = userVotes[i].id;
 				return;
 			}
 		}
 		return true;
-		// return false;
 	},
 
 	_onStoreChange: function() {
 		console.log("_onStoreChange" + this.state.value);
 		this.setState({value: this._decideCurrentState()})
-		// this.setState({value: this.state.value ? false : true });
-		// this.voteID = null;
 		console.log("emit change");
 
 	},
@@ -45,15 +41,9 @@ var UpvoteButton = React.createClass({
 		this.sessionListener.remove();
 	},
 
-	_onChange: function(e) {
-
-	},
-
 	deleteVote: function(e) {
 		e.preventDefault();
 		ApiUtil.destroyVote(this.voteID, this.props.answer.id);
-		// // console.log(this.props);
-		// // console.log("voteID "  + this.voteID);
 	},
 
 	createVote: function(e) {
@@ -68,9 +58,7 @@ var UpvoteButton = React.createClass({
 	},
 
 	render: function() {
-		// console.log(this.props.answer.id);
 		var upvoteButton;
-		// // console.log(this.state.value);
 		if (this.state.value === true) {
 			upvoteButton =
 			<input

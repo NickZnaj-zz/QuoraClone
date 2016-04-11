@@ -38,7 +38,7 @@ var deleteVote = function(id){
 SessionStore.allVotes = function() {
   var votes = [];
   for (var id in _votes) {
-    votes.push(_votes[id].answer_id);
+    votes.push(_votes[id]);
   }
   return votes;
 };

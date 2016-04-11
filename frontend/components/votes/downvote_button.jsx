@@ -19,8 +19,9 @@ var DownvoteButton = React.createClass({
 		_decideCurrentState: function(){
 			var userVotes = SessionStore.allVotes();
 			for (var i = 0; i < userVotes.length; i++) {
-				if (userVotes[i] == this.props.answer.id) {
-					this.voteID = userVotes[i];
+				if (userVotes[i].answer_id == this.props.answer.id) {
+					this.voteID = userVotes[i].id;
+					this.pastVoteValue = userVotes[i].value;
 					return;
 				}
 			}
@@ -57,10 +58,12 @@ var DownvoteButton = React.createClass({
 		},
 
 		_findButtonString: function() {
-			if (this.state.value === false){
+			if (this.state.value === false ){
 				return "Downvote";
-			} else {
+			} else if (this.pastVoteValue === false) {
 				return "Downvoted";
+			} else {
+				return "Downvote"
 			}
 		},
 
@@ -68,7 +71,7 @@ var DownvoteButton = React.createClass({
 			var downvoteButton;
 
 
-			if (this.state.value === false) {
+			if (this.state.value === false && this.pastVoteValue !== false) {
 				downvoteButton =
 				<a
 					onClick={this.createVote}

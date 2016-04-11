@@ -23,8 +23,9 @@ var AnswerForm = React.createClass({
 		};
 	},
 
-	_onBodyChange: function(e){
-		this.setState({body: e.target.value});
+	_onBodyChange: function(value){
+		debugger
+		this.setState({body:value});
 	},
 
 	handleSubmit: function(e){
@@ -52,11 +53,9 @@ var AnswerForm = React.createClass({
 					</section>
 
 					<ReactQuill
-						type="textarea"
 						className="answer-body"
 						onChange={this._onBodyChange}
-						value={this.state.body}>
-					</ReactQuill>
+						value={this.state.body}/>
 
           <div className="submit-area group">
             <input type="submit"
