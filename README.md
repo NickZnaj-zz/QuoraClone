@@ -34,6 +34,7 @@ Live Link:
 
 ##To-Do:
 
+- [ ] Optimize to reduce number of calls to database 
 - [ ] Pagination / Infinite Scroll
 - [ ] Notifications
 - [ ] User Show page
