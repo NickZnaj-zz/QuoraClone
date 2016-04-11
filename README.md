@@ -3,7 +3,7 @@ Shmora is a web application for asking and viewing questions on a variety of top
 The site is a clone of Quora and built using Ruby on Rails and React.js with Flux.
 
 Live Link:
-(capstone-nickznaj.herokuapp.com)
+[Shmora](capstone-nickznaj.herokuapp.com)
 
 
 
