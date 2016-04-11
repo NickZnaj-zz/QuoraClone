@@ -29,14 +29,14 @@ Live Link:
 * Upvote and Downvote answers
 * Navbar and side bars fixed into position
 * Full CRUD capabilities
-* React Quill for basic Rich Text input. 
+* React Quill for basic Rich Text input.
 
 
 ##To-Do:
 
-[ ] Pagination / Infinite Scroll
-[ ] Notifications
-[ ] User Show page
-[ ] Modals for all forms
-[ ] Facebook/Google Login
-[ ] Image upload
+- [ ] Pagination / Infinite Scroll
+- [ ] Notifications
+- [ ] User Show page
+- [ ] Modals for all forms
+- [ ] Facebook/Google Login
+- [ ] Image upload
