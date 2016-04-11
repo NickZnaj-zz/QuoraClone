@@ -29,7 +29,8 @@ var DownvoteButton = React.createClass({
 		},
 
 		_onStoreChange: function() {
-			this.setState({value: this.state.value ? true : false});
+			this.setState({value: this._decideCurrentState()})
+			// this.setState({value: this.state.value ? true : false});
 		},
 
 		componentDidMount: function() {

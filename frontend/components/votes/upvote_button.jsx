@@ -30,7 +30,8 @@ var UpvoteButton = React.createClass({
 
 	_onStoreChange: function() {
 		console.log("_onStoreChange" + this.state.value);
-		this.setState({value: this.state.value ? false : true });
+		this.setState({value: this._decideCurrentState()})
+		// this.setState({value: this.state.value ? false : true });
 		// this.voteID = null;
 		console.log("emit change");
 
@@ -70,7 +71,6 @@ var UpvoteButton = React.createClass({
 		// console.log(this.props.answer.id);
 		var upvoteButton;
 		// // console.log(this.state.value);
-		debugger
 		if (this.state.value === true) {
 			upvoteButton =
 			<input
