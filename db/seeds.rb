@@ -56,4 +56,7 @@ end
 7000.times do |n|
 	user_id = rand(1..15)
 	answer_id = rand(1..1800)
+	value = [true, false][rand(0..1)]
+
+	vote = Vote.create!(user_id: user_id, answer_id: answer_id, value: value)
 end
