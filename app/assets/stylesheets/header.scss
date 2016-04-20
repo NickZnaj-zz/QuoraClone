@@ -1,0 +1,128 @@
+/* --- HEADER --- */
+
+ .header {
+   width: 100%;
+   border-top: 2px solid #b92b27;
+   border-bottom: 1px solid #dddddd;
+   padding-bottom: 5px;
+   background: #fff;
+   z-index: 1;
+   position: fixed;
+ }
+
+ .header-nav {
+   width: 1000px;
+   margin: 0 auto;
+ }
+
+ .logo {
+	 float: left;
+   width: 94px;
+   height: 30px;
+	 content:  asset-url(shmora);
+	 margin-top: 8px;
+ }
+
+ .question-form {
+   float: left;
+ }
+
+ .nav-bar-input {
+	 box-sizing:padding-box;
+   border: 1px solid #e2e2e2;
+   background: #eee;
+   border-radius: 2px;
+   width: 399px;
+   height: 21px;
+   padding: 2px 8px 3px 8px;
+   margin: 10px 0px 11px 14px;
+	 border-top-right-radius: 0;
+	 border-bottom-right-radius: 0;
+ }
+
+ .ask-question-button {
+	 border-radius: 3px;
+    box-shadow: 0 1px 1px 0 rgba(200,200,200,0.2);
+    display: inline-block;
+    font-weight: 500;
+    outline: 0;
+    padding: 3px 7px 4px 7px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    background: #fff;
+    color: #585a61;
+    border: 1px solid #ced1e1;
+    float: right;
+    font-size: 13px;
+    line-height: normal;
+    padding: 5px 8px 6px 10px;
+    margin: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+		margin-top: 10px;
+ }
+
+ .logout-link {
+	 background: transparent;
+	 border: none;
+	 float:left;
+	 cursor: pointer;
+ }
+
+ .logout-link:hover {
+	 background: #ccc;
+ }
+
+ .current-user {
+	 width: 130px;
+	 float:right;
+	margin-top: 12px;
+ }
+
+ .current-user-name {
+	 margin: 0;
+	 font-size: 13px;
+	 font-weight: 500px;
+	 margin-top: 3px;
+	 color: #999;
+	 float: left;
+ }
+
+ .current-user-pic {
+	 width: 22px;
+	 height: 22px;
+	 float:left;
+	 margin-right: 7px;
+	 border-radius: 50%;
+	 content: asset-url(default_profile_pic);
+ }
+
+ .search-result-list {
+	 padding-top: 100px;
+ }
+
+ .answer-wrapper {
+	 float:left;
+	 padding:15px;
+	 height: auto;
+ }
+
+ .answer-wrapper:hover {
+	background: #eee;
+
+ }
+
+ .read-wrapper {
+	 float: left;
+	 padding:15px;
+	 height: auto;
+ }
+
+ .read-wrapper:before{
+ }
+
+ .read-wrapper:hover {
+	 background: #eee;
+
+ }

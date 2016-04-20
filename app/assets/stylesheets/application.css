@@ -1,0 +1,43 @@
+/*
+ *= require reset
+ *= require_self
+ *= require_tree .
+ */
+
+
+
+ body {
+   box-sizing: content-box;
+   font-family: sans-serif;
+   font-size: 16px;
+   background: #fff;
+   color: #000;
+   margin: auto;
+ }
+
+ ul {
+   list-style: none;
+ }
+ /* --- CLEARFIX --- */
+
+ .group:after {
+   content: "";
+   clear: both;
+   display: block;
+ }
+
+/* --- MAIN --- */
+
+.main {
+  margin: 0 auto;
+  width: 1000px;
+  padding-top: 58px;
+  position: relative;
+}
+.center-panel {
+  width: 570px;
+  padding: 0px 20px;
+  margin: auto;
+  position: relative;
+  right: 70px;
+}

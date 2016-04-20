@@ -1,0 +1,104 @@
+.container {
+	position: absolute;
+	margin: auto;
+	/*right: 900px;*/
+	left: -1px;
+	top: -1px;
+
+}
+
+.question-submit {
+	font-size: 13px;
+	color: white;
+	background: #3e78ad;
+	width:auto;
+	padding: 3px 7px 4px 7px;
+	border: 1px solid #3a66ad;
+	border-radius: 2px;
+	margin-left: 20px;
+}
+
+.modal-question-input {
+	box-sizing:padding-box;
+	border: 1px solid #e2e2e2;
+	color: #333;
+	background: #fff;
+	border-radius: 2px;
+	width: 600px;
+	height: 21px;
+	padding: 2px 8px 3px 8px;
+	margin: 10px 0px 11px 14px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.search-results {
+	margin: auto;
+	border-radius: 3px;
+}
+.search-results:after {
+
+}
+
+
+
+.search-results-list {
+	-webkit-margin-before: 0em;
+	-webkit-margin-after: 0em;
+	-webkit-margin-start: 0px;
+	-webkit-margin-end: 0px;
+	-webkit-padding-start: 0px;
+
+	position: absolute;
+	margin: auto;
+	width: 630px;
+	height: auto;
+	background: #f6f6f6;
+	border-radius: 3px;
+	margin-top: 75px;
+	margin-left: 87px;
+}
+
+
+.search-result-container {
+	/*padding: 5px;
+	border-top: 1px solid #ccc;
+	font-size: 12px;*/
+}
+
+.search-results-list > li:first-child {
+	border-top: 0px solid white;
+	position: relative;
+}
+.search-results-list > li:first-child::before{
+	content: "";
+	display: block;
+	width: 0;
+	height: 0;
+	border-color: rgba(204,204,204,0);
+	border-left: 7.5px solid transparent;
+	border-right: 7.5px solid transparent;
+	border-bottom: 7px solid #f6f6f6;
+	margin-top: -17px;
+	margin-left: 300px;
+	position: absolute;
+}
+
+.search-results-list > li {
+	padding: 10px;
+	border-top: 1px solid #ccc;
+	font-size: 14px;
+
+}
+
+.search-result-container > strong {
+	padding: 10px;
+	border-top: 1px solid #ccc;
+	font-weight: bold;
+	color: #d3d3d3
+}
+
+a {
+	text-decoration: none;
+	color: #333
+}

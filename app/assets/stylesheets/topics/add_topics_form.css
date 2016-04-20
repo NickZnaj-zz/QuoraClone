@@ -1,0 +1,43 @@
+.topic-selection-form {
+	float: left;
+	border: 2px solid #bbcadc;
+	border-radius: 2px;
+	padding: 5px;
+	background: #f1f8fb
+}
+
+.form-words {
+	color: #2b6dad;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.topic-list {
+	-webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+	-webkit-padding-start: 0px;
+	float: left;
+	margin-left: 3px;
+}
+
+.form-words {
+
+}
+
+.checkbox-table {
+	font-size: 14px;
+	color: #111A2D;
+	display:block;
+;
+}
+
+.submit-form-choice-button {
+  font-size: 13px;
+  color: white;
+  background: #3e78ad;
+  width:auto;
+  padding: 3px 7px 4px 7px;
+  border: 1px solid #3a66ad;
+  border-radius: 2px;
+	margin: 10px 10px 10px 30px;
+}
