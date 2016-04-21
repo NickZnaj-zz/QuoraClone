@@ -66,8 +66,9 @@
  .logout-link {
 	 background: transparent;
 	 border: none;
-	 float:left;
+	 float:right;
 	 cursor: pointer;
+   padding: 3px;
  }
 
  .logout-link:hover {

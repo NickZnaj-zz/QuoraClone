@@ -28,6 +28,10 @@
 
 }
 
+.question-list-item-topic:hover {
+  text-decoration: overline;
+}
+
 .question-title-index {
   font-size: 19px;
   text-decoration: none;

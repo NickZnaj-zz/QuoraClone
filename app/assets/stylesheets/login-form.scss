@@ -119,6 +119,7 @@
 }
 
 .login-form-input {
+	border: 1px solid #ccc;
 	color: #333;
 	font-size: 13px;
 	font-family: sans-serif;
@@ -131,6 +132,7 @@
 }
 
 .login-form-button {
+	font-size: 15px;
 	border-radius: 3px;
   display: inline-block;
   font-weight: 500;
@@ -147,12 +149,13 @@
   position: relative;
   float: right;
   top: 14px;
-  right: 20px;
+  // right: 20px;
 	margin-top: 26px;
 
 }
 
 .login-button {
+	font-size: 15px;
 	border-radius: 3px;
 	display: inline-block;
 	font-weight: 500;

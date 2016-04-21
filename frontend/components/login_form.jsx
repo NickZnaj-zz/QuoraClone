@@ -56,7 +56,7 @@ var LoginForm = React.createClass({
 										<input
 											className="login-form-button"
 											type="button"
-											value="No account? Sign Up!"
+											value="No account?"
 											onClick={this.startSignUp}/>
 									</div>
 						</div>
