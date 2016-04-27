@@ -6,7 +6,7 @@ var SessionStore = require('../../stores/session_store');
 var UpvoteButton = require('../votes/upvote_button');
 var DownvoteButton = require('../votes/downvote_button');
 
-var IndexItem = React.createClass({
+var AnswerFeedItem = React.createClass({
 	contextTypes: {
 		router: React.PropTypes.object.isRequired
 	},
@@ -72,7 +72,7 @@ var IndexItem = React.createClass({
 														className="delete-answer-button" />;
 
     return (
-      <li className="answer-list-item group">
+      <li className="answer-feed-item group">
 
 				<div className="answer-header group">
 					<div className="user-pic"/>
@@ -105,4 +105,4 @@ var IndexItem = React.createClass({
   }
 });
 
-module.exports = IndexItem;
+module.exports = AnswerFeedItem;

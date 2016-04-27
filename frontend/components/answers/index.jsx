@@ -1,6 +1,7 @@
 var React = require('react');
 var AnswerStore = require('../../stores/answer_store.js');
 var IndexItem = require('./index_item');
+var AnswerFeedItem = require('./profile_answer_feed_item');
 var ApiUtil = require('../../util/api_util');
 
 var AnswersIndex = React.createClass({
@@ -18,7 +19,9 @@ var AnswersIndex = React.createClass({
 
   componentDidMount: function() {
     this.answerListener = AnswerStore.addListener(this._onChange);
-    ApiUtil.fetchAllAnswers(this.props.question.id);
+    if (this.props.question) {
+      ApiUtil.fetchAllAnswers(this.props.question.id);
+    }
   },
 
 	componentWillUnmount: function() {
@@ -31,23 +34,62 @@ var AnswersIndex = React.createClass({
 		else return (this.state.answers.length + ' answers');
 	},
 
+	userAnswerCount : function() {
+		if (this.props.answers.length === 0) return "No Answers";
+		if (this.props.answers.length === 1) return "1 Answer";
+		else return (this.props.answers.length + ' answers');
+	},
+
+  renderAnswerList: function() {
+      return this.props.answers.map(function(answer){
+       return <div key={answer.id} className="answer-feed-box">
+         <a href={"/#/questions/" + answer.question.id}
+           className="question-title-index">
+           {answer.question.title}
+         </a>
+
+         <AnswerFeedItem key={answer.id}
+           answer={answer}
+           submitter={this.props.submitter}
+           />
+       </div>;
+          }.bind(this))
+  },
+
   render: function() {
-    if (!this.state.answers) return <div></div>; 
+    if (!this.state.answers  && !this.props.answers) return <div></div>;
 
-    return (
-      <div className="answers-index group">
-				<p className="answers-count">{this.answerCount()}</p>
-        <ul className="answers">
-          {this.state.answers.map(function(answer){
-             return <IndexItem key={answer.id}
-							 								 answer={answer}
-															 submitter={answer.user}
+    //IF RENDERED AS A PROFILE ANSWERS FEED
+    if (this.props.answers) {
 
-										/>;
-								}.bind(this))}
-        </ul>
-      </div>
-    );
+
+      return (
+        <div className="answers-index group">
+  				<p className="answers-count">{this.userAnswerCount()}</p>
+          <ul className="answers">
+            {this.renderAnswerList()}
+          </ul>
+        </div>
+      );
+    }
+
+    // IF RENDERED ON QUESTION DETAIL PAGE
+    else {
+      return (
+        <div className="answers-index group">
+  				<p className="answers-count">{this.answerCount()}</p>
+          <ul className="answers">
+            {this.state.answers.map(function(answer){
+               return <IndexItem key={answer.id}
+  							 								 answer={answer}
+  															 submitter={answer.user}
+
+  										/>;
+  								}.bind(this))}
+          </ul>
+        </div>
+      );
+    }
   }
 
 });

@@ -17,10 +17,19 @@ var IndexItem = React.createClass({
 		this.setState({ isAnswering: false });
 	},
 
+	renderTopicList: function() {
+		if (!this.props.question.topics) return;
+
+		return this.props.question.topics.map(function(topic) {
+			return <a href={"/#/topics/" + topic.id} key={topic.id} className="question-list-item-topic">{topic.name}</a>;
+		}.bind(this))
+
+	},
+
   render: function() {
 		var answerButton;
-		if (this.props.question.answers &&
-			  this.props.question.answers.length === 0) {
+		if (!this.props.question.answers ||
+			  this.props.question.answers.length <= 5) {
 			answerButton =
 			<input type="submit"
 				onClick={this.startAnswer}
@@ -35,21 +44,29 @@ var IndexItem = React.createClass({
 				onAnswerEnd={this.closeAnswer}
 			/>;
 		}
+		//
+		// console.log(this.props.question.topics);
+		console.log((typeof this.props.question.topics !== "undefined"));
 
+		var topAnswer;
+		if (this.props.question.answers){
+
+			topAnswer = <TopAnswer question={this.props.question} />
+		}
 
     return (
       <li className="question-list-item">
 				<ul className="question-list-item-topics group">
-					{this.props.question.topics.map(function(topic) {
-						return <a href={"/#/topics/" + topic.id} key={topic.id} className="question-list-item-topic">{topic.name}</a>;
-					}.bind(this))}
+					{this.renderTopicList()}
 				</ul>
 
         <div className="question-index-item">
 
           <a href={"/#/questions/" + this.props.question.id}
-						 className="question-title-index">{this.props.question.title}</a>
-					<TopAnswer question={this.props.question} />
+						 className="question-title-index">{this.props.question.title}
+					</a>
+
+					{topAnswer}
 
         </div>
 				{answerButton}

@@ -10,10 +10,10 @@ var UserActions = {
   },
 
 	receiveSingleUser: function(user) {
-		// console.log("hit receiveSingleUser");
+		console.log("hit receiveSingleUser");
 		Dispatcher.dispatch({
 			actionType: UserConstants.USER_RECEIVED,
-			user: user,
+			user: user
 		});
 	},
 
@@ -25,7 +25,7 @@ var UserActions = {
 	},
 
 	editUser: function(user) {
-		
+
 		Dispatcher.dispatch({
 			actionType: UserConstants.USER_EDITED,
 			user: user

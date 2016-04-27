@@ -29,7 +29,7 @@
 }
 
 .question-list-item-topic:hover {
-  text-decoration: overline;
+  text-decoration: underline;
 }
 
 .question-title-index {

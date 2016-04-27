@@ -19,7 +19,7 @@ var QuestionDetail =  React.createClass({
 	},
 
   getStateFromStore: function () {
-    return { question: QuestionStore.find(this.props.params.questionId)};
+    return { question: QuestionStore.find(this.props.params.questionId) };
   },
 
   _onChange: function () {
@@ -150,7 +150,7 @@ var QuestionDetail =  React.createClass({
 					disabled={this.state.isAnswering}/>
 
 				{answerForm}
-				
+
         <div className="answers-index" >
           <AnswersIndex question={this.state.question} />
         </div>

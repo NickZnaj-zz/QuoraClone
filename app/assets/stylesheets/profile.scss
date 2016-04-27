@@ -1,0 +1,64 @@
+.profile-user-section{
+  border-bottom: 2px solid #ccc;
+  height: 150px;
+}
+
+.profile-user-pic{
+  width: 142px;
+	height: 142px;
+	border-radius: 50%;
+	content: asset-url(default_profile_pic);
+  display: inline-block;
+  float: left;
+  margin-right: 30px;
+}
+
+.profile-user-name{
+  color: #333;
+  letter-spacing: -0.5px;
+  line-height: 1.25;
+  font-weight: bold;
+  font-size: 28px;
+  letter-spacing: -1px;
+}
+
+.profile-feeds {
+  width: 142px;
+  float: left;
+}
+
+.profile-feed-items {
+  float:left;
+  margin-left: 35px;
+}
+
+.profile-feeds-list-item-clicked {
+  display: inline;
+  font-size: 13px;
+  background: #ececec;
+  padding: 4px 5px;
+  color: #666;
+  border-radius: 3px;
+  font-weight: 400;
+  cursor: default;
+}
+
+.profile-feeds-list-item {
+  padding: 4px 5px;
+
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.profile-feeds-list-item:hover {
+  color: #2b6dad;
+}
+
+.answer-feed-item {
+  padding: 20px 0;
+}
+
+.answer-feed-box {
+  border-top: 1px solid #ccc;
+  padding-top: 15px;
+}

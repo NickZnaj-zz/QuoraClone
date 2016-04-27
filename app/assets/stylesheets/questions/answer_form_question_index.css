@@ -72,3 +72,7 @@
   padding: 5px;
   font-weight: bold
 }
+
+.question-index-answer-button:hover {
+  cursor:pointer;
+}

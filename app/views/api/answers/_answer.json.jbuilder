@@ -6,3 +6,4 @@ json.extract!(
 json.votes answer.votes
 json.score answer.score
 json.user answer.user
+json.question answer.question

@@ -30,7 +30,6 @@ var TopicView = React.createClass({
 
 	renderQuestionsList: function() {
 		if(!this.state.topic) return;
-		debugger
 		return (
 			<ul className="questions">
 				{this.state.topic.questions.map(function(question){

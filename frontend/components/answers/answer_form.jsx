@@ -24,7 +24,6 @@ var AnswerForm = React.createClass({
 	},
 
 	_onBodyChange: function(value){
-		debugger
 		this.setState({body:value});
 	},
 
@@ -40,6 +39,7 @@ var AnswerForm = React.createClass({
 	},
 
 	render: function() {
+		console.log(this.state.body);
 		return (
 				<form className="answer-form group"
 							onSubmit={this.handleSubmit}
@@ -52,6 +52,20 @@ var AnswerForm = React.createClass({
 						</div>
 					</section>
 
+					<ReactQuill theme="snow">
+						<ReactQuill.Toolbar
+							key="toolbar"
+							ref="toolbar"
+							items={ReactQuill.Toolbar.defaultItems} />
+
+						<div
+							key="editor"
+							ref="editor"
+							onChange={this._onBodyChange}
+							className="quill-contents"
+							/>
+					</ReactQuill>
+
 					<ReactQuill
 						className="answer-body"
 						onChange={this._onBodyChange}
@@ -63,7 +77,7 @@ var AnswerForm = React.createClass({
 									 value="Submit Answer"
 									 />
           </div>
-        </form>
+				</form>
 		);
 	}
 

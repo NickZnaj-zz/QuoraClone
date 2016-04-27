@@ -2,7 +2,7 @@ class Api::AnswersController < ApplicationController
 
   def index
     if params.has_key?(:question_id)
-      @answers = Answer.where(question_id: params[:question_id]).includes(:user, :votes)
+      @answers = Answer.where(question_id: params[:question_id]).includes(:user, :votes, :question)
     else
       @answers = Answer.all
     end
@@ -20,7 +20,7 @@ class Api::AnswersController < ApplicationController
   end
 
   def show
-    @answer = Answer.includes(:user, :votes).find(params[:id])
+    @answer = Answer.includes(:user, :votes, :question).find(params[:id])
 		render :show
   end
 

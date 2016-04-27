@@ -12,6 +12,7 @@ var RightBar = require('./components/main/rightbar');
 var App = require('./components/App');
 var AnswerView = require('./components/questions/index_answer_view');
 var TopicView = require('./components/topics/topic_view');
+var UserDetail = require('./components/users/profile');
 
 var Router = require('react-router').Router;
 var Route = require('react-router').Route;
@@ -30,6 +31,7 @@ var routes = (
 			<Route path="answer" component={AnswerView} />
 			<Route path="topics/:topicID" component={TopicView} />
 			<Route path="questions/:questionId" component={QuestionDetail} />
+			<Route path="users/:userID" component={UserDetail} />
 
 		</Route>
 		<Route path="/login" component={LoginForm}/>
