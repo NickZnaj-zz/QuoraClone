@@ -21,6 +21,10 @@
 	left: 0px;
 }
 
+.user-info:hover {
+	text-decoration: underline;
+}
+
 .answer-list-item-answer {
 	margin: 10px 0;
 	font-family: serif;

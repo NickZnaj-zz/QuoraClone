@@ -80,6 +80,13 @@ var UserDetail = React.createClass({
 
 	},
 
+	getQuestionFeed: function() {
+		return this.state.user.questions.map(function(question) {
+			return <QuestionIndexItem key={question.id}
+																question={question} />;
+		}.bind(this))
+	},
+
 	render: function() {
 
 		var answerFeed;
@@ -91,12 +98,13 @@ var UserDetail = React.createClass({
 
 		var questionFeed;
 		if (this.state.user.questions && this.state.viewingFeed === "questions") {
-			questionFeed = <ul className="profile-question-feed">
-				{this.state.user.questions.map(function(question) {
-					return <QuestionIndexItem key={question.id}
-																		question={question} />;
-				}.bind(this))}
-			</ul>
+			questionFeed =
+			<div>
+				<p className="questions-feed-count">{this.state.user.questions.length + " Questions"}</p>
+				<ul className="profile-question-feed">
+					{this.getQuestionFeed()}
+				</ul>
+			</div>
 		}
 
 		var answerFeedButton;
@@ -134,7 +142,7 @@ var UserDetail = React.createClass({
 
 				<section className="profile-bottom group">
 					<section className="profile-feeds">
-						<p>Feeds</p>
+						<p className="profile-feeds-header">Feeds</p>
 						<ul className="profile-feeds-list group">
 
 							{answerFeedButton}

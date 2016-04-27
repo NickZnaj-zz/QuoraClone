@@ -27,9 +27,21 @@
   float: left;
 }
 
+.profile-feeds-header{
+  font-size: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 16px;
+}
+
 .profile-feed-items {
   float:left;
   margin-left: 35px;
+}
+
+.profile-feeds-list {
+  -webkit-padding-start: 0px;
+
 }
 
 .profile-feeds-list-item-clicked {
@@ -50,6 +62,10 @@
   cursor: pointer;
 }
 
+.profile-question-feed {
+  -webkit-padding-start: 0px;
+}
+
 .profile-feeds-list-item:hover {
   color: #2b6dad;
 }
@@ -61,4 +77,13 @@
 .answer-feed-box {
   border-top: 1px solid #ccc;
   padding-top: 15px;
+}
+
+.answers-feed-count {
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.questions-feed-count {
+  font-size: 15px;
 }

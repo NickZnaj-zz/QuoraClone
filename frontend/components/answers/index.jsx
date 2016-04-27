@@ -31,13 +31,13 @@ var AnswersIndex = React.createClass({
 	answerCount : function() {
 		if (this.state.answers.length === 0) return "No Answers";
 		if (this.state.answers.length === 1) return "1 Answer";
-		else return (this.state.answers.length + ' answers');
+		else return (this.state.answers.length + ' Answers');
 	},
 
 	userAnswerCount : function() {
 		if (this.props.answers.length === 0) return "No Answers";
 		if (this.props.answers.length === 1) return "1 Answer";
-		else return (this.props.answers.length + ' answers');
+		else return (this.props.answers.length + ' Answers');
 	},
 
   renderAnswerList: function() {
@@ -65,7 +65,7 @@ var AnswersIndex = React.createClass({
 
       return (
         <div className="answers-index group">
-  				<p className="answers-count">{this.userAnswerCount()}</p>
+  				<p className="answers-feed-count">{this.userAnswerCount()}</p>
           <ul className="answers">
             {this.renderAnswerList()}
           </ul>

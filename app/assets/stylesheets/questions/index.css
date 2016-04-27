@@ -51,6 +51,10 @@
 	padding-top: 9px;
 }
 
+.top-answer-user-info:hover {
+  text-decoration: underline;
+}
+
 .top-answer-body {
 	margin: 10px 0;
 	font-family: serif;
