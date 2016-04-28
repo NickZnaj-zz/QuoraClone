@@ -5,7 +5,6 @@ var UserStore = require('../../stores/user_store');
 var SessionStore = require('../../stores/session_store');
 var UpvoteButton = require('../votes/upvote_button');
 var DownvoteButton = require('../votes/downvote_button');
-var createFragment = require('react-addons-create-fragment');
 
 
 var IndexItem = React.createClass({
