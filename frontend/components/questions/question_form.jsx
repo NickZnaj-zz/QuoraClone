@@ -102,6 +102,7 @@ var QuestionForm = React.createClass({
           <input type="submit"
 								 className="ask-question-button"
 								 value="Ask Question"
+								 onClick={this.openModal}
 								 />
         </form>
 

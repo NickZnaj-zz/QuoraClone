@@ -5,10 +5,25 @@ var SessionStore = require('../../stores/session_store');
 var NavBarModal = require('./navbar_modal');
 var SearchResults = require('../search_results');
 
+
 var NavBar = React.createClass({
+
+  getInitialState: function() {
+    return {
+      inReadView: false
+    };
+  },
+
+  _determineState: function() {
+
+    if (document.body.getElementsByClassName('questions')[0]){
+      return true;
+    } else return false;
+  },
 
   componentDidMount: function() {
     this.sessionToken = SessionStore.addListener(this._onChange);
+    this._determineState();
   },
 
   componentWillUnmount: function() {
@@ -24,7 +39,24 @@ var NavBar = React.createClass({
   },
 
   render: function () {
+    console.log("navbar state:     " + this.state.inReadView)
 		var currentUser = SessionStore.currentUser();
+
+    var readViewLink;
+    if (this.state.inReadView){
+      readViewLink =
+      <a type="submit"
+        href="/#/"
+        className="read-view-link-red"
+        onClick={this.beginRead}>Read</a> //RED VERSION
+    } else {
+      readViewLink =
+      <a type="submit"
+        href="/#/"
+        className="read-view-link"
+        onClick={this.beginRead}>Read</a> //GREY VERSION
+    }
+
     return (
 			<div>
 	      <header className="header">
@@ -34,10 +66,7 @@ var NavBar = React.createClass({
 
 						<div className="navbar-buttons">
 							<div className="read-wrapper">
-								<a type="submit"
-									href="/#/"
-									className="read-view-link"
-									onClick={this.beginRead}>Read</a>
+								{readViewLink}
 							</div>
 
 							<div className="answer-wrapper">

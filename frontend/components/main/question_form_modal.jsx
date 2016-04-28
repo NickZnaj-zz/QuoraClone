@@ -128,6 +128,10 @@ var QuestionFormInModal = React.createClass({
     }.bind(this));
   },
 
+	focus: function() {
+		document.body.getElementsByClassName('modal-question-input')[0].focus()
+	},
+
   render: function() {
 
     return(
@@ -140,6 +144,7 @@ var QuestionFormInModal = React.createClass({
 								 autofocus="autofocus"
 								 onChange={this._onChange}
 								 onClick={this.openModal}
+								 onMouseEnter={this.focus}
 								 value={this.state.title}
 								 className="modal-question-input"
 								 />
