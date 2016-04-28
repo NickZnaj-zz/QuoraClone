@@ -5,6 +5,8 @@ var SessionStore = require('../../stores/session_store');
 var ApiUtil = require('../../util/api_util');
 var IndexItem = require('./index_item');
 var QuestionForm = require('./question_form');
+var Infinite = require('react-infinite');
+
 
 var QuestionsIndex = React.createClass({
   getInitialState: function() {
@@ -49,22 +51,25 @@ _hasOverlap: function(obj1, obj2){
 render: function() {
   return(
     <div>
+      <Infinite containerHeight={600} elementHeight={40} useWindowAsScrollContainer>
       <ul className="questions">
-        {this.state.questions.map(function(question) {
-					var qTopics = question.topics;
 
-					var uTopics = [];
-					if (SessionStore.currentUser() &&
-							SessionStore.currentUser().topics &&
-							SessionStore.currentUser().topics.length > 0) {
-						uTopics = SessionStore.currentUser().topics;
-					}
+          {this.state.questions.map(function(question) {
+  					var qTopics = question.topics;
 
-					if (this._compareKeys(qTopics, uTopics)) {
-          return <IndexItem key={question.id} question={question} />;
-					}
-        }.bind(this))}
+  					var uTopics = [];
+  					if (SessionStore.currentUser() &&
+  							SessionStore.currentUser().topics &&
+  							SessionStore.currentUser().topics.length > 0) {
+  						uTopics = SessionStore.currentUser().topics;
+  					}
+
+  					if (this._compareKeys(qTopics, uTopics)) {
+            return <IndexItem key={question.id} question={question} />;
+  					}
+          }.bind(this))}
       </ul>
+    </Infinite>
     </div>
   );
 }

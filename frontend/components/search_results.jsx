@@ -1,6 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 var SearchResultsStore = require("../stores/search_result_store");
+var Infinite = require('react-infinite');
 
 var SearchResults = React.createClass({
 
@@ -60,9 +61,9 @@ var SearchResults = React.createClass({
 	render: function() {
 		return (
 			<div className="search-results group">
-				<ul className="search-results-list">
-					{ this.resultLis() }
-				</ul>
+					<ul cassName="search-results-list">
+						{ this.resultLis() }
+					</ul>
 			</div>
 		);
 	}

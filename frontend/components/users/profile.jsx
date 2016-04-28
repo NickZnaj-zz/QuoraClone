@@ -6,6 +6,7 @@ var UserStore = require('../../stores/user_store');
 var ApiUtil = require('../../util/api_util');
 var AnswersIndex = require('../answers/index');
 var QuestionIndexItem = require('../questions/index_item');
+var Infinite = require('react-infinite');
 
 
 var UserDetail = React.createClass({
@@ -91,9 +92,10 @@ var UserDetail = React.createClass({
 
 		var answerFeed;
 		if (this.state.user.answers && this.state.viewingFeed === "answers") {
-			answerFeed = <AnswersIndex className="profile-answer-feed"
-				 												 answers={this.state.user.answers}
-																 submitter={this.state.user}/>
+			answerFeed =
+				<AnswersIndex className="profile-answer-feed"
+					 						answers={this.state.user.answers}
+											submitter={this.state.user}/>
 		}
 
 		var questionFeed;

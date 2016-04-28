@@ -3,6 +3,7 @@ var AnswerStore = require('../../stores/answer_store.js');
 var IndexItem = require('./index_item');
 var AnswerFeedItem = require('./profile_answer_feed_item');
 var ApiUtil = require('../../util/api_util');
+var Infinite = require('react-infinite');
 
 var AnswersIndex = React.createClass({
   getInitialState: function() {
@@ -66,9 +67,11 @@ var AnswersIndex = React.createClass({
       return (
         <div className="answers-index group">
   				<p className="answers-feed-count">{this.userAnswerCount()}</p>
-          <ul className="answers">
-            {this.renderAnswerList()}
-          </ul>
+            <Infinite containerHeight={600} elementHeight={40} useWindowAsScrollContainer>
+              <ul className="answers">
+                {this.renderAnswerList()}
+              </ul>
+            </Infinite>
         </div>
       );
     }
