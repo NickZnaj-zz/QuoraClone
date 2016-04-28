@@ -84,6 +84,7 @@ var AnswersIndex = React.createClass({
           <ul className="answers">
             {this.state.answers.map(function(answer){
                return <IndexItem key={answer.id}
+                                 id={answer.id}
   							 								 answer={answer}
   															 submitter={answer.user}
 

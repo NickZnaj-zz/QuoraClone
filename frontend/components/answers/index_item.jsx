@@ -5,6 +5,8 @@ var UserStore = require('../../stores/user_store');
 var SessionStore = require('../../stores/session_store');
 var UpvoteButton = require('../votes/upvote_button');
 var DownvoteButton = require('../votes/downvote_button');
+var createFragment = require('react-addons-create-fragment');
+
 
 var IndexItem = React.createClass({
 	contextTypes: {
@@ -25,6 +27,8 @@ var IndexItem = React.createClass({
 	componentDidMount: function() {
 		// this.userListener = UserStore.addListener(this._onChange);
 		// ApiUtil.fetchSingleUser(this.props.answer.user_id);
+		var element = document.getElementById(this.props.id)
+		element.innerHTML = this.props.answer.body;
 	},
 
 	componentWillUnmount: function() {
@@ -47,6 +51,7 @@ var IndexItem = React.createClass({
 	},
 
   render: function() {
+
 		var answerEditForm;
 		if (this.state.isEditing) {
 			answerEditForm = <AnswerEditForm
@@ -65,11 +70,16 @@ var IndexItem = React.createClass({
 		}
 
 		var deleteButton;
-		if (this.props.submitter && (this.props.submitter.id === SessionStore.currentUser().id))
+		if (this.props.submitter && (this.props.submitter.id === SessionStore.currentUser().id)){
 			deleteButton = <input type="submit"
 						 								value="Delete Answer"
 						 								onClick={this.handleDelete}
 														className="delete-answer-button" />;
+		}
+
+		var answerString = this.props.answer.body
+
+
 
     return (
       <li className="answer-list-item group">
@@ -79,8 +89,8 @@ var IndexItem = React.createClass({
 					<a href={"/#/users/" + this.props.submitter.id} className="user-info">{this.props.submitter.username}</a>
 				</div>
 
-        <div className="answer-list-item-answer">
-          {this.props.answer.body}
+        <div className="answer-list-item-answer" id={this.props.id} >
+					{answerString}
         </div>
 
 			{answerEditForm}

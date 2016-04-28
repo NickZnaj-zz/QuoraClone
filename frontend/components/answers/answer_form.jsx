@@ -4,7 +4,8 @@ var PropTypes = React.PropTypes;
 var ApiUtil = require('../../util/api_util.js');
 var SessionStore = require('../../stores/session_store');
 var ReactQuill = require('react-quill');
-
+var Quill = require('react-quill').Quill;
+var AnswerToolbar = require('./answer_toolbar');
 
 var AnswerForm = React.createClass({
 	contextTypes: {
@@ -41,6 +42,7 @@ var AnswerForm = React.createClass({
 	render: function() {
 		console.log(this.state.body);
 		return (
+
 				<form className="answer-form group"
 							onSubmit={this.handleSubmit}
 							id="answer-form">
@@ -50,26 +52,16 @@ var AnswerForm = React.createClass({
 							<img className="user-pic" />
 							<p className="current-user-name">{SessionStore.currentUser().username}</p>
 						</div>
-					</section>
-
-					<ReactQuill theme="snow">
-						<ReactQuill.Toolbar
-							key="toolbar"
-							ref="toolbar"
-							items={ReactQuill.Toolbar.defaultItems} />
-
-						<div
-							key="editor"
-							ref="editor"
-							onChange={this._onBodyChange}
-							className="quill-contents"
-							/>
-					</ReactQuill>
 
 					<ReactQuill
 						className="answer-body"
 						onChange={this._onBodyChange}
 						value={this.state.body}/>
+
+				</section>
+
+
+
 
           <div className="submit-area group">
             <input type="submit"

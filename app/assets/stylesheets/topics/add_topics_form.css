@@ -41,3 +41,13 @@
   border-radius: 2px;
 	margin: 10px 10px 10px 30px;
 }
+
+.topic-view-topic-header{
+	color: #333;
+  letter-spacing: -0.5px;
+  line-height: 1.25;
+  font-weight: bold;
+  font-size: 28px;
+  letter-spacing: -1px;
+	margin-left: 40px;
+}

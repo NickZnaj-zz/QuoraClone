@@ -61,7 +61,7 @@ var SearchResults = React.createClass({
 	render: function() {
 		return (
 			<div className="search-results group">
-					<ul cassName="search-results-list">
+					<ul className="search-results-list">
 						{ this.resultLis() }
 					</ul>
 			</div>
