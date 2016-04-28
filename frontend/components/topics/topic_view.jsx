@@ -41,10 +41,17 @@ var TopicView = React.createClass({
 
 	render: function() {
 
-		return (
+		var topicName;
+		if (this.state.topic){
+			topicName = this.state.topic.name;
+		}
 
-			<div className="topic-view-question-list">
-				{this.renderQuestionsList()}
+		return (
+			<div>
+				<div className="topic-view-topic-header">{topicName}</div>
+				<div className="topic-view-question-list">
+					{this.renderQuestionsList()}
+				</div>
 			</div>
 		);
 	}
