@@ -14,13 +14,14 @@ var TopAnswer = React.createClass({
 
 	_onChange: function() {
 		if (this.props.question.answers[0]){
-		var user = this.props.question.answers[0].user;
+			
+		var user = UserStore.find(this.props.question.answers[0].user_id);
 		this.setState({ submitter: user});}
 	},
 
 	componentDidMount: function() {
 		this.userListener = UserStore.addListener(this._onChange);
-		// this.props.question.answers[0] && ApiUtil.fetchSingleUser(this.props.question.answers[0].user_id);
+		if (this.props.question.answers[0]) ApiUtil.fetchSingleUser(this.props.question.answers[0].user_id);
 	},
 
 	componentWillUnmount: function() {
@@ -28,30 +29,25 @@ var TopAnswer = React.createClass({
 	},
 
 	render: function() {
-		debugger
-		if (!this.props.question.answers ||
-				(this.props.question.answers.length === 0)) {
-			return(
-			<div>
-				<div className="top-answer-body">This question hasn't been answered!</div>
-			</div>
-			);
+		if (!this.props.question.answers || (this.props.question.answers.length === 0) || !this.state.submitter) {
+			return(<div className="top-answer-body">This question hasn't been answered!</div>)
 		}
-		var displayed = this.props.question.answers[0].body;
-		var userInfo;
-		if (typeof this.state.submitter !== "undefined"){
-			userInfo = this.state.submitter.username;
-		}
+		else {
+			var displayed = this.props.question.answers[0].body;
+			var userInfo;
+			if (typeof this.state.submitter !== "undefined"){
+				userInfo = this.state.submitter.username;
+			}
 
-		return (
-			<div className="top-answer group">
-				<div className="top-answer-submitter group">
-					<img className="index-user-pic"  />
-					<a href={"/#/users/" + this.state.submitter.id} className="top-answer-user-info"> {userInfo}</a>
+			return (
+				<div className="top-answer group">
+					<div className="top-answer-submitter group">
+						<img className="index-user-pic"  />
+						<a href={"/#/users/" + this.state.submitter.id} className="top-answer-user-info"> {userInfo}</a>
+					</div>
+					<div className="top-answer-body">{displayed}</div>
 				</div>
-				<div className="top-answer-body">{displayed}</div>
-			</div>
-		);
+			);}
 	}
 
 });
