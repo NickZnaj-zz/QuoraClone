@@ -66,6 +66,7 @@ SessionStore.__onDispatch = function (payload) {
     case SessionConstants.LOGOUT:
       _currentUser = null;
       SessionStore.__emitChange();
+			console.log("LOGGED_OUT");
       break;
     case VoteConstants.VOTE_RECEIVED:
       updateVote(payload.vote);

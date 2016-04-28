@@ -6,6 +6,23 @@ var NavBarModal = require('./navbar_modal');
 var SearchResults = require('../search_results');
 
 var NavBar = React.createClass({
+
+  componentDidMount: function() {
+    this.sessionToken = SessionStore.addListener(this._onChange);
+  },
+
+  componentWillUnmount: function() {
+    this.sessionToken.remove();
+  },
+
+  _onChange: function() {
+    this.render();
+  },
+
+  logout: function() {
+    ApiUtil.logout();
+  },
+
   render: function () {
 		var currentUser = SessionStore.currentUser();
     return (
@@ -32,14 +49,17 @@ var NavBar = React.createClass({
 
 							<div className="current-user group" >
 								<div className="current-user-pic"/>
-									<p className="current-user-name">{currentUser.username}</p>
-									<input type="submit"
-										className="logout-link"
-										value="Logout"
-										onClick={ApiUtil.logout}
-									/>
+									<a href={"/#/users/" + currentUser.id} className="current-user-name">{currentUser.username}</a>
 								</div>
 					  	</div>
+
+              <div className="logout-link-wrapper">
+                <a href="/#/login"
+                  className="logout-link"
+                  value="Logout"
+                  onClick={this.logout}
+                  >Logout</a>
+              </div>
 	        </div>
 	      </header>
 			</div>

@@ -13,13 +13,14 @@ var TopAnswer = React.createClass({
 	},
 
 	_onChange: function() {
-		var user = this.props.question.answers[0] && UserStore.find(this.props.question.answers[0].user_id);
-		this.setState({ submitter: user});
+		if (this.props.question.answers[0]){
+		var user = this.props.question.answers[0].user;
+		this.setState({ submitter: user});}
 	},
 
 	componentDidMount: function() {
 		this.userListener = UserStore.addListener(this._onChange);
-		this.props.question.answers[0] && ApiUtil.fetchSingleUser(this.props.question.answers[0].user_id);
+		// this.props.question.answers[0] && ApiUtil.fetchSingleUser(this.props.question.answers[0].user_id);
 	},
 
 	componentWillUnmount: function() {
@@ -27,6 +28,7 @@ var TopAnswer = React.createClass({
 	},
 
 	render: function() {
+		debugger
 		if (!this.props.question.answers ||
 				(this.props.question.answers.length === 0)) {
 			return(
