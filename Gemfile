@@ -51,8 +51,10 @@ gem 'kaminari'
 gem "paperclip", '5.0.0.beta1'
 gem 'figaro'
 gem 'aws-sdk', '>= 2.0'
+gem 'json', '~> 1.8.3'
 
 group :production do
   gem 'newrelic_rpm'
   gem 'rails_12factor' # error feedback
+  #comment
 end
