@@ -1,6 +1,5 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
-// var VoteStore = require('../../stores/vote_store');
 var SessionStore = require('../../stores/session_store');
 var ApiUtil = require('../../util/api_util.js');
 
@@ -26,7 +25,6 @@ var DownvoteButton = React.createClass({
 				}
 			}
 			return false;
-			// return false;
 		},
 
 		_onStoreChange: function() {
@@ -68,6 +66,8 @@ var DownvoteButton = React.createClass({
 		},
 
 		render: function() {
+			console.log("downvoteButton state: " + this.state.value)
+
 			var downvoteButton;
 
 
