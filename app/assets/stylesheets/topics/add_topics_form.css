@@ -3,7 +3,12 @@
 	border: 2px solid #bbcadc;
 	border-radius: 2px;
 	padding: 5px;
-	background: #f1f8fb
+	background: #f1f8fb;
+	width: 150px;
+/*
+	position: fixed;
+	left: 30%;
+	width: 30%;*/
 }
 
 .form-words {
@@ -39,7 +44,7 @@
   padding: 3px 7px 4px 7px;
   border: 1px solid #3a66ad;
   border-radius: 2px;
-	margin: 10px 10px 10px 30px;
+	margin: 120px 10px 10px 30px;
 }
 
 .topic-view-topic-header{

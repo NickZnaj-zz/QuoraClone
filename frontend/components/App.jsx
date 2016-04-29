@@ -4,6 +4,7 @@ var ApiUtil = require('../util/api_util');
 
 var RightBar = require('./main/rightbar');
 var NavBar = require('./main/navbar');
+var Main = require('./main/main');
 var LoginForm = require('./login_form');
 
 var App = React.createClass({

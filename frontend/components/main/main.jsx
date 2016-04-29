@@ -7,7 +7,7 @@ var Main = React.createClass({
   render: function () {
     return (
       <div>
-        <SideBar />
+        <SideBar currentUser={this.props.currentUser} />
         <div className="center-panel group">
           <div className="questions-list group">
             <QuestionsIndex />
