@@ -46,7 +46,7 @@ var SignUpForm = React.createClass({
 										value={this.state.password}
 										className="sign-up-form-input"/>
 							</div>
-								<button className="sign-up-form-button">Submit</button>
+								<button type="submit" className="sign-up-form-button">Submit</button>
 						</div>
 
 
@@ -71,8 +71,9 @@ var SignUpForm = React.createClass({
     var router = this.context.router;
 		ApiUtil.signUp(this.state);
     ApiUtil.login(this.state, function() {
-      router.push("/");
-    });
+      console.log("LOGGED IN")
+      router.push("/main");
+      document.location.reload(true);    });
   },
 
   _onEmailChange: function(e) {

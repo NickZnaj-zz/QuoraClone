@@ -52,7 +52,9 @@ var LoginForm = React.createClass({
 										className="login-form-input"/>
 							</div>
 								<div className="login-form-button-group">
-									<button className="login-button">Submit</button>
+
+									<button type="submit" className="login-button">Submit</button>
+
 										<input
 											className="login-form-button"
 											type="button"
@@ -83,7 +85,10 @@ var LoginForm = React.createClass({
     var router = this.context.router;
 
     ApiUtil.login(this.state, function() {
-      router.push("/");
+      console.log("LOGGED IN")
+      router.push("/main");
+      document.location.reload(true);
+
     });
   },
 
