@@ -46,13 +46,13 @@ var NavBar = React.createClass({
     if (this.state.inReadView){
       readViewLink =
       <a type="submit"
-        href="/#/"
+        href="/#/main/"
         className="read-view-link-red"
         onClick={this.beginRead}>Read</a> //RED VERSION
     } else {
       readViewLink =
       <a type="submit"
-        href="/#/"
+        href="/#/main/"
         className="read-view-link"
         onClick={this.beginRead}>Read</a> //GREY VERSION
     }
@@ -61,7 +61,7 @@ var NavBar = React.createClass({
 			<div>
 	      <header className="header">
 	        <div className="header-nav group">
-	          <a href="/#/" className="logo"></a>
+	          <a href="/#/main/" className="logo"></a>
 	          <QuestionForm />
 
 						<div className="navbar-buttons">
@@ -71,14 +71,14 @@ var NavBar = React.createClass({
 
 							<div className="answer-wrapper">
 								<a type="submit"
-									href="/#/answer"
+									href="/#/main/answer"
 									className="answer-view-link"
 									onClick={this.beginAnswer}>Answer</a>
 							</div>
 
 							<div className="current-user group" >
 								<div className="current-user-pic"/>
-									<a href={"/#/users/" + currentUser.id} className="current-user-name">{currentUser.username}</a>
+									<a href={"/#/main/users/" + currentUser.id} className="current-user-name">{currentUser.username}</a>
 								</div>
 					  	</div>
 

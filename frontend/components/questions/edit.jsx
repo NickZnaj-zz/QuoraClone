@@ -63,7 +63,7 @@ var QuestionEdit =  React.createClass({
           </input>
           <div className="submit-area group">
             <input type="submit" className="submit-button" value="Update" />
-            <a href={"/#/questions/" + this.props.question.id}
+            <a href={"/#/main/questions/" + this.props.question.id}
                onClick={this.props.onEditEnd}
                className="cancel-link"
                value="Cancel">Cancel</a>

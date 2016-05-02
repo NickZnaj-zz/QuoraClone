@@ -28,7 +28,7 @@ var NavBarModal = React.createClass({
 		<div className="container">
 			<header className="header">
         <div className="header-nav group">
-          <a href="/#/" className="logo">Shmora</a>
+          <a href="/#/main/" className="logo">Shmora</a>
           <QuestionFormInModal />
 					<SearchResults />
         </div>

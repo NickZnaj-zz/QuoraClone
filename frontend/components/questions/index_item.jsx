@@ -21,12 +21,12 @@ var IndexItem = React.createClass({
 		if (!this.props.question.topics) return;
 
 		return this.props.question.topics.map(function(topic) {
-			return <a href={"/#/topics/" + topic.id} key={topic.id} className="question-list-item-topic">{topic.name}</a>;
+			return <a href={"/#/main/topics/" + topic.id} key={topic.id} className="question-list-item-topic">{topic.name}</a>;
 		}.bind(this))
 
 	},
 
-  render: function() {
+  render: function() {		
 		var answerButton;
 		if (!this.props.question.answers ||
 			  this.props.question.answers.length <= 5) {
@@ -53,7 +53,6 @@ var IndexItem = React.createClass({
 
 			topAnswer = <TopAnswer question={this.props.question} />
 		}
-
     return (
       <li className="question-list-item">
 				<ul className="question-list-item-topics group">
@@ -62,7 +61,7 @@ var IndexItem = React.createClass({
 
         <div className="question-index-item">
 
-          <a href={"/#/questions/" + this.props.question.id}
+          <a href={"/#/main/questions/" + this.props.question.id}
 						 className="question-title-index">{this.props.question.title}
 					</a>
 

@@ -47,7 +47,7 @@ var QuestionDetail =  React.createClass({
 
     // console.log("hit the handle delete in q detail");
     ApiUtil.destroyQuestion(this.state.question.id, function () {
-      this.context.router.push('/');
+      this.context.router.push('/#/main/');
     }.bind(this));
   },
 

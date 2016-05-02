@@ -44,7 +44,7 @@ var AnswersIndex = React.createClass({
   renderAnswerList: function() {
       return this.props.answers.map(function(answer){
        return <div key={answer.id} className="answer-feed-box">
-         <a href={"/#/questions/" + answer.question.id}
+         <a href={"/#/main/questions/" + answer.question.id}
            className="question-title-index">
            {answer.question.title}
          </a>

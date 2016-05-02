@@ -76,7 +76,7 @@ var AnswerFeedItem = React.createClass({
 
 				<div className="answer-header group">
 					<div className="user-pic"/>
-					<a href={"/#/users/" + this.props.submitter.id} className="user-info">{this.props.submitter.username}</a>
+					<a href={"/#/main/users/" + this.props.submitter.id} className="user-info">{this.props.submitter.username}</a>
 				</div>
 
         <div className="answer-list-item-answer">

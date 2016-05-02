@@ -66,7 +66,7 @@ var AnswerEditForm = React.createClass({
 								 value="Submit Answer"
 								 />
 
-							 <a href={"/#/questions/" + this.props.answer.question_id}
+							 <a href={"/#/main/questions/" + this.props.answer.question_id}
             onClick={this.props.onEditEnd}
             className="cancel-link"
             value="Cancel">Cancel</a>

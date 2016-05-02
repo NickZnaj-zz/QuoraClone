@@ -29,7 +29,7 @@ var SearchResults = React.createClass({
 				return (
 					<li key={ result.id } className="search-result-item group">
 						<div className="search-result-container">
-							<a href={"/#/questions/" + result.id}>
+							<a href={"/#/main/questions/" + result.id}>
 								<strong>Question</strong>: {result.title}</a>
 						</div>
 					</li>
@@ -39,7 +39,7 @@ var SearchResults = React.createClass({
 				return (
 					<li key={ result.id } className="search-result-item group">
 						<div className="search-result-container">
-							<a href={"/#/topics/" + result.id}>
+							<a href={"/#/main/topics/" + result.id}>
 								<strong>Topic</strong>: {result.name}</a>
 						</div>
 					</li>
@@ -49,7 +49,7 @@ var SearchResults = React.createClass({
 				return (
 					<li key={ result.id } className="search-result-item group">
 						<div className="search-result-container">
-							<a href={"/#/users/" + result.id}>
+							<a href={"/#/main/users/" + result.id}>
 								<strong>Profile</strong>: {result.username}</a>
 						</div>
 					</li>

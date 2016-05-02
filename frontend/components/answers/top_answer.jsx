@@ -43,7 +43,7 @@ var TopAnswer = React.createClass({
 				<div className="top-answer group">
 					<div className="top-answer-submitter group">
 						<img className="index-user-pic"  />
-						<a href={"/#/users/" + this.state.submitter.id} className="top-answer-user-info"> {userInfo}</a>
+						<a href={"/#/main/users/" + this.state.submitter.id} className="top-answer-user-info"> {userInfo}</a>
 					</div>
 					<div className="top-answer-body">{displayed}</div>
 				</div>

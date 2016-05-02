@@ -99,7 +99,7 @@ var QuestionFormInModal = React.createClass({
         return (
           <li key={ result.id } className="search-result-item group">
 						<div className="search-result-container">
-							<a href={"/#/questions/" + result.id}>
+							<a href={"/#/main/questions/" + result.id}>
 								Question: {result.title}</a>
 						</div>
           </li>
@@ -109,7 +109,7 @@ var QuestionFormInModal = React.createClass({
         return (
           <li key={ result.id } className="search-result-item group">
 						<div className="search-result-container">
-							<a href={"/#/topics/" + result.id}>
+							<a href={"/#/main/topics/" + result.id}>
 								Topic: {result.name}</a>
 						</div>
           </li>
@@ -119,7 +119,7 @@ var QuestionFormInModal = React.createClass({
         return (
           <li key={ result.id } className="search-result-item group">
 						<div className="search-result-container">
-							<a href={"/#/users/" + result.id}>
+							<a href={"/#/main/users/" + result.id}>
 								Profile: {result.username}</a>
 						</div>
           </li>

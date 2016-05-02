@@ -26,15 +26,15 @@ var ApiUtil = require('./util/api_util');
 
 var routes = (
 	<Router history={hashHistory}>
-		<Route path='/' component={App} onEnter={_requireLoggedIn} >
+		<Route path="login" component={LoginForm}/>
+		<Route path="/main" component={App} onEnter={_requireLoggedIn} >
 			<IndexRoute component={Main} />
-			<Route path="answer" component={AnswerView} />
-			<Route path="topics/:topicID" component={TopicView} />
-			<Route path="questions/:questionId" component={QuestionDetail} />
-			<Route path="users/:userID" component={UserDetail} />
+			<Route path="/main/answer" component={AnswerView} />
+			<Route path="/main/topics/:topicID" component={TopicView} />
+			<Route path="/main/questions/:questionId" component={QuestionDetail} />
+			<Route path="/main/users/:userID" component={UserDetail} />
 
 		</Route>
-		<Route path="/login" component={LoginForm}/>
 	</Router>
 );
 
@@ -49,7 +49,7 @@ window.initializeApp = function() {
 function _requireLoggedIn(nextState, replace, asyncCompletionCallback) {
 	function _redirectIfNotLoggedIn() {
 		if (!SessionStore.isLoggedIn()) {
-			replace("/login");
+			replace("login");
 		}
 	}
 		if (!SessionStore.currentUserHasBeenFetched()) {
