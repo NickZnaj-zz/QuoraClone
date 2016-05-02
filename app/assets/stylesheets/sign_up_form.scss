@@ -1,8 +1,8 @@
 .sign-up-screen {
 	background: asset-url(background);
 	background-size: auto;
-	background-position:bottom;
-	height: 700px;
+	background-position:left;
+	height: 850px;
 }
 
 .sign-up-page{
@@ -10,8 +10,9 @@
 	height: 372px;
 	background: transparent;
 	position: absolute;
-	top: 100px;
-	left: 30%;
+	top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .sign-up-message {
