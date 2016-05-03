@@ -8,12 +8,19 @@
 #
 
 
-topics = (1..15).to_a.map do |n|
-	name = Faker::Book.genre
+# topics = (1..15).to_a.map do |n|
+# 	name = Faker::Book.genre
+#
+# 	Topic.create!(
+# 		name: name
+# 	)
+# end
 
-	Topic.create!(
-		name: name
-	)
+names = ["Ruby", "React.js", "JavaScript", "CSS", "HTML", "Rails",
+					"SQL", "Git"]
+
+topics = names.map do |topic|
+	Topic.create!(name: topic)
 end
 
 200.times do |n|
@@ -53,10 +60,10 @@ end
 	user = User.create!(username: username, password: password, email: email)
 end
 
-7000.times do |n|
-	user_id = rand(1..15)
-	answer_id = rand(1..1800)
-	value = [true, false][rand(2)]
-
-	vote = Vote.create!(user_id: user_id, answer_id: answer_id, value: value)
-end
+# 7000.times do |n|
+# 	user_id = rand(1..15)
+# 	answer_id = rand(1..1500)
+# 	value = [true, false][rand(2)]
+#
+# 	vote = Vote.create!(user_id: user_id, answer_id: answer_id, value: value)
+# end
