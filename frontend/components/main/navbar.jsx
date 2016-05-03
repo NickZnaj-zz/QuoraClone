@@ -4,6 +4,7 @@ var ApiUtil = require('../../util/api_util');
 var SessionStore = require('../../stores/session_store');
 var NavBarModal = require('./navbar_modal');
 var SearchResults = require('../search_results');
+var TopicModal = require('../topics/topic_modal');
 
 
 var NavBar = React.createClass({
@@ -39,7 +40,16 @@ var NavBar = React.createClass({
   },
 
   render: function () {
-    console.log("navbar state:     " + this.state.inReadView)
+
+    if (this.props.currentUser.topics.length === 0){
+      return (
+        <TopicModal currentUser={this.props.currentUser} />
+      )
+    }
+
+
+
+    // console.log("navbar state:     " + this.state.inReadView)
 		var currentUser = SessionStore.currentUser();
 
     var readViewLink;

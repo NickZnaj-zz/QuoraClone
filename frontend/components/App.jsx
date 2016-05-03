@@ -45,7 +45,7 @@ var App = React.createClass({
 
     return (
       <div>
-				<NavBar />
+				<NavBar currentUser = {this.state.currentUser} />
 				{button}
 				<div className="main group">
 					<RightBar />

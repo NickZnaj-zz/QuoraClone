@@ -26,7 +26,7 @@ var IndexItem = React.createClass({
 
 	},
 
-  render: function() {		
+  render: function() {
 		var answerButton;
 		if (!this.props.question.answers ||
 			  this.props.question.answers.length <= 5) {
@@ -46,7 +46,7 @@ var IndexItem = React.createClass({
 		}
 		//
 		// console.log(this.props.question.topics);
-		console.log((typeof this.props.question.topics !== "undefined"));
+		// console.log((typeof this.props.question.topics !== "undefined"));
 
 		var topAnswer;
 		if (this.props.question.answers){
