@@ -7,6 +7,7 @@ var ApiUtil = require('../../util/api_util');
 var AnswersIndex = require('../answers/index');
 var QuestionIndexItem = require('../questions/index_item');
 var Infinite = require('react-infinite');
+var RightBar = require('../main/rightbar');
 
 
 var UserDetail = React.createClass({
@@ -131,6 +132,15 @@ var UserDetail = React.createClass({
 			<li className="profile-feeds-list-item-clicked">Questions</li>
 		}
 
+		var userTopics;
+		if (this.state.user.topics){
+			userTopics = this.state.user.topics.map(function(topic){
+				return (
+					<li>{topic.name}</li>
+				)
+			});
+		}
+
 		return (
 			<div>
 				<section className="profile-user-section">
@@ -151,29 +161,18 @@ var UserDetail = React.createClass({
 
 							{questionFeedButton}
 
-
 						</ul>
 					</section>
 
 					<section className="profile-feed-items">
 						{answerFeed}
 						{questionFeed}
-
 					</section>
+
+					<RightBar className="profile-user-topics-bar" user={this.state.user} />
+
 				</section>
 
-
-				<form onSubmit={this.handleSubmit}>
-					<label>Profile Picture
-						<input
-							type="file"
-							onChange={this.handleFileChange}/>
-					</label>
-					<input type="submit" value="Upload Photo" />
-				</form>
-
-				<p>Preview:</p>
-				<img className="preview-image" src={this.state.imageUrl} />
 			</div>
 		);
 	}

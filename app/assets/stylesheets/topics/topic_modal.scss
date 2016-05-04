@@ -1,7 +1,8 @@
 .topic-modal {
+  box-sizing: padding-box;
   position: relative;
-  width: 600px;
-  height: 600px;
+  width: 568px;
+  height: auto;
 	top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -25,6 +26,7 @@
 }
 
 .topic-list-topic-modal{
+  padding: 0px 40px;
 }
 
 // .checkbox-table-topic-modal:before{
@@ -48,8 +50,16 @@
   width:140px;
   height:140px;
   // display: block;
-  margin: auto
+  margin: auto;
 }
+
+.topic-item-wrapper {
+  float: left;
+}
+
+// .topic-item-wrapper:last-child {
+// margin-bottom: 20px;
+// }
 
 .checkbox-table-topic-modal {
   background: asset-url(test_avatar);
@@ -79,14 +89,20 @@
   display:block;
 }
 
+.button-wrapper-topic-modal {
+  padding:20px;
+  // top: 50%;
+  // left: 50%;
+  // transform: translate(-50%, -50%);
+}
+
 .submit-button-topic-modal {
-  font-size: 13px;
+  font-size: 19px;
   color: white;
   background: #3e78ad;
   width:auto;
-  padding: 3px 7px 4px 7px;
+  height:auto;
+  padding: 13px 17px 11px 17px;
   border: 1px solid #3a66ad;
   border-radius: 2px;
-  margin: auto;
-  top: 500px;
 }

@@ -60,7 +60,7 @@ var TopicModal = React.createClass({
     var topicList = this.state.topics.map(function(topic) {
 
         return (
-          <li key={topic.id}>
+          <li className="topic-item-wrapper group" key={topic.id}>
             <label className="checkbox-table-topic-modal" key={topic.id}>
               <input
                 className="checkbox-topic-modal"
@@ -80,13 +80,14 @@ var TopicModal = React.createClass({
   							onSubmit={this.handleSubmit}
   				>
   					<p className="form-words-topic-modal">Pick some topics:</p>
-  					<ul className="topic-list-topic-modal">
+  					<ul className="topic-list-topic-modal group">
   						{topicList}
   					</ul>
-  					<input type="submit"
-  								 value="Submit!"
-  								 className="submit-button-topic-modal"
-  					/>
+            <div className="button-wrapper-topic-modal">
+              <input type="submit"
+                value="Submit!"
+                className="submit-button-topic-modal"/>
+            </div>
   				</form>
   			</div>
     );
