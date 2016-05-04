@@ -71,9 +71,10 @@ var SignUpForm = React.createClass({
     var router = this.context.router;
 		ApiUtil.signUp(this.state);
     ApiUtil.login(this.state, function() {
-      console.log("LOGGED IN")
+      console.log("LOGGED IN");
       router.push("/main");
-      document.location.reload(true);    });
+      document.location.reload(true);
+    });
   },
 
   _onEmailChange: function(e) {

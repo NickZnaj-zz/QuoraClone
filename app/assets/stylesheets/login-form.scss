@@ -2,6 +2,7 @@
 	background: asset-url(background);
 	background-size: auto;
 	background-position:left;
+	background-position-x: -127px;
 	height: 850px;
 }
 
@@ -126,6 +127,7 @@
 }
 
 .login-form-button-group {
+	margin-top: -16px;
 
 }
 
@@ -148,7 +150,7 @@
   float: right;
   top: 14px;
   // right: 20px;
-	margin-top: 26px;
+	margin-top: 10px;
 
 }
 

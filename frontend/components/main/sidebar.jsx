@@ -10,7 +10,7 @@ var SideBar = React.createClass({
 
     return (
       <div className="sidebar group">
-        {addTopicsForm}
+        {}
       </div>
     );
   }

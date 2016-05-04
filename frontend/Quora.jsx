@@ -26,6 +26,7 @@ var ApiUtil = require('./util/api_util');
 
 var routes = (
 	<Router history={hashHistory}>
+		<Route path="/" component={LoginForm}/>
 		<Route path="login" component={LoginForm}/>
 		<Route path="/main" component={App} onEnter={_requireLoggedIn} >
 			<IndexRoute component={Main} />

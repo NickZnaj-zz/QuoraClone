@@ -14,8 +14,9 @@ class Api::UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
+			
       flash[:success] = "Created account successfuly! Welcome #{@user.username}!"
-      redirect_to root_url
+      redirect_to "http://localhost:3000/#/main"
     else
       flash.now[:errors] = @user.errors.full_messages
       render :new

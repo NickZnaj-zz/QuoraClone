@@ -51,9 +51,15 @@ var LoginForm = React.createClass({
 										value={this.state.password}
 										className="login-form-input"/>
 							</div>
-								<div className="login-form-button-group">
+								<div className="login-form-button-group group">
 
-									<button type="submit" className="login-button">Submit</button>
+                  <input
+                    className="login-form-button"
+                    type="button"
+                    value="Continue as Guest"
+                    onClick={this.guestLogin}/>
+
+                  <button type="submit" className="login-form-button">Submit</button>
 
 										<input
 											className="login-form-button"
@@ -88,7 +94,25 @@ var LoginForm = React.createClass({
       console.log("LOGGED IN")
       router.push("/main");
       document.location.reload(true);
+    });
+  },
 
+  randomString: function(length) {
+    return Math.round((Math.pow(36, length + 1) - Math.random() * Math.pow(36, length))).toString(36).slice(1);
+  },
+
+
+  guestLogin: function(e) {
+    e.preventDefault();
+
+    var router = this.context.router;
+    var guest = { email: "guest" + this.randomString(10), password: "guest", username: "Guest" };
+    var guestLogin = { email: guest.email, password: guest.password, signingUp: false};
+
+    ApiUtil.signUp(guest);
+    ApiUtil.login(guestLogin, function(){
+      router.push("/main");
+      document.location.reload(true);
     });
   },
 
