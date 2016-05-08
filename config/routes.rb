@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   root to: "static_pages#root"
 
   get "auth/facebook/callback", to: "omniauth#facebook"
+  get "auth/google_oauth2/callback", to: "omniauth#google_oauth2"
 
 end
 

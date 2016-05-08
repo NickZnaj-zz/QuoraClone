@@ -22,17 +22,33 @@ class User < ActiveRecord::Base
 
 	def self.find_or_create_by_auth_hash(auth_hash)
     provider = auth_hash[:provider]
-    email = auth_hash[:extra][:raw_info][:email]
 
-    user = User.find_by(provider: provider, email: email)
-    return user if user
+		if provider == "google_oauth2"
+			uid = auth_hash[:uid][0..-4]
 
-    User.create(
-      provider: provider,
-			email: auth_hash[:extra][:raw_info][:email],
-      # uid: uid,
-      username: auth_hash[:extra][:raw_info][:name]
-    )
+			user = User.find_by(provider: provider, uid: uid)
+	    return user if user
+
+	    User.create(
+	      provider: provider,
+				uid: uid.to_i,
+	      username: auth_hash[:info][:name],
+				email: uid + "@google.com"
+	    )
+
+		elsif provider == "facebook"
+
+	    email = auth_hash[:extra][:raw_info][:email]
+
+	    user = User.find_by(provider: provider, email: email)
+	    return user if user
+
+	    User.create(
+	      provider: provider,
+				email: auth_hash[:extra][:raw_info][:email],
+	      username: auth_hash[:extra][:raw_info][:name]
+	    )
+		end
   end
 
   def self.random_code

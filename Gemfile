@@ -54,6 +54,7 @@ gem 'aws-sdk', '>= 2.0'
 gem 'json', '~> 1.8.3'
 gem 'omniauth'
 gem 'omniauth-facebook', '3.0.0'
+gem "omniauth-google-oauth2"
 
 group :production do
   gem 'newrelic_rpm'
