@@ -74,7 +74,7 @@ var LoginForm = React.createClass({
 							<a className="google-button" href="#">
 								<span className="google-button-text">Continue with Google</span>
 							</a>
-							<a className="facebook-button" href="#">
+							<a className="facebook-button" href="/auth/facebook">
 								<span className="facebook-button-text">Continue with Facebook</span>
 							</a>
 						</div>

@@ -20,6 +20,21 @@ class User < ActiveRecord::Base
     user && user.valid_password?(password) ? user : nil
   end
 
+	def self.find_or_create_by_auth_hash(auth_hash)
+    provider = auth_hash[:provider]
+    email = auth_hash[:extra][:raw_info][:email]
+
+    user = User.find_by(provider: provider, email: email)
+    return user if user
+
+    User.create(
+      provider: provider,
+			email: auth_hash[:extra][:raw_info][:email],
+      # uid: uid,
+      username: auth_hash[:extra][:raw_info][:name]
+    )
+  end
+
   def self.random_code
     code = SecureRandom::urlsafe_base64;
     while exists?(session_token: code)

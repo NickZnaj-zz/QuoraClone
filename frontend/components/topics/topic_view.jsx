@@ -29,7 +29,6 @@ var TopicView = React.createClass({
 	},
 
 	renderQuestionsList: function() {
-		debugger
 		if(!this.state.topic) return;
 		return (
 			<ul className="questions">

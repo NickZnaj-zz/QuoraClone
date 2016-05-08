@@ -18,7 +18,10 @@ Rails.application.routes.draw do
 		resource :session, only: [:show, :create, :destroy]
 		resources :topics
   end
-  root "static_pages#root"
+  root to: "static_pages#root"
+
+  get "auth/facebook/callback", to: "omniauth#facebook"
+
 end
 
 
