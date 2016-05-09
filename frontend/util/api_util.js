@@ -29,8 +29,6 @@ var ApiUtil = {
 		$.ajax({
 			method: "PATCH",
 			url: "/api/users/" + user.id,
-			// processData: false,
-			// contentType: false,
 			data: { user: newAttrs },
 			success: function(user) {
 				SessionActions.currentUserReceived(user);
@@ -38,8 +36,27 @@ var ApiUtil = {
 				callback && callback(user);
 			},
 			error: function(e) {
-				// console.log("api_util#editUser error");
-		}
+				console.log("api_util#editUser error");
+			}
+		});
+	},
+
+	editUserImage: function(user, formData, callback) {
+		$.ajax({
+			method: "PATCH",
+			url: "/api/users/" + user.id,
+			processData: false,
+			contentType: false,
+			dataType: 'json',
+			data: formData,
+			success: function(user) {
+				SessionActions.currentUserReceived(user);
+				UserActions.editUser(user);
+				callback && callback(user);
+			},
+			error: function(e) {
+				console.log("api_util#editUserImage error");
+			}
 		});
 	},
 

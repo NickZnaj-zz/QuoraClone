@@ -1,5 +1,7 @@
 class Answer < ActiveRecord::Base
 	# include PgSearch
+	has_attached_file :image
+  validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 
   validates :body, :user_id, :question_id, presence: true
 

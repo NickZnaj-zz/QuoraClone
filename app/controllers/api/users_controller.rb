@@ -14,7 +14,7 @@ class Api::UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-			
+
       flash[:success] = "Created account successfuly! Welcome #{@user.username}!"
       redirect_to "http://localhost:3000/#/main"
     else
@@ -41,6 +41,6 @@ class Api::UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :username, :password, topic_ids: [])
+    params.require(:user).permit(:email, :username, :password, :image, topic_ids: [])
   end
 end

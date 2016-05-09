@@ -55,6 +55,7 @@ var UserDetail = React.createClass({
     reader.onloadend = function () {
       var result = reader.result;
       this.setState({ imageFile: file, imageUrl: result });
+			console.log(this.state);
     }.bind(this);
 
     reader.readAsDataURL(file);
@@ -63,11 +64,11 @@ var UserDetail = React.createClass({
 	handleSubmit: function (e) {
     e.preventDefault();
     var formData = new FormData();
-    formData.append("currentUser[image]", this.state.imageFile);
-
-    ApiUtil.editUser(SessionStore.currentUser(), formData, function (){
+		// var formData = {}
+    formData.append("user[image]", this.state.imageFile);
+    ApiUtil.editUserImage(SessionStore.currentUser(), formData, function (){
 			this.setState({currentUser: SessionStore.currentUser()});
-		});
+		}.bind(this));
   },
 
 	viewAnswers: function() {
@@ -89,7 +90,33 @@ var UserDetail = React.createClass({
 		}.bind(this))
 	},
 
+	changeAvatar: function() {
+		var changeAvatarForm = document.getElementsByClassName('changeAvatarForm')[0];
+		changeAvatarForm.click();
+	},
+
+	buttonVisibility: "hidden",
+
+	showButton: function() {
+		this.buttonVisibility = "visibile";
+	},
+
+	hideButton: function() {
+		this.buttonVisibility = "hidden";
+	},
+
 	render: function() {
+
+		var changeAvatarButton;
+		if (this.props.params.userID == this.state.currentUser.id){
+
+			changeAvatarButton =
+			<button
+				className="profile-change-avatar-button"
+				onClick={this.changeAvatar}
+				visibility={this.buttonVisibility}
+				>Change Picture</button>
+		}
 
 		var answerFeed;
 		if (this.state.user.answers && this.state.viewingFeed === "answers") {
@@ -144,9 +171,12 @@ var UserDetail = React.createClass({
 		return (
 			<div>
 				<section className="profile-user-section">
-					<div className="profile-user-pic">
-						<img className="profile-user-pic" />
+					<div className="profile-avatar-wrapper group">
+						<img className="profile-avatar" src={this.state.user.image_url}
+								 onMouseOver={this.showButton} onMouseLeave={this.hideButton}/>
+						{changeAvatarButton}
 					</div>
+
 					<div className="profile-user-info">
 						<p className="profile-user-name">{this.state.user.username}</p>
 					</div>
@@ -172,6 +202,18 @@ var UserDetail = React.createClass({
 					<RightBar className="profile-user-topics-bar" user={this.state.user} />
 
 				</section>
+
+
+				<form className="change-avatar-form" onSubmit={this.handleSubmit}>
+          <label>Image
+            <input
+							className="changeAvatarForm"
+              type="file"
+              onChange={this.handleFileChange}
+              />
+          </label>
+					<input type="submit" />
+        </form>
 
 			</div>
 		);

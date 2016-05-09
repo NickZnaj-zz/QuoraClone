@@ -58,7 +58,8 @@ var TopicModal = React.createClass({
   render: function() {
     console.log("current topics:  " + this.state.userTopics);
     var topicList = this.state.topics.map(function(topic) {
-
+      var pleaseWork = require('../../../app/assets/images/' + topic.name + '.png');
+      debugger
         return (
           <li className="topic-item-wrapper group" key={topic.id}>
             <label className="checkbox-table-topic-modal" key={topic.id}>
@@ -68,7 +69,8 @@ var TopicModal = React.createClass({
                 value={topic.id}
                 onClick={this._onCheckboxClick}
                 />
-              {topic.name}
+              <div className="topic-name" value={topic.name}>{topic.name}</div>
+              <img src={pleaseWork} />
             </label>
           </li>
         );

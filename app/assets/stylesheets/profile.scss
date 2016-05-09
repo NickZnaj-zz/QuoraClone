@@ -1,9 +1,9 @@
-.profile-user-section{
+.profile-user-section {
   border-bottom: 2px solid #ccc;
   height: 150px;
 }
 
-.profile-user-pic{
+.profile-user-pic {
   width: 142px;
 	height: 142px;
 	border-radius: 50%;
@@ -13,7 +13,34 @@
   margin-right: 30px;
 }
 
-.profile-user-name{
+.profile-avatar-wrapper {
+    float: left;
+    margin-right: 30px;
+    position: relative;
+}
+
+.profile-avatar {
+    width: 142px;
+  	height: 142px;
+    border-radius: 50%;
+    display: inline-block;
+
+}
+
+.profile-change-avatar-button {
+  width: 142px;
+  position: absolute;
+  left: 0px;
+  bottom: 4px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: 3px;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.profile-user-name {
   color: #333;
   letter-spacing: -0.5px;
   line-height: 1.25;
@@ -86,4 +113,8 @@
 
 .questions-feed-count {
   font-size: 15px;
+}
+
+.change-avatar-form{
+  display: none;
 }
