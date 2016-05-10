@@ -49,7 +49,9 @@ var AnswersIndex = React.createClass({
            {answer.question.title}
          </a>
 
-         <AnswerFeedItem key={answer.id}
+         <AnswerFeedItem
+           id={answer.id}
+           key={answer.id}
            answer={answer}
            submitter={this.props.submitter}
            />
@@ -67,11 +69,9 @@ var AnswersIndex = React.createClass({
       return (
         <div className="answers-index group">
   				<p className="answers-feed-count">{this.userAnswerCount()}</p>
-            <Infinite containerHeight={600} elementHeight={40} useWindowAsScrollContainer>
               <ul className="answers">
                 {this.renderAnswerList()}
               </ul>
-            </Infinite>
         </div>
       );
     }

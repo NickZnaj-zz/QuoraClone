@@ -25,6 +25,8 @@ var AnswerFeedItem = React.createClass({
 	componentDidMount: function() {
 		// this.userListener = UserStore.addListener(this._onChange);
 		// ApiUtil.fetchSingleUser(this.props.answer.user_id);
+				var element = document.getElementById(this.props.id);
+				element.innerHTML = this.props.answer.body;
 	},
 
 	componentWillUnmount: function() {
@@ -66,12 +68,18 @@ var AnswerFeedItem = React.createClass({
 
 		var deleteButton;
 		if (this.props.submitter && (this.props.submitter.id === SessionStore.currentUser().id))
-			deleteButton = <input type="submit"
+			{deleteButton = <input type="submit"
 						 								value="Delete Answer"
 						 								onClick={this.handleDelete}
-														className="delete-answer-button" />;
+														className="delete-answer-button" />;}
 
+		var answerString = this.props.answer.body;
     return (
+
+
+
+
+
       <li className="answer-feed-item group">
 
 				<div className="answer-header group">
@@ -79,8 +87,8 @@ var AnswerFeedItem = React.createClass({
 					<a href={"/#/main/users/" + this.props.submitter.id} className="user-info">{this.props.submitter.username}</a>
 				</div>
 
-        <div className="answer-list-item-answer">
-          {this.props.answer.body}
+        <div className="answer-list-item-answer" id={this.props.id} >
+					{answerString}
         </div>
 
 			{answerEditForm}
