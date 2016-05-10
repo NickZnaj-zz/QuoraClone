@@ -154,7 +154,7 @@
 }
 .ql-editor {
   box-sizing: border-box;
-  min-height: 100%;
+  min-height: 150px;
   outline: none;
   tab-size: 4;
   white-space: pre-wrap;
@@ -165,6 +165,7 @@
 }
 .ql-editor a {
   text-decoration: underline;
+  color: #b92b27;
 }
 .ql-editor b {
   font-weight: bold;
