@@ -10,3 +10,4 @@ json.questions topic.questions do |question|
 	json.title question.title
 end
 json.users topic.users
+json.image_url asset_path(topic.image.url)

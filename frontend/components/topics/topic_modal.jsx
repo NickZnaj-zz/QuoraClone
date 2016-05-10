@@ -58,7 +58,7 @@ var TopicModal = React.createClass({
   render: function() {
     console.log("current topics:  " + this.state.userTopics);
     var topicList = this.state.topics.map(function(topic) {
-      var pleaseWork = require('../../../app/assets/images/' + topic.name + '.png');
+      var imgURL = 'https://s3.amazonaws.com/shmora-dev/' + topic.name + '.png';
         return (
           <li className="topic-item-wrapper group" key={topic.id}>
             <label className="checkbox-table-topic-modal" key={topic.id}>
@@ -69,7 +69,7 @@ var TopicModal = React.createClass({
                 onClick={this._onCheckboxClick}
                 />
               <div className="topic-name" value={topic.name}>{topic.name}</div>
-              <img src={pleaseWork} />
+              <img className="topic-image" src={imgURL} />
             </label>
           </li>
         );
@@ -80,7 +80,7 @@ var TopicModal = React.createClass({
   				<form className="topic-modal group"
   							onSubmit={this.handleSubmit}
   				>
-  					<p className="form-words-topic-modal">Pick some topics:</p>
+  					<p className="form-words-topic-modal">What interests you?:</p>
   					<ul className="topic-list-topic-modal group">
   						{topicList}
   					</ul>

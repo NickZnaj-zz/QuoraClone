@@ -37,7 +37,7 @@ var App = React.createClass({
     var button, welcomeMessage;
 
     if (this.state.currentUser) {
-      button = <button onClick={ApiUtil.logout}>Logout</button>;
+      button;
     } else {
 			var loginForm = <LoginForm />;
 			return <div>{loginForm}</div>;

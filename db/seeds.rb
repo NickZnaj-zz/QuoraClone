@@ -16,7 +16,7 @@
 # 	)
 # end
 
-names = ["Ruby", "React.js", "JavaScript", "CSS", "HTML", "Rails",
+names = ["Ruby", "React", "JavaScript", "CSS", "HTML", "Rails",
 					"SQL", "Git"]
 
 topics = names.map do |topic|
