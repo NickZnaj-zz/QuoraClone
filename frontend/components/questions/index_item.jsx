@@ -49,9 +49,9 @@ var IndexItem = React.createClass({
 		// console.log((typeof this.props.question.topics !== "undefined"));
 
 		var topAnswer;
-		if (this.props.question.answers){
-
-			topAnswer = <TopAnswer question={this.props.question} />
+		if (this.props.question.answers[0]) {
+			var id = this.props.question.answers[0].id.toString()
+			topAnswer = <TopAnswer id={id} question={this.props.question} />
 		}
     return (
       <li className="question-list-item">
