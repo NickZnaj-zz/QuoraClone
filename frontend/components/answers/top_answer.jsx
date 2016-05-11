@@ -22,7 +22,6 @@ var TopAnswer = React.createClass({
 	componentDidMount: function() {
 		// this.userListener = UserStore.addListener(this._onChange);
 		if (this.props.question.answers[0]) {
-			debugger
 			// ApiUtil.fetchSingleUser(this.props.question.answers[0].user_id);
 			var element = document.getElementById(this.props.id.toString());
 			element.innerHTML = this.props.question.answers[0].body;
