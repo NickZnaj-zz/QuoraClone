@@ -9,6 +9,10 @@ class User < ActiveRecord::Base
 	has_attached_file :image, default_url: "default_profile_pic.png"
 	validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 
+	validates :username, :email, presence: true
+	validates :username, length: {minimum: 3}
+	validates :email, length: {minimum: 3}
+
 	has_many :questions
 	has_many :answers
 	has_many :votes

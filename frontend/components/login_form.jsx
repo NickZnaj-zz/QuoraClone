@@ -32,6 +32,7 @@ var LoginForm = React.createClass({
 	        <h1 className="login-message">Log In</h1>
 
 	        <form onSubmit={this.handleSubmit} className="login-form group">
+            <div className="login-error hidden" >Invalid Credentials. Try again.</div>
 						<div className="traditional-login group">
 
 							<div className="login-field">
@@ -67,6 +68,7 @@ var LoginForm = React.createClass({
 											value="No account?"
 											onClick={this.startSignUp}/>
 									</div>
+
 						</div>
 
 

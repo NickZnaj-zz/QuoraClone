@@ -21,6 +21,7 @@ var SignUpForm = React.createClass({
 	        <h1 className="sign-up-message">Sign Up</h1>
 
 	        <form onSubmit={this.handleSubmit} className="sign-up-form group">
+            <div className="sign-up-error hidden" >Name, Password, or Email invalid. Try again.</div>
 						<div className="traditional-sign-up group">
 							<div className="sign-up-field">
 									<label htmlFor="username" className="sign-up-form-label">Full Name</label>
@@ -51,10 +52,10 @@ var SignUpForm = React.createClass({
 
 
 						<div className="o-auth-buttons">
-							<a className="google-button" href="#">
+							<a className="google-button" href="/auth/google_oauth2">
 								<span className="google-button-text">Continue with Google</span>
 							</a>
-							<a className="facebook-button" href="#">
+							<a className="facebook-button" href="/auth/facebook">
 								<span className="facebook-button-text">Continue with Facebook</span>
 							</a>
 						</div>

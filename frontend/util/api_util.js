@@ -84,6 +84,12 @@ var ApiUtil = {
 			success: function(newUser) {
 				SessionActions.currentUserReceived(newUser);
 				callback && callback();
+			},
+			error: function(request, status, error) {
+				$(".sign-up-error").removeClass("hidden");
+				setTimeout(function(){
+					$(".sign-up-error").addClass("hidden")
+				}, 3000);
 			}
 		});
 	},
@@ -97,7 +103,13 @@ var ApiUtil = {
       success: function(currentUser) {
         SessionActions.currentUserReceived(currentUser);
         callback && callback();
-      }
+      },
+			error: function(request, status, error) {
+				$(".login-error").removeClass("hidden");
+				setTimeout(function(){
+					$(".login-error").addClass("hidden")
+				}, 3000);
+			}
     });
   },
 

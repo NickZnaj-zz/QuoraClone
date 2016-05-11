@@ -2,7 +2,7 @@
 	background: asset-url(background);
 	background-size: auto;
 	background-position:left;
-	background-position-x: -127px;
+	background-position-x: -10px;
 	height: 850px;
 }
 
@@ -32,6 +32,18 @@
 	background: white;
 	border: 1px solid #ccc;
 	border-radius: 3px;
+}
+
+.hidden {
+	display:none;
+}
+
+.sign-up-error {
+		color: #b92b27;
+		font-size: 13px;
+		font-family: sans-serif;
+		position: absolute;
+		margin-left: 28%;
 }
 
 .o-auth-buttons{
